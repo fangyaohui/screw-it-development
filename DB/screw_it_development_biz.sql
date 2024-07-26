@@ -1,0 +1,177 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : spack
+ Source Server Type    : MySQL
+ Source Server Version : 80022
+ Source Host           : localhost:3306
+ Source Schema         : screw_it_development_biz
+
+ Target Server Type    : MySQL
+ Target Server Version : 80022
+ File Encoding         : 65001
+
+ Date: 26/07/2024 18:00:23
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for blog_history
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_history`;
+CREATE TABLE `blog_history`  (
+  `id` int NOT NULL COMMENT 'id',
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '消息',
+  `send_user_id` int NULL DEFAULT NULL COMMENT '发送者',
+  `receive_user_id` int NULL DEFAULT NULL COMMENT '接收者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `status` int NULL DEFAULT NULL COMMENT '状态',
+  `del_flag` int NULL DEFAULT NULL COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_history
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_inbox
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_inbox`;
+CREATE TABLE `blog_inbox`  (
+  `id` bigint NOT NULL COMMENT '收件箱ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `message_id` bigint NOT NULL COMMENT '消息ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_inbox
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_permission`;
+CREATE TABLE `blog_permission`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '权限记录ID',
+  `permission_type` int NULL DEFAULT NULL COMMENT '权限类型(1-按钮,2-表单,3-数据,4-其它)',
+  `permission_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限编码',
+  `permission_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限名称',
+  `action_id` bigint NULL DEFAULT NULL COMMENT '动作ID(按钮ID)',
+  `permission_scope` int NULL DEFAULT NULL COMMENT '权限范围(1-Tenant,2-Role,3-Org,4-User,5-EnergyType,6-Product,7-Device,8-Point)',
+  `permission_category` int NULL DEFAULT NULL COMMENT '权限类别(1-Read,2-Write,3-Read/Write,4-Other)',
+  `menu_form_id` bigint NULL DEFAULT NULL COMMENT '自定义Form唯一ID',
+  `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ' COMMENT '创建人',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ' COMMENT '修改人',
+  `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志，0未删除，1已删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of blog_permission
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_public_box
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_public_box`;
+CREATE TABLE `blog_public_box`  (
+  `id` bigint NOT NULL COMMENT '公开箱ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `blog_id` bigint NOT NULL COMMENT '博客ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_public_box
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_role
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_role`;
+CREATE TABLE `blog_role`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色名称',
+  `role_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色编码',
+  `role_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色描述',
+  `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ' COMMENT '创建人',
+  `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ' COMMENT '修改人',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标记，0未删除，1已删除',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1' COMMENT '0停用 1启用',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_role
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for blog_user
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_user`;
+CREATE TABLE `blog_user`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '密码',
+  `salt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '盐值',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电话号码',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `nickname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '昵称',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
+  `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱地址',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `lock_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '锁定标记，0未锁定，9已锁定',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标记，0未删除，1已删除',
+  `wx_openid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信登录openId',
+  `mini_openid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '小程序openId',
+  `qq_openid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'QQ openId',
+  `gitee_login` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '码云标识',
+  `osc_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '开源中国标识',
+  `gender` int NULL DEFAULT NULL COMMENT '性别 1：男 2：女',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '0停用 1启用',
+  `last_login` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of blog_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for rel_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `rel_role_permission`;
+CREATE TABLE `rel_role_permission`  (
+  `role_id` bigint NOT NULL,
+  `permission` bigint NOT NULL,
+  PRIMARY KEY (`role_id`, `permission`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rel_role_permission
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for rel_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `rel_user_role`;
+CREATE TABLE `rel_user_role`  (
+  `user_id` bigint NOT NULL,
+  `role_id` bigint NOT NULL,
+  PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rel_user_role
+-- ----------------------------
+
+SET FOREIGN_KEY_CHECKS = 1;
