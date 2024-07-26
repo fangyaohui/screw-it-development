@@ -1,0 +1,47 @@
+server:
+  port: 61237
+
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      discovery:
+        username: nacos
+        password: nacos
+        server-addr: localhost:8848
+        namespace: dev
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        namespace: ${spring.profiles.active}
+        refresh-enabled: true
+        extension-configs:
+          - data-id: ${spring.application.name}-${spring.profiles.active}.yml
+            refresh: true
+        enable-remote-sync-config: true
+    gateway:
+      routes:
+        - id: upm
+#          uri: http://localhost:51234
+          uri: lb://com-fang-demo-upm
+          predicates:
+            - Path=/api/upm/**
+          filters:
+            - StripPrefix=2
+
+        - id: consumer
+          uri: lb://com-fang-demo-consumer
+          predicates:
+            - Path=/api/consumer/**
+          filters:
+            - StripPrefix=2
+
+  config:
+    import:
+      - optional:nacos:application-${spring.profiles.active}.yml
+#      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yml

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+<!--    <parent>-->
+<!--        <artifactId>com-fang-demo-base</artifactId>-->
+<!--        <groupId>com.fang.demo</groupId>-->
+<!--        <version>1.0-SNAPSHOT</version>-->
+<!--    </parent>-->
+
+    <groupId>screw.it.development</groupId>
+    <description>注册中心/配置中心</description>
+    <artifactId>screw-it-development-nacos</artifactId>
+    <packaging>jar</packaging>
+    <version>${revision}</version>
+
+    <properties>
+        <!-- your project version -->
+        <revision>2.0</revision>
+
+        <!-- jdk version -->
+        <jdk.version>8</jdk.version>
+        <maven.compiler.source>${jdk.version}</maven.compiler.source>
+        <maven.compiler.target>${jdk.version}</maven.compiler.target>
+
+        <!-- Spring 版本管理,与官方nacos源码中版本保持一直 -->
+        <spring-boot.version>2.6.13</spring-boot.version>
+        <!-- SpringCloud 版本管理，与官方nacos源码中版本保持一直 -->
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <!-- spring-阿里巴巴 相关-->
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        <!-- Nacos 服务版本，与阿里巴巴nacos 版本保持一致：https://nacos.io/zh-cn/ -->
+        <nacos-server.version>2.2.0</nacos-server.version>
+
+        <!-- 插件版本管理 -->
+        <maven-docker-plugin.version>0.40.2</maven-docker-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springboot.nacos</groupId>
+            <artifactId>nacos-config</artifactId>
+            <version>${nacos-server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springboot.nacos</groupId>
+            <artifactId>nacos-naming</artifactId>
+            <version>${nacos-server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springboot.nacos</groupId>
+            <artifactId>nacos-istio</artifactId>
+            <version>${nacos-server.version}</version>
+        </dependency>
+        <!--
+        插件默认实现（授权/角色等的默认实现）也可以不引入此依赖，自行实现相关功能
+        官方鉴权插件文档：https://nacos.io/zh-cn/docs/v2/plugin/auth-plugin.html
+        -->
+        <dependency>
+            <groupId>io.springboot.nacos</groupId>
+            <artifactId>nacos-plugin-default-impl</artifactId>
+            <version>${nacos-server.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+
+
+        <!-- Nacos 认证相关 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${maven-docker-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

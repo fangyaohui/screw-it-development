@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>screw-it-development-maven</artifactId>
+        <groupId>screw.it.development</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>./screw-it-development-base/screw-it-development-maven/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>screw-it-development-modules</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>screw-it-development-base</module>
+        <module>screw-it-development-platform</module>
+    </modules>
+
+</project>

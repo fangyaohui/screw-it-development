@@ -1,0 +1,54 @@
+# 这是数据库 MySQL 模式启动的配置
+server:
+  port: 8848
+  tomcat:
+    basedir: logs
+  servlet:
+    context-path: nacos
+
+# 数据库存储存储配置文件
+db:
+  num: 1
+  host: localhost
+  port: 3306
+  database: com_fang_demo_cfg
+  user: root
+  password: 123456
+  url:
+    0: jdbc:mysql://localhost:3306/com_fang_demo_cfg?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+nacos:
+  # 单实例模式启动
+  standalone: true
+  core:
+    # 授权认证相关：https://nacos.io/zh-cn/docs/auth.html
+    # 授权认证相关：https://nacos.io/zh-cn/docs/v2/guide/user/auth.html
+    auth:
+      # 是否开启认证
+      enabled: false
+      # 所启用的Nacos的鉴权插件的名称，与`com.alibaba.nacos.plugin.auth.spi.server.AuthPluginService`的`getAuthServiceName`返回值对应
+      system.type: nacos
+      default.token.secret.key: SecretKey012345678901234567890123456789012345678901234567890123456789
+      plugin.nacos.token.secret.key: VGhpc0lzTXlDdXN0b21TZWNyZXRLZXkwMTIzNDU2Nzg=
+
+  # 官方配置中复制过来的
+  security:
+    ignore:
+      urls: /,/error,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/v1/auth/**,/v1/console/health/**,/actuator/**,/v1/console/server/**
+
+spring:
+  datasource:
+    platform: mysql
+  security:
+    enabled: true
+  boot: # 接入 spring boot admin
+    admin:
+      client:
+        url: http://iserver-monitor:5001
+        username: iserver
+        password: iserver888888
+        instance:
+          prefer-ip: true
+    application:
+      name: nacos-console
+
+useAddressServer: true

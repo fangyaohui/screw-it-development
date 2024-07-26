@@ -1,0 +1,52 @@
+target/
+*.war
+*.ear
+*.zip
+*.tar
+*.tar.gz
+*.versionsBackup
+
+HELP.md
+
+.idea
+*.iws
+*.iml
+*.ipr
+rebel.xml
+
+.settings/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+bin/
+
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### vscode ###
+.vscode
+
+### logs ###
+/logs/
+*.log
+*.log.gz
+
+### temp ignore ###
+*.cache
+*.diff
+*.patch
+*.tmp
+*.java~
+*.properties~
+*.xml~
+
+### system ignore ###
+.DS_Store
+Thumbs.db
+Servers
+.metadata
+/.mvn/
