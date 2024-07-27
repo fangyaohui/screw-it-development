@@ -22,6 +22,7 @@
     <modules>
         <module>screw-it-development-domain</module>
         <module>screw-it-development-communal</module>
+        <module>screw-it-development-bus</module>
     </modules>
 
 </project>

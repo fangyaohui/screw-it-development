@@ -27,15 +27,14 @@ spring:
     gateway:
       routes:
         - id: upm
-#          uri: http://localhost:51234
-          uri: lb://com-fang-demo-upm
+          uri: lb://screw-it-development-upm
           predicates:
             - Path=/api/upm/**
           filters:
             - StripPrefix=2
 
         - id: consumer
-          uri: lb://com-fang-demo-consumer
+          uri: lb://screw-it-development-consumer
           predicates:
             - Path=/api/consumer/**
           filters:

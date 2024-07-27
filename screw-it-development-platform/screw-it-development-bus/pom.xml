@@ -3,29 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>screw-it-development-modules</artifactId>
+        <artifactId>screw-it-development-platform</artifactId>
         <groupId>screw.it.development</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>screw-it-development-base</artifactId>
     <packaging>pom</packaging>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+    <artifactId>screw-it-development-bus</artifactId>
+
 
     <modules>
 
-        <module>screw-it-development-gateway</module>
-        <module>screw-it-development-maven</module>
-        <module>screw-it-development-nacos</module>
+        <module>screw-it-development-upm</module>
 
     </modules>
-
-
 
 </project>
