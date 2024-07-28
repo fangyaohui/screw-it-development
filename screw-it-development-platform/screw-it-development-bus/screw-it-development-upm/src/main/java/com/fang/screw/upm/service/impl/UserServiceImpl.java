@@ -5,7 +5,6 @@ import com.fang.screw.communal.service.UserService;
 import com.fang.screw.upm.mapper.UserInfoMapper;
 
 import org.springframework.stereotype.Service;
-import po.BlogUserPO;
 import po.UserInfoPO;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * @Author yaoHui
  * @date 2024-07-17
  **/
-//@DubboService
 @Service
 public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoPO> implements UserService {
 
