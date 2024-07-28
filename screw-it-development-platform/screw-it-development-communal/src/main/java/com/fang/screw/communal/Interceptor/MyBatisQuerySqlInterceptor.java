@@ -2,20 +2,12 @@ package com.fang.screw.communal.Interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.reflection.DefaultReflectorFactory;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -64,15 +56,5 @@ public class MyBatisQuerySqlInterceptor implements Interceptor {
 
         log.info(boundSql.getSql().toString());
         return invocation.proceed();
-    }
-
-    private MappedStatement copyFromMappedStatement(MappedStatement mappedStatement, SqlSource newSqlSource){
-        return new MappedStatement.Builder( mappedStatement.getConfiguration(),
-                 mappedStatement.getId() + "_delFlag", newSqlSource,  mappedStatement.getSqlCommandType())
-                .resource( mappedStatement.getResource())
-                .fetchSize( mappedStatement.getFetchSize())
-                .statementType( mappedStatement.getStatementType())
-                .keyGenerator( mappedStatement.getKeyGenerator())
-                .build();
     }
 }
