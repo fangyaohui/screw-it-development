@@ -17,6 +17,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.sql.Statement;
@@ -45,7 +46,8 @@ import java.util.stream.Collectors;
         method = "batch",
         args = {Statement.class})
 })
-public class MybatisSqlInterceptor implements Interceptor {
+@Order(2)
+public class MybatisSqlLogInterceptor implements Interceptor {
 
     /**
      * 定义一个包含需要添加单引号括起来的参数类型集合。

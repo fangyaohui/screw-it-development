@@ -17,4 +17,10 @@ public class DynamicParameter {
     // 登录状态有效期9小时
     public static final Integer REDIS_LOGIN_STATUS_EXPIRATION_TIME = 1000*60*60*9;
 
+    // 删除
+    public static final Integer DEL_FLAG = 1;
+
+    // 未删除
+    public static final Integer NOT_DEL_FLAG = 0;
+
 }
