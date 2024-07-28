@@ -5,6 +5,7 @@ import com.fang.screw.communal.service.UserService;
 import com.fang.screw.upm.mapper.UserInfoMapper;
 
 import org.springframework.stereotype.Service;
+import po.BlogUserPO;
 import po.UserInfoPO;
 
 import java.util.List;

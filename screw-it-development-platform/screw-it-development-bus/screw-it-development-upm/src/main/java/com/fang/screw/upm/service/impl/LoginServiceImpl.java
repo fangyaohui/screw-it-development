@@ -1,20 +1,22 @@
 package com.fang.screw.upm.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fang.screw.communal.config.RedisDynamicParameter;
 import com.fang.screw.communal.utils.*;
 import com.fang.screw.upm.enums.ExceptionEnum;
 import com.fang.screw.upm.mapper.BlogUserMapper;
 import com.fang.screw.upm.service.LoginService;
-import com.fang.screw.upm.config.DynamicConstant;
 import dto.BlogUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import po.BlogUserPO;
 import vo.LoginVO;
 
 import java.util.UUID;
+
+import static com.fang.screw.communal.config.DynamicParameter.EXPIRATION_TIME;
 
 /**
  * @FileName LoginServiceImpl
@@ -29,6 +31,8 @@ public class LoginServiceImpl implements LoginService {
 
     private BlogUserMapper blogUserMapper;
 
+    private RedisUtils redisUtils;
+
     /***
     * @Description 登录：可以通过手机号、用户名或者邮箱进行登录
     * @param loginVO
@@ -38,18 +42,15 @@ public class LoginServiceImpl implements LoginService {
     */
     @Override
     public R<String> signIn(LoginVO loginVO) {
-
         BlogUserPO userInfoPO = blogUserMapper.selectOne(Wrappers.<BlogUserPO>lambdaQuery()
                 .eq(RegexUtils.isMobile(loginVO.getUserName()),BlogUserPO::getPhone,loginVO.getUserName())
                         .or()
                 .eq(RegexUtils.isEmailAddress(loginVO.getUserName()),BlogUserPO::getEmail,loginVO.getUserName())
+                        .or()
+                        .eq(BlogUserPO::getUserName,loginVO.getUserName())
                 );
-        if(ObjectUtils.isEmpty(userInfoPO)){
-            userInfoPO = blogUserMapper.selectOne(Wrappers.<BlogUserPO>lambdaQuery()
-                    .eq(BlogUserPO::getUserName,loginVO.getUserName()));
-        }
 
-        if(ObjectUtils.isEmpty(userInfoPO)){
+        if(userInfoPO == null){
             return ExceptionEnum.SYSOP_USERNAME_ERROR.getBusinessException();
         }
 
@@ -60,8 +61,17 @@ public class LoginServiceImpl implements LoginService {
         String uuid = String.valueOf(UUID.randomUUID());
         BlogUserDTO blogUserDTO = userInfoPO.transformToDTO();
 
-        RedisUtils.set(uuid,blogUserDTO);
-        String token = JWTUtils.generateToken(uuid,1L);
+        // 判断该用户是否登录 登陆过就无需再生成Token然后保存到Redis中
+        String token = (String) redisUtils.get(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + blogUserDTO.getId());
+        if(ObjectUtils.isNotEmpty(token)){
+            return R.ok(token);
+        }
+
+        String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
+
+        redisUtils.set(tokenKey,blogUserDTO,EXPIRATION_TIME);
+        token = JWTUtils.generateToken(uuid,1L);
+        redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + blogUserDTO.getId(),token,EXPIRATION_TIME);
 
         return R.ok(token);
     }

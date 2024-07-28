@@ -1,5 +1,6 @@
 package com.fang.screw.communal.utils;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
@@ -22,6 +23,9 @@ public class RegexUtils {
     */
     public static boolean isMobile(String str)
     {
+        if(ObjectUtils.isEmpty(str)){
+            return false;
+        }
         Pattern p = null;
         Matcher m = null;
         boolean b = false;

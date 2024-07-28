@@ -43,21 +43,24 @@ public class RegisterServiceImpl implements RegisterService {
 
         // 判断用户名是否重复
         if(blogUserMapper.exists(Wrappers.<BlogUserPO>lambdaQuery()
-                .eq(StringUtils.isNotBlank(registerUserInfoVO.getUserName()),BlogUserPO::getUserName,
+                .eq(StringUtils.isNotBlank(registerUserInfoVO.getUserName())
+                        ,BlogUserPO::getUserName,
                         registerUserInfoVO.getUserName()))){
             return ExceptionEnum.DUPLICATE_SYSOP_USER_NAME.getBusinessException();
         }
 
         // 判断邮箱是否重复
-        if(blogUserMapper.exists(Wrappers.<BlogUserPO>lambdaQuery()
-                .eq(RegexUtils.isEmailAddress(registerUserInfoVO.getEmail()),BlogUserPO::getEmail,
+        if(StringUtils.isNotBlank(registerUserInfoVO.getEmail()) && blogUserMapper.exists(Wrappers.<BlogUserPO>lambdaQuery()
+                .eq(RegexUtils.isEmailAddress(registerUserInfoVO.getEmail())
+                        ,BlogUserPO::getEmail,
                         registerUserInfoVO.getEmail()))){
             return ExceptionEnum.DUPLICATE_SYSOP_USER_EMAIL.getBusinessException();
         }
 
         // 判断手机号是否重复
-        if(blogUserMapper.exists(Wrappers.<BlogUserPO>lambdaQuery()
-                .eq(RegexUtils.isMobile(registerUserInfoVO.getPhone()),BlogUserPO::getPhone,
+        if(StringUtils.isNotBlank(registerUserInfoVO.getPhone()) && blogUserMapper.exists(Wrappers.<BlogUserPO>lambdaQuery()
+                .eq(RegexUtils.isMobile(registerUserInfoVO.getPhone())
+                        ,BlogUserPO::getPhone,
                         registerUserInfoVO.getPhone()))){
             return ExceptionEnum.DUPLICATE_SYSOP_USER_PHONE.getBusinessException();
         }
@@ -74,7 +77,7 @@ public class RegisterServiceImpl implements RegisterService {
         blogUserPO.setNickName(blogUserPO.getUserName());
 
         log.info(blogUserPO.toString());
-        if(  blogUserMapper.insert(blogUserPO) > 0){
+        if( blogUserMapper.insert(blogUserPO) > 0){
             return R.ok();
         }
         return ExceptionEnum.SYSOP_ACTION_FAIL.getBusinessException();

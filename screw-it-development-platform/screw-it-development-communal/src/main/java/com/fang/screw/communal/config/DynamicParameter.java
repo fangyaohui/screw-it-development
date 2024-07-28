@@ -14,4 +14,7 @@ public class DynamicParameter {
     // Token有效期10小时
     public static final Integer EXPIRATION_TIME = 1000*60*60*10;
 
+    // 登录状态有效期9小时
+    public static final Integer REDIS_LOGIN_STATUS_EXPIRATION_TIME = 1000*60*60*9;
+
 }
