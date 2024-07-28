@@ -9,16 +9,18 @@
     </parent>
 
 
-    <artifactId>screw-it-development-upm</artifactId>
+    <artifactId>screw-it-development-blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>screw-it-development-upm</name>
-    <description>screw-it-development-upm</description>
+    <name>screw-it-development-blog</name>
+    <description>screw-it-development-blog</description>
 
     <properties>
 
     </properties>
 
     <dependencies>
+
+
 
         <!--    Dubbo Nacos适配依赖包 开始  -->
 <!--        <dependency>-->
