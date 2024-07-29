@@ -87,7 +87,8 @@
 		<appender-ref ref="info"/>
 	</root>
 
-	<root level="ERROR">
-		<appender-ref ref="error"/>
-	</root>
+<!--	<root level="ERROR">-->
+<!--		<appender-ref ref="console"/>-->
+<!--		<appender-ref ref="error"/>-->
+<!--	</root>-->
 </configuration>

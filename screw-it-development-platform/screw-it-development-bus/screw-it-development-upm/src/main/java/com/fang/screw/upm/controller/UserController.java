@@ -34,4 +34,10 @@ public class UserController {
         return R.ok(userInfoPOList.toString());
     }
 
+    @GetMapping("/test")
+    public R<String> getTest(){
+        log.info("test");
+        return R.ok("test");
+    }
+
 }
