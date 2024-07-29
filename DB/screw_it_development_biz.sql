@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80025
  Source Host           : localhost:3306
- Source Schema         : screw_it_ development_biz
+ Source Schema         : screw_it_development_biz
 
  Target Server Type    : MySQL
  Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 27/07/2024 18:50:44
+ Date: 29/07/2024 22:54:41
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `blog_collection`  (
   `status` int NULL DEFAULT NULL COMMENT '状态',
   `del_flag` int NULL DEFAULT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of blog_collection
@@ -49,7 +49,7 @@ CREATE TABLE `blog_comment`  (
   `status` int NULL DEFAULT NULL COMMENT '状态',
   `del_flag` int NULL DEFAULT NULL COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of blog_comment
@@ -166,6 +166,7 @@ CREATE TABLE `blog_user`  (
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
   `email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱地址',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `lock_flag` int NULL DEFAULT 0 COMMENT '锁定标记，0未锁定，9已锁定',
   `del_flag` int NULL DEFAULT 0 COMMENT '删除标记，0未删除，1已删除',
   `wx_openid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信登录openId',
@@ -173,8 +174,8 @@ CREATE TABLE `blog_user`  (
   `qq_openid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'QQ openId',
   `gitee_login` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '码云标识',
   `osc_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '开源中国标识',
-  `gender` int NULL DEFAULT NULL COMMENT '性别 1：男 2：女',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '0停用 1启用',
+  `gender` int NULL DEFAULT 0 COMMENT '性别 0：未知 1：男 2：女',
+  `status` int NULL DEFAULT 1 COMMENT '0停用 1启用',
   `last_login` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
@@ -183,7 +184,9 @@ CREATE TABLE `blog_user`  (
 -- ----------------------------
 -- Records of blog_user
 -- ----------------------------
-INSERT INTO `blog_user` VALUES (1, 'fangyaohui', '123456', NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-27 18:38:43', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL, NULL);
+INSERT INTO `blog_user` VALUES (1, 'fangyaohui', '123456', NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-27 18:38:43', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `blog_user` VALUES (3, 'fang', '47d4bead8ac78fd470363b30bf3f4923', '232b5e5d-0147-4b90-a6a6-29244f5502f6', NULL, NULL, 'fang', NULL, '2944163240@qq.com', NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, '2024-07-28 12:31:24', NULL);
+INSERT INTO `blog_user` VALUES (19, 'fangMyBatisTest', 'f47c1ba24e08ce33db11b0a3947bae76', 'd3adb988-3cdc-44b4-885e-4877e1756832', NULL, NULL, 'fangMyBatisTest', NULL, 'fangMyBatisTest@qq.com', '2024-07-28 15:50:44', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 1, '2024-07-28 15:50:44', NULL);
 
 -- ----------------------------
 -- Table structure for rel_collection_blog
@@ -193,7 +196,7 @@ CREATE TABLE `rel_collection_blog`  (
   `user_id` bigint NOT NULL,
   `collection_id` bigint NOT NULL,
   `blog_id` bigint NOT NULL
-) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of rel_collection_blog
@@ -220,7 +223,7 @@ DROP TABLE IF EXISTS `rel_user_blog`;
 CREATE TABLE `rel_user_blog`  (
   `user_id` bigint NOT NULL COMMENT '用户ID',
   `blog_id` bigint NOT NULL COMMENT '博客ID'
-) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin COMMENT = '点赞关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = armscii8 COLLATE = armscii8_bin COMMENT = '点赞关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of rel_user_blog
