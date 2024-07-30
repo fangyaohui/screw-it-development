@@ -89,3 +89,12 @@ server:
 #  protocol:
 #    name: dubbo
 #    port: -1
+
+#MINIO
+oss:
+  name: minio
+  accessKey: MtjQrkWMkc2pZcbb6Xqa
+  secretKey: KpTTuINwsGHbCku5xtJNGtBd66Rh96Ka1YHtqRqA
+  bucketName: screw-it-development-blog-buck
+  endpoint: http://localhost:9000
+  fileExt: png,jpg,jpeg,pdf

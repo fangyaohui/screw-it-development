@@ -1,12 +1,10 @@
 package com.fang.screw.blog.controller;
 
+import com.fang.screw.communal.template.OssTemplate;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -27,6 +25,7 @@ import java.nio.file.Files;
 @AllArgsConstructor
 public class BlogController {
 
+    private OssTemplate ossTemplate;
 
     /**
     * @Description
@@ -55,6 +54,15 @@ public class BlogController {
 
     @RequestMapping("/test")
     public R<String> test(){
+        return R.ok("test");
+    }
+
+    @GetMapping("/uploadImg")
+    public R<String> uploadImg(@RequestParam("file") MultipartFile file){
+        if(ossTemplate.bucketExists("screw-it-development-blog-buck")){
+            log.info("screw-it-development-blog-buck存在");
+        }
+        log.info(String.valueOf(ossTemplate.upLoadFile("blogFoladerName","blogFileName",file)));
         return R.ok("test");
     }
 }

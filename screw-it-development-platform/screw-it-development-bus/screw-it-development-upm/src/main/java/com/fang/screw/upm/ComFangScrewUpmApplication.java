@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 //@EnableDubbo
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(value = {"com.fang.screw.communal.*", "com.fang.screw.upm.*"})
+@ComponentScan(value = {"com.fang.screw.communal.*","com.fang.screw.communal.config", "com.fang.screw.upm.*"})
 public class ComFangScrewUpmApplication {
 
     public static void main(String[] args) {

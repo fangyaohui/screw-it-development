@@ -56,6 +56,8 @@
         <spring-context-support.version>1.0.11</spring-context-support.version>
 
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <minio.version>8.2.2</minio.version>
+        <hutool.version>5.8.18</hutool.version>
     </properties>
 
     <dependencies>
@@ -239,6 +241,20 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- MinIO -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+
+            <!-- Hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
 
         </dependencies>
