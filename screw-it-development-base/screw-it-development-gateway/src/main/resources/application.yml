@@ -40,6 +40,13 @@ spring:
           filters:
             - StripPrefix=2
 
+        - id: blog
+          uri: lb://screw-it-development-blog
+          predicates:
+            - Path=/api/blog/**
+          filters:
+            - StripPrefix=1
+
   config:
     import:
       - optional:nacos:application-${spring.profiles.active}.yml
