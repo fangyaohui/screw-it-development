@@ -1,6 +1,7 @@
 package com.fang.screw.blog.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fang.screw.blog.service.BlogService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,5 +15,5 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class BlogServiceImpl extends ServiceImpl<> {
+public class BlogServiceImpl implements BlogService {
 }
