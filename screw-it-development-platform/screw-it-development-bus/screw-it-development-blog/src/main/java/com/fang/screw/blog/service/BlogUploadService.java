@@ -1,5 +1,6 @@
 package com.fang.screw.blog.service;
 
+import com.fang.screw.communal.entity.OssFile;
 import com.fang.screw.communal.utils.R;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,4 +22,6 @@ public interface BlogUploadService {
      * @Date 2024/7/31
      */
     R<String> uploadMDFile(MultipartFile file) throws IOException;
+
+    R<OssFile> uploadImage (MultipartFile file) throws IOException;
 }

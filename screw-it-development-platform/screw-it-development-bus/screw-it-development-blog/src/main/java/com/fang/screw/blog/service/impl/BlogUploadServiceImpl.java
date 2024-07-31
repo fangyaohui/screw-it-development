@@ -3,10 +3,12 @@ package com.fang.screw.blog.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.fang.screw.blog.mapper.BlogInfoMapper;
 import com.fang.screw.blog.service.BlogUploadService;
+import com.fang.screw.communal.entity.OssFile;
+import com.fang.screw.communal.template.OssTemplate;
+import com.fang.screw.communal.utils.ImageDetermineUtils;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import po.BlogInfoPO;
@@ -14,8 +16,9 @@ import po.BlogInfoPO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.UUID;
 
-import static com.fang.screw.communal.constant.UploadConstant.BLOG_UPLOAD_MD_FILE_MAX_SIZE;
+import static com.fang.screw.communal.constant.UploadConstant.*;
 
 /**
  * @FileName BlogUploadServiceImpl
@@ -29,6 +32,8 @@ import static com.fang.screw.communal.constant.UploadConstant.BLOG_UPLOAD_MD_FIL
 public class BlogUploadServiceImpl implements BlogUploadService {
 
     private BlogInfoMapper blogInfoMapper;
+
+    private OssTemplate ossTemplate;
 
     /**
      * @Description 上传MD文件博客
@@ -84,5 +89,36 @@ public class BlogUploadServiceImpl implements BlogUploadService {
         file.getInputStream().close();
 
         return R.ok("文件上传成功");
+    }
+
+    /**
+     * @Description 上传博客图片
+     * @param file
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/7/31
+     */
+    @Override
+    public R<OssFile> uploadImage(MultipartFile file) throws IOException {
+
+        // 限制上传文件大小 不能为空 OR 超过10MB
+        if(ObjectUtils.isEmpty(file) || file.getSize() > BLOG_UPLOAD_IMAGE_MAX_SIZE){
+            // 清理临时缓存
+            file.getInputStream().close();
+            return R.failed("上传文件不能为空或大小超过10MB");
+        }
+
+        // 判断上传的文件是图片
+        if(!ImageDetermineUtils.isImageFile(file)){
+            file.getInputStream().close();
+            return R.failed("只能上传图片，请确保上传的是图片");
+        }
+
+        String imageName = UUID.randomUUID().toString();
+        OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,file);
+
+        file.getInputStream().close();
+
+        return R.ok(ossFile,"上传成功");
     }
 }

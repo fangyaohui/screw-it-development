@@ -132,10 +132,10 @@ public class MinIOTemplate implements OssTemplate {
         if (file == null || file.isEmpty()) {
             throw new RuntimeException("文件不能为空");
         }
-        // 文件大小
-        if (file.getSize() > 5 * 1024 * 1024) {
-            throw new RuntimeException("文件大小不能超过5M");
-        }
+//        // 文件大小
+//        if (file.getSize() > 5 * 1024 * 1024) {
+//            throw new RuntimeException("文件大小不能超过5M");
+//        }
         String suffix = getFileExtension(file.getOriginalFilename());
         // 文件后缀判断
         if (!CollUtil.contains(ossProperties.getFileExt(), suffix)) {
