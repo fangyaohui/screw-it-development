@@ -17,7 +17,7 @@ import static com.fang.screw.communal.config.DynamicParameter.NOT_DEL_FLAG;
 
 /**
  * @FileName MyBatisQuerySqlInterceptor
- * @Description
+ * @Description 自动为所有查询添加del_flag = 0 这个条件
  * @Author yaoHui
  * @date 2024-07-28
  **/

@@ -1,5 +1,6 @@
 package com.fang.screw.blog.controller;
 
+import com.fang.screw.blog.service.BlogService;
 import com.fang.screw.communal.template.OssTemplate;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,8 @@ import java.nio.file.Files;
 public class BlogController {
 
     private OssTemplate ossTemplate;
+
+    private BlogService blogService;
 
     /**
     * @Description
