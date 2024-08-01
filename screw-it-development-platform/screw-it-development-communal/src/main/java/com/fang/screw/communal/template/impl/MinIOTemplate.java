@@ -119,6 +119,25 @@ public class MinIOTemplate implements OssTemplate {
     }
 
     /**
+     * 获取文件
+     *
+     * @param fileName 文件地址
+     * @return InputStream
+     */
+    @Override
+    public InputStream getOssFile(String fileName) {
+        try {
+            return client.getObject(GetObjectArgs.builder().bucket(getBucketName(ossProperties.getBucketName()))
+                    .object(fileName).build());
+
+        } catch (Exception e) {
+            log.error("minio getOssInfo Exception:{}", e);
+        }
+        return null;
+    }
+
+
+    /**
      * 上传文件
      *
      * @param folderName 上传的文件夹名称

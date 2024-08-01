@@ -9,12 +9,16 @@ import com.fang.screw.communal.utils.ImageDetermineUtils;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import po.BlogInfoPO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
 
@@ -120,5 +124,23 @@ public class BlogUploadServiceImpl implements BlogUploadService {
         file.getInputStream().close();
 
         return R.ok(ossFile,"上传成功");
+    }
+
+    /**
+     * @Description 获取minio服务器中的图片
+     * @param imageName
+     * @return {@link R< OssFile> }
+     * @Author yaoHui
+     * @Date 2024/8/1
+     */
+    @Override
+    public ResponseEntity<InputStreamResource> getImage(String imageName) {
+
+        InputStream inputStream = ossTemplate.getOssFile(imageName);
+        InputStreamResource resource = new InputStreamResource(inputStream);
+
+        return ResponseEntity.ok()
+                .header("Content-Type", "image/jpeg") // 根据文件类型设置正确的Content-Type
+                .body(resource);
     }
 }

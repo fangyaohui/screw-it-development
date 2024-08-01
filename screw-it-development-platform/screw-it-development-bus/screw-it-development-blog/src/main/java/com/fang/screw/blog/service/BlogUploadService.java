@@ -2,6 +2,8 @@ package com.fang.screw.blog.service;
 
 import com.fang.screw.communal.entity.OssFile;
 import com.fang.screw.communal.utils.R;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,5 +25,21 @@ public interface BlogUploadService {
      */
     R<String> uploadMDFile(MultipartFile file) throws IOException;
 
-    R<OssFile> uploadImage (MultipartFile file) throws IOException;
+    /**
+     * @Description 上传博客图片
+     * @param file
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/7/31
+     */
+    R<OssFile> uploadImage(MultipartFile file) throws IOException;
+
+    /**
+     * @Description 获取minio服务器中的图片
+     * @param imageName
+     * @return {@link R< OssFile> }
+     * @Author yaoHui
+     * @Date 2024/8/1
+     */
+    ResponseEntity<InputStreamResource> getImage(String imageName);
 }

@@ -33,6 +33,14 @@ public interface OssTemplate {
     OssFile getOssInfo(String fileName);
 
     /**
+     * 获取文件
+     *
+     * @param fileName 文件地址
+     * @return InputStream
+     */
+    InputStream getOssFile(String fileName);
+
+    /**
      * 上传文件
      *
      * @param folderName 上传的文件夹名称

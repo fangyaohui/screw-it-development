@@ -93,11 +93,21 @@ server:
 #    port: -1
 
 
-#MINIO
+#MINIO 本机
+#oss:
+#  name: minio
+#  accessKey: MtjQrkWMkc2pZcbb6Xqa
+#  secretKey: KpTTuINwsGHbCku5xtJNGtBd66Rh96Ka1YHtqRqA
+#  bucketName: screw-it-development-blog-buck
+#  endpoint: http://localhost:9000
+#  fileExt: png,jpg,jpeg,pdf
+
+#  MINIO 实习机
 oss:
   name: minio
-  accessKey: MtjQrkWMkc2pZcbb6Xqa
-  secretKey: KpTTuINwsGHbCku5xtJNGtBd66Rh96Ka1YHtqRqA
+  accessKey: fMNacdYkjR9vLglCjPpt
+  secretKey: iJfnvmKVo3TEJQQv9fIRoGKrhn2aW8NaR5bXX8m6
   bucketName: screw-it-development-blog-buck
   endpoint: http://localhost:9000
   fileExt: png,jpg,jpeg,pdf
+
