@@ -1,6 +1,6 @@
 package com.fang.screw.communal.utils;
 
-import com.fang.screw.communal.config.DynamicParameter;
+import com.fang.screw.communal.constant.DynamicParameter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

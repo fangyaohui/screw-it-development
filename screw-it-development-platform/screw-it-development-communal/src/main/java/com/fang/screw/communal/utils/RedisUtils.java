@@ -1,7 +1,9 @@
 package com.fang.screw.communal.utils;
 
+import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -92,8 +94,17 @@ public class RedisUtils {
      * @param key 键
      * @return 值
      */
-    public   Object get(String key) {
+    public Object get(String key) {
         return key == null ? null : redisTemplate.opsForValue().get(key);
+    }
+
+    public <T> T get(String key,Class<T> clazz){
+        String value = (String) redisTemplate.opsForValue().get(key);
+        if(StringUtils.isNotEmpty(value)){
+            return JSON.parseObject(value,clazz);
+        }
+        return null;
+
     }
 
     /**
@@ -103,7 +114,7 @@ public class RedisUtils {
      * @return true成功 false失败
      */
 
-    public   boolean set(String key, Object value) {
+    public boolean set(String key, Object value) {
         try {
             redisTemplate.opsForValue().set(key, value);
             return true;
@@ -125,7 +136,7 @@ public class RedisUtils {
     public   boolean set(String key, Object value, long time) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(key, value, time, TimeUnit.MILLISECONDS);
             } else {
                 set(key, value);
             }

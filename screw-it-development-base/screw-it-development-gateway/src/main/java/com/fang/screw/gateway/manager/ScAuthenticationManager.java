@@ -31,7 +31,6 @@ public class ScAuthenticationManager implements ReactiveAuthenticationManager {
             roleId = JWTUtils.getRoleId(token);
         }
         log.info("ScAuthenticationManager roleId = {}", roleId);
-
         Long finalRoleId = roleId;
         return Mono.just(authentication).map(auth -> {
             return new UsernamePasswordAuthenticationToken(finalRoleId, null, null);

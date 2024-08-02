@@ -2,19 +2,15 @@ package com.fang.screw.blog.controller;
 
 import com.fang.screw.blog.service.BlogUploadService;
 import com.fang.screw.communal.entity.OssFile;
-import com.fang.screw.communal.template.OssTemplate;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * @FileName BlogUploadController
@@ -52,7 +48,7 @@ public class BlogUploadController {
     @PostMapping("/uploadImage")
     public R<OssFile> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
 
-        return blogUploadService.uploadImage(file);
+        return blogUploadService.uploadBlogImage(file);
 
     }
 

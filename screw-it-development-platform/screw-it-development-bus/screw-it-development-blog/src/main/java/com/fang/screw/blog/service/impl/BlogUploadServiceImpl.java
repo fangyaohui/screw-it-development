@@ -1,6 +1,8 @@
 package com.fang.screw.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fang.screw.blog.mapper.BlogImageUploadMapper;
 import com.fang.screw.blog.mapper.BlogInfoMapper;
 import com.fang.screw.blog.service.BlogUploadService;
 import com.fang.screw.communal.entity.OssFile;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import po.BlogImageUploadPO;
 import po.BlogInfoPO;
 
 import java.io.BufferedReader;
@@ -38,6 +41,8 @@ public class BlogUploadServiceImpl implements BlogUploadService {
     private BlogInfoMapper blogInfoMapper;
 
     private OssTemplate ossTemplate;
+
+    private BlogImageUploadMapper blogImageUploadMapper;
 
     /**
      * @Description 上传MD文件博客
@@ -103,7 +108,7 @@ public class BlogUploadServiceImpl implements BlogUploadService {
      * @Date 2024/7/31
      */
     @Override
-    public R<OssFile> uploadImage(MultipartFile file) throws IOException {
+    public R<OssFile> uploadBlogImage(MultipartFile file) throws IOException {
 
         // 限制上传文件大小 不能为空 OR 超过10MB
         if(ObjectUtils.isEmpty(file) || file.getSize() > BLOG_UPLOAD_IMAGE_MAX_SIZE){
@@ -117,6 +122,12 @@ public class BlogUploadServiceImpl implements BlogUploadService {
             file.getInputStream().close();
             return R.failed("只能上传图片，请确保上传的是图片");
         }
+
+        // 判断用户是否上传过这个文件
+//        if(blogImageUploadMapper.exists(Wrappers.<BlogImageUploadPO>lambdaQuery()
+//                .eq()))
+
+
 
         String imageName = UUID.randomUUID().toString();
         OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,file);

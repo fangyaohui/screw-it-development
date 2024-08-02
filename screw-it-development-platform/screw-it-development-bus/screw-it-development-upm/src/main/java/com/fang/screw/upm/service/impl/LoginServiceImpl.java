@@ -1,12 +1,11 @@
 package com.fang.screw.upm.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fang.screw.communal.config.RedisDynamicParameter;
+import com.fang.screw.communal.constant.RedisDynamicParameter;
 import com.fang.screw.communal.utils.*;
 import com.fang.screw.upm.enums.ExceptionEnum;
 import com.fang.screw.upm.mapper.BlogUserMapper;
 import com.fang.screw.upm.service.LoginService;
-import dto.BlogUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -16,7 +15,8 @@ import vo.LoginVO;
 
 import java.util.UUID;
 
-import static com.fang.screw.communal.config.DynamicParameter.EXPIRATION_TIME;
+import static com.fang.screw.communal.constant.DynamicParameter.EXPIRATION_TIME;
+import static com.fang.screw.communal.constant.DynamicParameter.REDIS_LOGIN_STATUS_EXPIRATION_TIME;
 
 /**
  * @FileName LoginServiceImpl
@@ -59,19 +59,18 @@ public class LoginServiceImpl implements LoginService {
         }
 
         String uuid = String.valueOf(UUID.randomUUID());
-        BlogUserDTO blogUserDTO = userInfoPO.transformToDTO();
 
         // 判断该用户是否登录 登陆过就无需再生成Token然后保存到Redis中
-        String token = (String) redisUtils.get(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + blogUserDTO.getId());
+        String token = (String) redisUtils.get(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userInfoPO.getId());
         if(ObjectUtils.isNotEmpty(token)){
             return R.ok(token);
         }
 
         String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
 
-        redisUtils.set(tokenKey,blogUserDTO,EXPIRATION_TIME);
+        redisUtils.set(tokenKey,userInfoPO,EXPIRATION_TIME);
         token = JWTUtils.generateToken(uuid,1L);
-        redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + blogUserDTO.getId(),token,EXPIRATION_TIME);
+        redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userInfoPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
 
         return R.ok(token);
     }

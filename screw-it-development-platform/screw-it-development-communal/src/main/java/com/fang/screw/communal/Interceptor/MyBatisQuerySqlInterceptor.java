@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 
-import static com.fang.screw.communal.config.DynamicParameter.NOT_DEL_FLAG;
+import static com.fang.screw.communal.constant.DynamicParameter.NOT_DEL_FLAG;
 
 /**
  * @FileName MyBatisQuerySqlInterceptor

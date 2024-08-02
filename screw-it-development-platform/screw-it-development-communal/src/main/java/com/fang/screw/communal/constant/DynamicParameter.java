@@ -1,4 +1,4 @@
-package com.fang.screw.communal.config;
+package com.fang.screw.communal.constant;
 
 /**
  * @FileName DynamicParameter

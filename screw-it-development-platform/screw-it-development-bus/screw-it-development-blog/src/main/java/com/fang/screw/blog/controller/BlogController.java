@@ -1,6 +1,7 @@
 package com.fang.screw.blog.controller;
 
 import com.fang.screw.blog.service.BlogService;
+import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.template.OssTemplate;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,7 @@ public class BlogController {
 
     @RequestMapping("/test")
     public R<String> test(){
+        log.info(CurrentUserHolder.getUser().toString());
         return R.ok("test");
     }
 
