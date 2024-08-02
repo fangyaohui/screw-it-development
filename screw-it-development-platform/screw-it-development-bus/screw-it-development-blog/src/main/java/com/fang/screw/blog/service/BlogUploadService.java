@@ -32,7 +32,7 @@ public interface BlogUploadService {
      * @Author yaoHui
      * @Date 2024/7/31
      */
-    R<OssFile> uploadBlogImage(MultipartFile file) throws IOException;
+    R<String> uploadBlogImage(MultipartFile file) throws IOException;
 
     /**
      * @Description 获取minio服务器中的图片

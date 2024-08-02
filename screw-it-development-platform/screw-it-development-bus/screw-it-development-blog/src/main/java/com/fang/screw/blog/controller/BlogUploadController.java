@@ -46,7 +46,7 @@ public class BlogUploadController {
     * @Date 2024/7/31
     */
     @PostMapping("/uploadImage")
-    public R<OssFile> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+    public R<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
 
         return blogUploadService.uploadBlogImage(file);
 

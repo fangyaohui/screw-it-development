@@ -39,16 +39,20 @@ public class MyBatisQuerySqlInterceptor implements Interceptor {
 
         String sql = boundSql.getSql();
 
-        if(StringUtils.contains(sql,"WHERE")){
-            sql = sql.substring(0,sql.length() - 1);
-            sql = sql + " AND del_flag = " + NOT_DEL_FLAG;
+        if(!StringUtils.contains(sql,"INSERT")){
+            if(StringUtils.contains(sql,"WHERE")){
+                sql = sql.substring(0,sql.length() - 1);
+                sql = sql + " AND del_flag = " + NOT_DEL_FLAG;
 
-            sql = sql + ")";
-        }else{
-            sql = sql + " WHERE (";
-            sql = sql + "del_flag = " + NOT_DEL_FLAG;
-            sql = sql + ")";
+                sql = sql + ")";
+            }else{
+                sql = sql + " WHERE (";
+                sql = sql + "del_flag = " + NOT_DEL_FLAG;
+                sql = sql + ")";
+            }
         }
+
+
 
         Field field = boundSql.getClass().getDeclaredField("sql");
         field.setAccessible(true);

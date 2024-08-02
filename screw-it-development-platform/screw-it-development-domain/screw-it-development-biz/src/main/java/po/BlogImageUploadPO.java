@@ -1,5 +1,6 @@
 package po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +12,7 @@ import lombok.EqualsAndHashCode;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
+@TableName(value = "blog_image_upload")
 public class BlogImageUploadPO extends BasePO{
 
     // 用户ID
@@ -23,6 +25,6 @@ public class BlogImageUploadPO extends BasePO{
     private String targetPath;
 
     // 图片大小
-    private Integer imgSize;
+    private Long imgSize;
 
 }

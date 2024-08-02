@@ -6,11 +6,13 @@ import com.fang.screw.blog.mapper.BlogImageUploadMapper;
 import com.fang.screw.blog.mapper.BlogInfoMapper;
 import com.fang.screw.blog.service.BlogUploadService;
 import com.fang.screw.communal.entity.OssFile;
+import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.template.OssTemplate;
 import com.fang.screw.communal.utils.ImageDetermineUtils;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.fang.screw.communal.constant.UploadConstant.*;
 
@@ -89,6 +94,15 @@ public class BlogUploadServiceImpl implements BlogUploadService {
             e.printStackTrace();
         }
 
+        // 替换MD文件中所有图片地址
+        Map<String,String> imagePath =  blogImageUploadMapper.selectList(Wrappers.<BlogImageUploadPO> lambdaQuery()
+                .eq(BlogImageUploadPO::getUserId,CurrentUserHolder.getUser().getId()))
+                .stream()
+                .collect(Collectors.toMap(BlogImageUploadPO::getSourcePath,BlogImageUploadPO::getTargetPath));
+
+        String content = ImageDetermineUtils.replaceImageUrls(contentBuilder.toString(),imagePath);
+        log.info(content);
+
         BlogInfoPO blogInfoPO = new BlogInfoPO();
         blogInfoPO.setContent(contentBuilder.toString());
 
@@ -108,7 +122,7 @@ public class BlogUploadServiceImpl implements BlogUploadService {
      * @Date 2024/7/31
      */
     @Override
-    public R<OssFile> uploadBlogImage(MultipartFile file) throws IOException {
+    public R<String> uploadBlogImage(MultipartFile file) throws IOException {
 
         // 限制上传文件大小 不能为空 OR 超过10MB
         if(ObjectUtils.isEmpty(file) || file.getSize() > BLOG_UPLOAD_IMAGE_MAX_SIZE){
@@ -123,18 +137,33 @@ public class BlogUploadServiceImpl implements BlogUploadService {
             return R.failed("只能上传图片，请确保上传的是图片");
         }
 
+        // 文件名字格式化
+        String fileName = file.getOriginalFilename();
+        if(StringUtils.isNotEmpty(fileName) && fileName.startsWith("./")){
+            fileName = fileName.substring(2);
+        }
+
         // 判断用户是否上传过这个文件
-//        if(blogImageUploadMapper.exists(Wrappers.<BlogImageUploadPO>lambdaQuery()
-//                .eq()))
-
-
+        if(blogImageUploadMapper.exists(Wrappers.<BlogImageUploadPO>lambdaQuery()
+                .eq(BlogImageUploadPO::getUserId,CurrentUserHolder.getUser().getId())
+                .eq(BlogImageUploadPO::getSourcePath,fileName))){
+            return R.ok("上传成功");
+        }
 
         String imageName = UUID.randomUUID().toString();
         OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,file);
 
+        // 保存用户上传过的图片信息
+        BlogImageUploadPO blogImageUploadPO = new BlogImageUploadPO();
+        blogImageUploadPO.setImgSize(ossFile.getSize());
+        blogImageUploadPO.setSourcePath(fileName);
+        blogImageUploadPO.setTargetPath(ossFile.getFilePath());
+        blogImageUploadPO.setUserId(CurrentUserHolder.getUser().getId());
+        blogImageUploadMapper.insert(blogImageUploadPO);
+
         file.getInputStream().close();
 
-        return R.ok(ossFile,"上传成功");
+        return R.ok("上传成功");
     }
 
     /**
