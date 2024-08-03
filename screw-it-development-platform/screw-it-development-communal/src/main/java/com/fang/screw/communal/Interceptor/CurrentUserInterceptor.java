@@ -4,6 +4,7 @@ import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.JWTUtils;
 import com.fang.screw.communal.utils.RedisUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import po.BlogUserPO;
@@ -21,6 +22,7 @@ import static com.fang.screw.communal.constant.RedisDynamicParameter.REDIS_USER_
  **/
 @Component
 @AllArgsConstructor
+@Slf4j
 public class CurrentUserInterceptor implements HandlerInterceptor {
 
     private RedisUtils redisUtils;
@@ -30,8 +32,16 @@ public class CurrentUserInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
-            String uuid = JWTUtils.getUUID(token);
-            CurrentUserHolder.setUser((BlogUserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid));
+            BlogUserPO blogUserPO = new BlogUserPO();
+            if(JWTUtils.validateToken(token)){
+                String uuid = JWTUtils.getUUID(token);
+                blogUserPO = (BlogUserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid);
+                CurrentUserHolder.setUser(blogUserPO);
+                log.info("当前用户get：" + blogUserPO.toString());
+            }else{
+                CurrentUserHolder.setUser(null);
+                log.info("当前用户get：null");
+            }
         }
         return true;
     }

@@ -77,10 +77,15 @@ public class BlogUploadServiceImpl implements BlogUploadService {
 
         // 检查MIME类型
         String mimeType = file.getContentType();
-        if (!"text/markdown".equals(mimeType) && !"text/plain".equals(mimeType)) {
-            // 清理临时缓存
-            file.getInputStream().close();
-            return R.failed("上传的文件类型必须为markdown格式");
+        String fileName = file.getOriginalFilename();
+        if (!"text/markdown".equals(mimeType) && !"text/plain".equals(mimeType) &&
+                "application/octet-stream".equals(mimeType)) {
+            assert fileName != null;
+            if (!fileName.endsWith(".md")) {
+                // 清理临时缓存
+                file.getInputStream().close();
+                return R.failed("上传的文件类型必须为markdown格式");
+            }
         }
 
         // 读取上传的文件内容
