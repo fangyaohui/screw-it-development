@@ -1,13 +1,20 @@
 package po;
 
+import ch.qos.logback.core.util.TimeUtil;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.format.annotation.DateTimeFormat;
+import vo.BlogInfoVO;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @FileName BlogInfoPO
@@ -35,20 +42,16 @@ public class BlogInfoPO {
     private String author;
 
     // 博客所有图片保存服务器地址
-    private String images;
+    private List<String> images;
 
     // 附件地址
     private String attachments;
 
     // 博客上传时间 或 创建时间
-    @TableField(fill = FieldFill.INSERT,value = "create_time")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
+    private String createTime;
 
     // 博客最后一次更新时间
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
+    private String updateTime;
 
     // 博客浏览人数
     private Integer views;
@@ -57,18 +60,45 @@ public class BlogInfoPO {
     private Integer likes;
 
     // 博客标签
-    private Integer tags;
+    private List<Integer> tags;
 
-    // 博客状态
+    // 博客状态 1-正常 0-异常
     private Integer status;
 
-    // 博客访问类型
+    // 博客访问类型 1-普通 2-VIP
     private Integer accessControl;
 
     // 博客评论总数
-    private Integer comments_count;
+    private Integer commentsCount;
 
     // 博客类型
-    private Integer category;
+    private List<Integer> category;
+
+    public void init(){
+        List<Integer> list = new ArrayList<>();
+        list.add(0);
+        this.setLikes(0);
+        this.setStatus(1);
+        this.setTags(list);
+        this.setAccessControl(1);
+        this.setViews(0);
+        this.setLikes(0);
+        this.setCommentsCount(0);
+        this.setCategory(list);
+        this.setCreateTime(getCurrentTimeStr());
+        this.setUpdateTime(getCurrentTimeStr());
+        this.setAttachments(null);
+    }
+
+    public String getCurrentTimeStr() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public BlogInfoVO transformVO(){
+        BlogInfoVO blogInfoVO = new BlogInfoVO();
+        BeanUtils.copyProperties(this,blogInfoVO);
+        return blogInfoVO;
+    }
 
 }

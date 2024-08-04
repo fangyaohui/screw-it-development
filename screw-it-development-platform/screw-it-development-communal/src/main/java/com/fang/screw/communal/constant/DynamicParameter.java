@@ -23,4 +23,10 @@ public class DynamicParameter {
     // 未删除
     public static final Integer NOT_DEL_FLAG = 0;
 
+    // 状态正常
+    public static final Integer STATUS_OK = 1;
+
+    // 头条博客数目
+    public static final Integer HEADLINE_NUM = 5;
+
 }

@@ -8,12 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import vo.BlogInfoVO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.util.List;
 
 /**
  * @FileName BlogController
@@ -27,34 +29,7 @@ import java.nio.file.Files;
 @AllArgsConstructor
 public class BlogController {
 
-    private OssTemplate ossTemplate;
-
     private BlogService blogService;
-
-    /**
-    * @Description
-    * @param file
-    * @return {@link R< String> }
-    * @Author yaoHui
-    * @Date 2024/7/30
-    */
-    @PostMapping("/addBlogMDFile")
-    public R<String> addBlogMDFile(@RequestParam("file") MultipartFile file) throws IOException {
-
-        log.info(file.toString());
-
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            String currentLine;
-            while ((currentLine = br.readLine()) != null) {
-                contentBuilder.append(currentLine).append("\n");
-            }
-        }
-
-        log.info(contentBuilder.toString());
-
-        return R.ok(contentBuilder.toString());
-    }
 
     @RequestMapping("/test")
     public R<String> test(){
@@ -62,12 +37,26 @@ public class BlogController {
         return R.ok("test");
     }
 
-    @GetMapping("/uploadImg")
-    public R<String> uploadImg(@RequestParam("file") MultipartFile file){
-        if(ossTemplate.bucketExists("screw-it-development-blog-buck")){
-            log.info("screw-it-development-blog-buck存在");
-        }
-        log.info(String.valueOf(ossTemplate.upLoadFile("blogFoladerName","blogFileName",file)));
-        return R.ok("test");
+    /***
+    * @Description 返回头条五条博客简要信息
+    * @return {@link com.fang.screw.communal.utils.R<java.util.List<vo.BlogInfoVO>> }
+    * @Author yaoHui
+    * @Date 2024/8/3
+    */
+    @RequestMapping("/getHeadlineBriefInfo")
+    public R<List<BlogInfoVO>> getHeadlineBriefInfo(){
+        return blogService.getHeadlineBriefInfo();
+    }
+
+    /***
+    * @Description 根据博客ID查询博客的详细信息
+    * @param blogId
+    * @return {@link R< BlogInfoVO> }
+    * @Author yaoHui
+    * @Date 2024/8/4
+    */
+    @GetMapping("/getBlogInfoByBlogId")
+    public R<BlogInfoVO> getBlogInfoByBlogId(@RequestParam("blogId") String blogId){
+        return blogService.getBlogInfoByBlogId(blogId);
     }
 }

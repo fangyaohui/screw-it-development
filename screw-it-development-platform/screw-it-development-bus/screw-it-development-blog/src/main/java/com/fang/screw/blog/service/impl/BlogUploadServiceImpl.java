@@ -104,13 +104,18 @@ public class BlogUploadServiceImpl implements BlogUploadService {
                 .eq(BlogImageUploadPO::getUserId,CurrentUserHolder.getUser().getId()))
                 .stream()
                 .collect(Collectors.toMap(BlogImageUploadPO::getSourcePath,BlogImageUploadPO::getTargetPath));
-
         String content = ImageDetermineUtils.replaceImageUrls(contentBuilder.toString(),imagePath);
-        log.info(content);
+        List<String> imagePathList = ImageDetermineUtils.extractImageUrls(content);
 
+        // 保存博客基本信息
         BlogInfoPO blogInfoPO = new BlogInfoPO();
-        blogInfoPO.setContent(contentBuilder.toString());
-
+        blogInfoPO.init();
+        blogInfoPO.setAuthor(CurrentUserHolder.getUser().getNickName());
+        assert fileName != null;
+        blogInfoPO.setTitle(fileName.substring(0,fileName.length()-3));
+        blogInfoPO.setSummary(content.substring(0,Math.min(200,content.length())));
+        blogInfoPO.setContent(content);
+        blogInfoPO.setImages(imagePathList);
         blogInfoMapper.save(blogInfoPO);
 
         // 清理临时缓存
