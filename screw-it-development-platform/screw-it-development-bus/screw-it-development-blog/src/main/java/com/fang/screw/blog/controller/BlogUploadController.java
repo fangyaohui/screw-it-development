@@ -5,6 +5,7 @@ import com.fang.screw.communal.entity.OssFile;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +62,9 @@ public class BlogUploadController {
     */
     @GetMapping("/getImage")
     public ResponseEntity<InputStreamResource> getImage(String imageName){
+        if(StringUtils.isEmpty(imageName)){
+            return ResponseEntity.ok().body(null);
+        }
         return blogUploadService.getImage(imageName);
     }
 

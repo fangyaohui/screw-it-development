@@ -1,6 +1,5 @@
 package com.fang.screw.blog.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.blog.mapper.BlogImageUploadMapper;
 import com.fang.screw.blog.mapper.BlogInfoMapper;
@@ -12,6 +11,7 @@ import com.fang.screw.communal.utils.ImageDetermineUtils;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -187,6 +187,9 @@ public class BlogUploadServiceImpl implements BlogUploadService {
     public ResponseEntity<InputStreamResource> getImage(String imageName) {
 
         InputStream inputStream = ossTemplate.getOssFile(imageName);
+        if(ObjectUtils.isEmpty(inputStream)){
+            return ResponseEntity.ok().body(null);
+        }
         InputStreamResource resource = new InputStreamResource(inputStream);
 
         return ResponseEntity.ok()
