@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import vo.BlogHeadlineVO;
 import vo.BlogInfoVO;
 
 import java.io.BufferedReader;
@@ -44,7 +45,7 @@ public class BlogController {
     * @Date 2024/8/3
     */
     @RequestMapping("/getHeadlineBriefInfo")
-    public R<List<BlogInfoVO>> getHeadlineBriefInfo(){
+    public R<List<BlogHeadlineVO>> getHeadlineBriefInfo(){
         return blogService.getHeadlineBriefInfo();
     }
 

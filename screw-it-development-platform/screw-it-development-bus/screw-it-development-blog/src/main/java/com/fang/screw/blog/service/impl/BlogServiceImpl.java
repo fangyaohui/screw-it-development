@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import po.BlogHeadlinePO;
 import po.BlogInfoPO;
+import vo.BlogHeadlineVO;
 import vo.BlogInfoVO;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class BlogServiceImpl implements BlogService {
      * @Date 2024/8/3
      */
     @Override
-    public R<List<BlogInfoVO>> getHeadlineBriefInfo() {
+    public R<List<BlogHeadlineVO>> getHeadlineBriefInfo() {
 
         List<BlogHeadlinePO> blogHeadlinePOList = blogHeadlineMapper.selectList(Wrappers.<BlogHeadlinePO>lambdaQuery()
                 .eq(BlogHeadlinePO::getDelFlag,NOT_DEL_FLAG)
@@ -63,7 +64,15 @@ public class BlogServiceImpl implements BlogService {
             return R.failed("博客查询错误");
         }
 
-        return R.ok(blogInfoPOList.stream().map(BlogInfoPO::transformVO).collect(Collectors.toList()));
+        return R.ok(blogInfoPOList.stream().map(e -> {
+            BlogHeadlineVO blogHeadlineVO = e.transformBlogHeadlineVO();
+            if(!e.getImages().isEmpty()){
+                blogHeadlineVO.setImage(e.getImages().get(0));
+            }else{
+                blogHeadlineVO.setImage(null);
+            }
+            return blogHeadlineVO;
+        }).collect(Collectors.toList()));
     }
 
     /***

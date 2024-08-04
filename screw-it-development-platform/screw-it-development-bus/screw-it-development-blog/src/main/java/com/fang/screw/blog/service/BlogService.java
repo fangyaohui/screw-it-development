@@ -3,6 +3,7 @@ package com.fang.screw.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fang.screw.communal.utils.R;
 import po.BlogInfoPO;
+import vo.BlogHeadlineVO;
 import vo.BlogInfoVO;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface BlogService {
      * @Author yaoHui
      * @Date 2024/8/3
      */
-    R<List<BlogInfoVO>> getHeadlineBriefInfo();
+    R<List<BlogHeadlineVO>> getHeadlineBriefInfo();
 
     /***
      * @Description 根据博客ID查询博客的详细信息

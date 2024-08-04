@@ -1,14 +1,10 @@
 package po;
 
-import ch.qos.logback.core.util.TimeUtil;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.format.annotation.DateTimeFormat;
+import vo.BlogHeadlineVO;
 import vo.BlogInfoVO;
 
 import java.time.LocalDateTime;
@@ -99,6 +95,12 @@ public class BlogInfoPO {
         BlogInfoVO blogInfoVO = new BlogInfoVO();
         BeanUtils.copyProperties(this,blogInfoVO);
         return blogInfoVO;
+    }
+
+    public BlogHeadlineVO transformBlogHeadlineVO(){
+        BlogHeadlineVO blogHeadlineVO = new BlogHeadlineVO();
+        BeanUtils.copyProperties(this,blogHeadlineVO);
+        return blogHeadlineVO;
     }
 
 }
