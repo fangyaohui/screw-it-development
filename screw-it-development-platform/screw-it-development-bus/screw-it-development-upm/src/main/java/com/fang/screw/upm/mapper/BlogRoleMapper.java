@@ -15,6 +15,7 @@ import java.util.List;
 @Mapper
 public interface BlogRoleMapper extends BaseMapper<BlogRolePO> {
 
+
     /**
     * @Description 根据用户ID查询其所有有效的角色列表
     * @param userId
