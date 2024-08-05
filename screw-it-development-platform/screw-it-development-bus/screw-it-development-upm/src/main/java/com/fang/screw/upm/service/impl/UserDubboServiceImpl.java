@@ -4,13 +4,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.upm.mapper.BlogUserMapper;
-import com.fang.screw.upm.mapper.UserInfoMapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import po.BlogUserPO;
-import po.UserInfoPO;
-import vo.BlogUserVO;
+import com.fang.screw.domain.po.BlogUserPO;
+import com.fang.screw.domain.vo.BlogUserVO;
 
 import java.util.List;
 

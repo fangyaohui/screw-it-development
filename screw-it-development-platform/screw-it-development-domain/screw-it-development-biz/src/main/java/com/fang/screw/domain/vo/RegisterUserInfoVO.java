@@ -1,8 +1,8 @@
-package vo;
+package com.fang.screw.domain.vo;
 
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
-import po.BlogUserPO;
+import com.fang.screw.domain.po.BlogUserPO;
 
 /**
  * @FileName RegisterInfoVO

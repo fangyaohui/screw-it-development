@@ -12,11 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import po.BlogHeadlinePO;
-import po.BlogInfoPO;
-import po.BlogUserPO;
-import vo.BlogHeadlineVO;
-import vo.BlogInfoVO;
+import com.fang.screw.domain.po.BlogHeadlinePO;
+import com.fang.screw.domain.po.BlogInfoPO;
+import com.fang.screw.domain.po.BlogUserPO;
+import com.fang.screw.domain.vo.BlogHeadlineVO;
+import com.fang.screw.domain.vo.BlogInfoVO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +40,7 @@ public class BlogServiceImpl implements BlogService {
 
     /**
      * @Description 返回头条五条博客简要信息
-     * @return {@link com.fang.screw.communal.utils.R<java.util.List<vo.BlogInfoVO>> }
+     * @return {@link com.fang.screw.communal.utils.R<java.util.List< BlogInfoVO >> }
      * @Author yaoHui
      * @Date 2024/8/3
      */

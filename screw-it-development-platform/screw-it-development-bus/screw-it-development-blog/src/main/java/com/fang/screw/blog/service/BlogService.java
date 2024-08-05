@@ -1,10 +1,8 @@
 package com.fang.screw.blog.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.fang.screw.communal.utils.R;
-import po.BlogInfoPO;
-import vo.BlogHeadlineVO;
-import vo.BlogInfoVO;
+import com.fang.screw.domain.vo.BlogHeadlineVO;
+import com.fang.screw.domain.vo.BlogInfoVO;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public interface BlogService {
 
     /***
      * @Description 返回头条五条博客简要信息
-     * @return {@link com.fang.screw.communal.utils.R<java.util.List<vo.BlogInfoVO>> }
+     * @return {@link com.fang.screw.communal.utils.R<java.util.List< BlogInfoVO >> }
      * @Author yaoHui
      * @Date 2024/8/3
      */

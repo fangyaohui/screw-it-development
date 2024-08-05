@@ -2,7 +2,7 @@ package com.fang.screw.upm.service;
 
 import com.fang.screw.communal.utils.BusinessException;
 import com.fang.screw.communal.utils.R;
-import vo.RegisterUserInfoVO;
+import com.fang.screw.domain.vo.RegisterUserInfoVO;
 
 public interface RegisterService {
 

@@ -2,20 +2,13 @@ package com.fang.screw.blog.controller;
 
 import com.fang.screw.blog.service.BlogService;
 import com.fang.screw.communal.holder.CurrentUserHolder;
-import com.fang.screw.communal.template.OssTemplate;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import vo.BlogHeadlineVO;
-import vo.BlogInfoVO;
+import com.fang.screw.domain.vo.BlogHeadlineVO;
+import com.fang.screw.domain.vo.BlogInfoVO;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -40,7 +33,7 @@ public class BlogController {
 
     /***
     * @Description 返回头条五条博客简要信息
-    * @return {@link com.fang.screw.communal.utils.R<java.util.List<vo.BlogInfoVO>> }
+    * @return {@link com.fang.screw.communal.utils.R<java.util.List< BlogInfoVO >> }
     * @Author yaoHui
     * @Date 2024/8/3
     */

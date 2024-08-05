@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import po.UserInfoPO;
+import com.fang.screw.domain.po.UserInfoPO;
 import reactor.core.publisher.Mono;
 
 /**

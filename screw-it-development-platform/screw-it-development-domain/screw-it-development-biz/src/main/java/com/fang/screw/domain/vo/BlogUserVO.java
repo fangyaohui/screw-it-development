@@ -1,16 +1,13 @@
-package po;
+package com.fang.screw.domain.vo;
 
 import lombok.Data;
 
 /**
- * @FileName BlogRolePO
+ * @FileName BlogUserVO
  * @Description
  * @Author yaoHui
  * @date 2024-08-05
  **/
 @Data
-public class BlogRolePO {
-
-
-
+public class BlogUserVO {
 }

@@ -1,9 +1,6 @@
-package vo;
+package com.fang.screw.domain.vo;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-
-import java.util.List;
 
 /**
  * @FileName BlogHeadlineVO

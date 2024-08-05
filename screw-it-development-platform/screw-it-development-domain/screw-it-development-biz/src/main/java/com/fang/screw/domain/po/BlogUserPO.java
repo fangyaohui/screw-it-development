@@ -1,13 +1,12 @@
-package po;
+package com.fang.screw.domain.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import dto.BlogUserDTO;
+import com.fang.screw.domain.dto.BlogUserDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
-import vo.BlogUserVO;
+import com.fang.screw.domain.vo.BlogUserVO;
 
 import java.time.LocalDateTime;
 

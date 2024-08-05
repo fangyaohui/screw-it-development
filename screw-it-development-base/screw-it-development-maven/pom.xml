@@ -87,6 +87,12 @@
             <version>${fastjson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>screw.it.development</groupId>
+            <artifactId>screw-it-development-biz</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>

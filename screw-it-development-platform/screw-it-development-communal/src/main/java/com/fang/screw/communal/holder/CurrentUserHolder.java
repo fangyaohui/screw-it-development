@@ -1,7 +1,7 @@
 package com.fang.screw.communal.holder;
 
 import org.springframework.stereotype.Component;
-import po.BlogUserPO;
+import com.fang.screw.domain.po.BlogUserPO;
 
 /**
  * @FileName CurrentUserHolder

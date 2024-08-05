@@ -1,4 +1,4 @@
-package po;
+package com.fang.screw.domain.po;
 
 /**
  * @FileName RelUserRolePO

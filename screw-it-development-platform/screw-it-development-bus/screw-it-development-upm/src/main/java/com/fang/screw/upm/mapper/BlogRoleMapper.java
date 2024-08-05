@@ -2,7 +2,7 @@ package com.fang.screw.upm.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import po.BlogRolePO;
+import com.fang.screw.domain.po.BlogRolePO;
 
 import java.util.List;
 

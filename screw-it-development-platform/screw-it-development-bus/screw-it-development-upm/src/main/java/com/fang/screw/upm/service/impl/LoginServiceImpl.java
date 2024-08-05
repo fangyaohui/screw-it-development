@@ -10,8 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
-import po.BlogUserPO;
-import vo.LoginVO;
+import com.fang.screw.domain.po.BlogUserPO;
+import com.fang.screw.domain.vo.LoginVO;
 
 import java.util.UUID;
 

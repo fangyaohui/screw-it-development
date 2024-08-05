@@ -1,11 +1,11 @@
-package po;
+package com.fang.screw.domain.po;
 
+import com.fang.screw.domain.vo.BlogHeadlineVO;
+import com.fang.screw.domain.vo.BlogInfoVO;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import vo.BlogHeadlineVO;
-import vo.BlogInfoVO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

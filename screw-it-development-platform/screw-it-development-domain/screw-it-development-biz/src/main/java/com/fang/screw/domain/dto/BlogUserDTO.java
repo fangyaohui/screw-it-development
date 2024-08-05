@@ -1,13 +1,8 @@
-package dto;
+package com.fang.screw.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fang.screw.domain.po.BlogUserPO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
-import org.springframework.format.annotation.DateTimeFormat;
-import po.BlogUserPO;
 
 import java.time.LocalDateTime;
 

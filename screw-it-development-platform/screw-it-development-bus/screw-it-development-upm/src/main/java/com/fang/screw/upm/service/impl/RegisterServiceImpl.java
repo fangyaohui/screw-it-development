@@ -2,7 +2,6 @@ package com.fang.screw.upm.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fang.screw.communal.utils.BusinessException;
 import com.fang.screw.communal.utils.MD5WithSaltUtils;
 import com.fang.screw.communal.utils.RegexUtils;
 import com.fang.screw.upm.enums.ExceptionEnum;
@@ -12,8 +11,8 @@ import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import po.BlogUserPO;
-import vo.RegisterUserInfoVO;
+import com.fang.screw.domain.po.BlogUserPO;
+import com.fang.screw.domain.vo.RegisterUserInfoVO;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

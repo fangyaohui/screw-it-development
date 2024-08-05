@@ -1,4 +1,4 @@
-package vo;
+package com.fang.screw.domain.vo;
 
 import lombok.Data;
 

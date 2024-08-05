@@ -1,8 +1,7 @@
-package vo;
+package com.fang.screw.domain.vo;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.util.List;

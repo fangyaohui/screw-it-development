@@ -2,7 +2,7 @@ package com.fang.screw.blog.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import po.BlogHeadlinePO;
+import com.fang.screw.domain.po.BlogHeadlinePO;
 
 /**
  * @FileName BlogHeadlineMapper

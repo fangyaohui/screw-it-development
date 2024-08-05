@@ -1,4 +1,4 @@
-package po;
+package com.fang.screw.domain.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

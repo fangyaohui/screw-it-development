@@ -6,7 +6,6 @@ import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
-import po.UserInfoPO;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;

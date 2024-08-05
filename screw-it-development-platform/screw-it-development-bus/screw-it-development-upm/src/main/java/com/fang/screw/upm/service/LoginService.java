@@ -1,7 +1,7 @@
 package com.fang.screw.upm.service;
 
 import com.fang.screw.communal.utils.R;
-import vo.LoginVO;
+import com.fang.screw.domain.vo.LoginVO;
 
 /**
  * @FileName LoginService
