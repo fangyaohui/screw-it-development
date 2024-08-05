@@ -25,4 +25,5 @@ public interface BlogRoleMapper extends BaseMapper<BlogRolePO> {
     List<Long> getRoleListByUserId(Long userId);
 
 
+
 }
