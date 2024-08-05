@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 05/08/2024 11:16:31
+ Date: 05/08/2024 15:50:45
 */
 
 SET NAMES utf8mb4;
@@ -99,8 +99,7 @@ CREATE TABLE `blog_permission`  (
   `permission_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限编码',
   `permission_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限名称',
   `action_id` bigint NULL DEFAULT NULL COMMENT '动作ID(按钮ID)',
-  `resource_type` int NULL DEFAULT NULL COMMENT '资源类型(1-博客资源，2-视频资源)',
-  `permission_scope` int NULL DEFAULT NULL COMMENT '权限范围(1-Tenant,2-Role,3-Org,4-User,5-EnergyType,6-Product,7-Device,8-Point)',
+  `permission_scope` int NULL DEFAULT NULL COMMENT '权限范围(1-博客资源，2-视频资源)',
   `permission_category` int NULL DEFAULT NULL COMMENT '权限类别(1-Read,2-Write,3-Read/Write,4-Other)',
   `menu_form_id` bigint NULL DEFAULT NULL COMMENT '自定义Form唯一ID',
   `create_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ' COMMENT '创建人',
@@ -115,6 +114,7 @@ CREATE TABLE `blog_permission`  (
 -- ----------------------------
 -- Records of blog_permission
 -- ----------------------------
+INSERT INTO `blog_permission` VALUES (1, 3, 'common_blog', 'common_blog', 1, 1, 1, 1, ' fang', '2024-08-05 13:31:04', ' fang', '2024-08-05 13:30:58', 0, NULL);
 
 -- ----------------------------
 -- Table structure for blog_public_box
@@ -152,6 +152,7 @@ CREATE TABLE `blog_role`  (
 -- ----------------------------
 -- Records of blog_role
 -- ----------------------------
+INSERT INTO `blog_role` VALUES (1, '普通用户', 'common_user', '基本用户，每个注册的用户默认都为该角色', ' fang', ' fang', '2024-08-05 11:55:13', '2024-08-05 11:55:15', '0', '1');
 
 -- ----------------------------
 -- Table structure for blog_user
@@ -210,13 +211,14 @@ CREATE TABLE `rel_collection_blog`  (
 DROP TABLE IF EXISTS `rel_role_permission`;
 CREATE TABLE `rel_role_permission`  (
   `role_id` bigint NOT NULL,
-  `permission` bigint NOT NULL,
-  PRIMARY KEY (`role_id`, `permission`) USING BTREE
+  `permission_id` bigint NOT NULL,
+  PRIMARY KEY (`role_id`, `permission_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of rel_role_permission
 -- ----------------------------
+INSERT INTO `rel_role_permission` VALUES (1, 1);
 
 -- ----------------------------
 -- Table structure for rel_user_blog
@@ -246,5 +248,6 @@ CREATE TABLE `rel_user_role`  (
 -- ----------------------------
 -- Records of rel_user_role
 -- ----------------------------
+INSERT INTO `rel_user_role` VALUES (3, 1, '2024-08-05 11:55:48', '3046-08-05 11:55:52');
 
 SET FOREIGN_KEY_CHECKS = 1;
