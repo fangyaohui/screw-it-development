@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * @FileName BlogPermissionPO
  * @Description
@@ -13,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName(value = "blog_permission")
-public class BlogPermissionPO extends BasePO{
+public class BlogPermissionPO extends BasePO implements Serializable {
 
     // 权限类型(1-按钮,2-表单,3-数据,4-其它)
     private Integer permissionType;

@@ -5,11 +5,14 @@ import com.fang.screw.blog.mapper.BlogHeadlineMapper;
 import com.fang.screw.blog.mapper.BlogInfoMapper;
 import com.fang.screw.blog.service.BlogService;
 import com.fang.screw.communal.holder.CurrentUserHolder;
+import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.ElasticSearchUtils;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.TimeUtils;
+import com.fang.screw.domain.po.BlogPermissionPO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import com.fang.screw.domain.po.BlogHeadlinePO;
@@ -37,6 +40,9 @@ public class BlogServiceImpl implements BlogService {
     private BlogInfoMapper blogInfoMapper;
 
     private BlogHeadlineMapper blogHeadlineMapper;
+
+    @DubboReference
+    private UserDubboService userDubboService;
 
     /**
      * @Description 返回头条五条博客简要信息
@@ -92,7 +98,7 @@ public class BlogServiceImpl implements BlogService {
         if(ObjectUtils.isEmpty(blogUserPO)){
             return R.failed("用户未登录，请重新登录");
         }
-
+        List<BlogPermissionPO> blogPermissionPOList = userDubboService.getBlogPermissionListByUserId(1L);
 
 
         BlogInfoPO blogInfoPO = ElasticSearchUtils.getElasticSearchById(blogInfoMapper,blogId);

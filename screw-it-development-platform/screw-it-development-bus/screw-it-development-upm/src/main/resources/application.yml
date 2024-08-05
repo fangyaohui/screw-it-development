@@ -74,21 +74,21 @@ spring:
 server:
   port: 51234
 
-#dubbo:
-#  application:
-#    name: ${spring.application.name}
-#    qos-enable: true
-#  registry:
-#    address: nacos://localhost:8848
-#    username: nacos
-#    password: nacos
-#    parameters:
-#      namespace: ${spring.cloud.nacos.discovery.namespace}
-##  scan:
-##    base-packages: com.fang.demo.comfangdemoupms.service
-#  protocol:
-#    name: dubbo
-#    port: -1
+dubbo:
+  application:
+    name: ${spring.application.name}
+    qos-enable: false
+  registry:
+    address: nacos://localhost:8848
+    username: nacos
+    password: nacos
+    parameters:
+      namespace: ${spring.cloud.nacos.discovery.namespace}
+#  scan:
+#    base-packages: com.fang.demo.comfangdemoupms.service
+  protocol:
+    name: dubbo
+    port: -1
 
 #MINIO 本机
 oss:

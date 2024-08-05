@@ -1,6 +1,7 @@
 package com.fang.screw.communal.service;
 
 import com.fang.screw.communal.utils.R;
+import com.fang.screw.domain.po.BlogPermissionPO;
 import com.fang.screw.domain.po.BlogUserPO;
 import com.fang.screw.domain.vo.BlogUserVO;
 
@@ -33,5 +34,14 @@ public interface UserDubboService {
     * @Date 2024/8/5
     */
     R<List<Long>> getUserRoleIdListByUSerId(Long userId);
+
+    /**
+    * @Description 根据用户ID查询其具有的所有权限List
+    * @param userId
+    * @return {@link R< List< BlogPermissionPO>> }
+    * @Author yaoHui
+    * @Date 2024/8/5
+    */
+    List<BlogPermissionPO> getBlogPermissionListByUserId(Long userId);
 
 }

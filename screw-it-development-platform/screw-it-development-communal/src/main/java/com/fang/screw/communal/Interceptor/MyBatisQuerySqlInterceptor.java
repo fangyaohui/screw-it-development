@@ -40,7 +40,8 @@ public class MyBatisQuerySqlInterceptor implements Interceptor {
         String sql = boundSql.getSql();
 
         if(!StringUtils.contains(sql,"INSERT")){
-            if(StringUtils.contains(sql,"WHERE") && !StringUtils.contains(sql,"del_flag =")){
+            if((StringUtils.contains(sql,"WHERE") || StringUtils.contains(sql,"where"))
+                    && !StringUtils.contains(sql,"del_flag =")){
                 sql = sql.substring(0,sql.length() - 1);
                 sql = sql + " AND del_flag = " + NOT_DEL_FLAG;
 
