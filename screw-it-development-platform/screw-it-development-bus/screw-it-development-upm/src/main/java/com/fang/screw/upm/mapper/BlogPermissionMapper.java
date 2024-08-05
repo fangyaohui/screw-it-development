@@ -3,6 +3,7 @@ package com.fang.screw.upm.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import com.fang.screw.domain.po.BlogPermissionPO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public interface BlogPermissionMapper extends BaseMapper<BlogPermissionPO> {
     * @Author yaoHui
     * @Date 2024/8/5
     */
-    List<BlogPermissionPO> getBlogPermissionListByUserId(Long userId);
+    List<BlogPermissionPO> getBlogPermissionListByUserId(@Param("userId") Long userId);
 
 }

@@ -9,9 +9,11 @@ import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.ElasticSearchUtils;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.TimeUtils;
+import com.fang.screw.domain.enums.PermissionCategoryEnum;
 import com.fang.screw.domain.po.BlogPermissionPO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -93,17 +95,40 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public R<BlogInfoVO> getBlogInfoByBlogId(String blogId) {
 
+        if(StringUtils.isEmpty(blogId)){
+            return R.failed("查无此博客");
+        }
+
+        // 查询到该博客的具体内容
+        BlogInfoPO blogInfoPO = ElasticSearchUtils.getElasticSearchById(blogInfoMapper,blogId);
+        if(ObjectUtils.isEmpty(blogInfoPO)){
+            return R.failed(null,"该博客查询异常，请稍后再试");
+        }
+
         // 判断当前用户是否有权限访问该博客具体内容
         BlogUserPO blogUserPO = CurrentUserHolder.getUser();
         if(ObjectUtils.isEmpty(blogUserPO)){
             return R.failed("用户未登录，请重新登录");
         }
-        List<BlogPermissionPO> blogPermissionPOList = userDubboService.getBlogPermissionListByUserId(1L);
 
+        List<BlogPermissionPO> blogPermissionPOList = userDubboService.getBlogPermissionListByUserId(blogUserPO.getId());
+        if(blogPermissionPOList.isEmpty()){
+            return R.failed("用户获取权限失败，请稍后再试");
+        }
 
-        BlogInfoPO blogInfoPO = ElasticSearchUtils.getElasticSearchById(blogInfoMapper,blogId);
-        if(ObjectUtils.isEmpty(blogInfoPO)){
-            return R.failed(null,"该博客查询异常，请稍后再试");
+        int accessControl = blogInfoPO.getAccessControl();
+        boolean accessFlag = false;
+        for(BlogPermissionPO blogPermissionPO : blogPermissionPOList){
+            if(blogPermissionPO.getPermissionScope().equals(accessControl) &&
+                    (blogPermissionPO.getPermissionCategory().equals(PermissionCategoryEnum.READ.getCode()) ||
+                            blogPermissionPO.getPermissionCategory().equals(PermissionCategoryEnum.READ_WRITE.getCode()))){
+                accessFlag = true;
+                break;
+            }
+        }
+
+        if(!accessFlag){
+            return R.failed("您暂无权限访问");
         }
 
         BlogInfoVO blogInfoVO = blogInfoPO.transformVO();

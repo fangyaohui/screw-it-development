@@ -26,13 +26,11 @@
             permission.permission_scope,
             permission.permission_category,
             permission.permission_type
-
-
         from blog_permission as permission
                  left join rel_role_permission on permission.id = rel_role_permission.permission_id
                  left join blog_role on blog_role.id = rel_role_permission.role_id
                  left join rel_user_role on rel_user_role.role_id = blog_role.id
-        where ( blog_role.id = 1 AND permission.del_flag = 0)
+        where ( blog_role.id = #{userId} AND permission.del_flag = 0)
     </select>
 
 <!--    <select id="getBizObjStatisticsDataPage" resultMap="BizObjStatisticsData">-->

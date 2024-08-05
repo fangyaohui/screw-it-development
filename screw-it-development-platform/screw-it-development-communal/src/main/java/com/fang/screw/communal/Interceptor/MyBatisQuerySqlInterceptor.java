@@ -59,7 +59,7 @@ public class MyBatisQuerySqlInterceptor implements Interceptor {
         field.setAccessible(true);
         field.set(boundSql,sql);
 
-        log.info(boundSql.getSql().toString());
+//        log.info(boundSql.getSql().toString());
         return invocation.proceed();
     }
 }

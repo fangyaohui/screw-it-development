@@ -61,7 +61,7 @@ public class BlogInfoPO {
     // 博客状态 1-正常 0-异常
     private Integer status;
 
-    // 博客访问类型 1-普通 2-VIP
+    // 博客访问类型 1-普通 2-VIP 3-付费
     private Integer accessControl;
 
     // 博客评论总数

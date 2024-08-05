@@ -72,8 +72,7 @@ public class UserDubboServiceImpl extends ServiceImpl<BlogUserMapper, BlogUserPO
      */
     @Override
     public List<BlogPermissionPO> getBlogPermissionListByUserId(Long userId) {
-        List<BlogPermissionPO> blogPermissionPOList = blogPermissionMapper.getBlogPermissionListByUserId(userId);
-        return blogPermissionPOList;
+        return blogPermissionMapper.getBlogPermissionListByUserId(userId);
 //        return null;
     }
 
