@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.blog.mapper.BlogHeadlineMapper;
 import com.fang.screw.blog.mapper.BlogInfoMapper;
 import com.fang.screw.blog.service.BlogService;
+import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.ElasticSearchUtils;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.TimeUtils;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import po.BlogHeadlinePO;
 import po.BlogInfoPO;
+import po.BlogUserPO;
 import vo.BlogHeadlineVO;
 import vo.BlogInfoVO;
 
@@ -84,6 +86,14 @@ public class BlogServiceImpl implements BlogService {
      */
     @Override
     public R<BlogInfoVO> getBlogInfoByBlogId(String blogId) {
+
+        // 判断当前用户是否有权限访问该博客具体内容
+        BlogUserPO blogUserPO = CurrentUserHolder.getUser();
+        if(ObjectUtils.isEmpty(blogUserPO)){
+            return R.failed("用户未登录，请重新登录");
+        }
+
+
 
         BlogInfoPO blogInfoPO = ElasticSearchUtils.getElasticSearchById(blogInfoMapper,blogId);
         if(ObjectUtils.isEmpty(blogInfoPO)){

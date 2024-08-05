@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.format.annotation.DateTimeFormat;
+import vo.BlogUserVO;
 
 import java.time.LocalDateTime;
 
@@ -109,6 +110,10 @@ public class BlogUserPO extends BasePO{
         return blogUserDTO;
     }
 
-
+    public BlogUserVO transformToVO(){
+        BlogUserVO blogUserVO = new BlogUserVO();
+        BeanUtils.copyProperties(this,blogUserVO);
+        return blogUserVO;
+    }
 
 }

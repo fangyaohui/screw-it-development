@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : LocalMySQL
+ Source Server         : spack
  Source Server Type    : MySQL
- Source Server Version : 80025
+ Source Server Version : 80022
  Source Host           : localhost:3306
  Source Schema         : screw_it_development_biz
 
  Target Server Type    : MySQL
- Target Server Version : 80025
+ Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 29/07/2024 22:54:41
+ Date: 05/08/2024 11:16:31
 */
 
 SET NAMES utf8mb4;
@@ -99,6 +99,7 @@ CREATE TABLE `blog_permission`  (
   `permission_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限编码',
   `permission_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限名称',
   `action_id` bigint NULL DEFAULT NULL COMMENT '动作ID(按钮ID)',
+  `resource_type` int NULL DEFAULT NULL COMMENT '资源类型(1-博客资源，2-视频资源)',
   `permission_scope` int NULL DEFAULT NULL COMMENT '权限范围(1-Tenant,2-Role,3-Org,4-User,5-EnergyType,6-Product,7-Device,8-Point)',
   `permission_category` int NULL DEFAULT NULL COMMENT '权限类别(1-Read,2-Write,3-Read/Write,4-Other)',
   `menu_form_id` bigint NULL DEFAULT NULL COMMENT '自定义Form唯一ID',
@@ -106,7 +107,8 @@ CREATE TABLE `blog_permission`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ' ' COMMENT '修改人',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志，0未删除，1已删除',
+  `del_flag` int NULL DEFAULT 0 COMMENT '删除标志，0未删除，1已删除',
+  `status` int NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
@@ -179,7 +181,7 @@ CREATE TABLE `blog_user`  (
   `last_login` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of blog_user
@@ -234,8 +236,10 @@ CREATE TABLE `rel_user_blog`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `rel_user_role`;
 CREATE TABLE `rel_user_role`  (
-  `user_id` bigint NOT NULL,
-  `role_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `start_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 

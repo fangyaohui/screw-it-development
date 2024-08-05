@@ -1,13 +1,16 @@
 package com.fang.screw.upm.controller;
 
-import com.fang.screw.communal.service.UserService;
+import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import po.BlogUserPO;
 import po.UserInfoPO;
+import vo.BlogUserVO;
 
 import java.util.List;
 
@@ -23,11 +26,11 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    private UserService userService;
+    private UserDubboService userDubboService;
 
     @GetMapping("/getAllUserInfoList")
     public R<String> getAllUserInfoList(){
-        List<UserInfoPO> userInfoPOList = userService.getAllUserInfoList();
+        List<BlogUserPO> userInfoPOList = userDubboService.getAllUserInfoList();
         if(userInfoPOList.isEmpty()){
             return null;
         }
@@ -38,6 +41,18 @@ public class UserController {
     public R<String> getTest(){
         log.info("test");
         return R.ok("test");
+    }
+
+    /**
+    * @Description 根据用户ID查询用户的具体信息
+    * @param userId
+    * @return {@link R< BlogUserVO> }
+    * @Author yaoHui
+    * @Date 2024/8/5
+    */
+    @RequestMapping("/getUserInfoByUserId")
+    public R<BlogUserVO> getUserInfoByUserId(@RequestParam("userId") Long userId){
+        return userDubboService.getUserInfoByUserId(userId);
     }
 
 }
