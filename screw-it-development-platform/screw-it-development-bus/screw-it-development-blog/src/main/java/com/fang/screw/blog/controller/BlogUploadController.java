@@ -48,9 +48,7 @@ public class BlogUploadController {
     */
     @PostMapping("/uploadImage")
     public R<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-
         return blogUploadService.uploadBlogImage(file);
-
     }
 
     /**
