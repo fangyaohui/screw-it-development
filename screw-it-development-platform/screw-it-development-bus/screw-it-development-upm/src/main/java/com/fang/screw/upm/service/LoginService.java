@@ -1,6 +1,7 @@
 package com.fang.screw.upm.service;
 
 import com.fang.screw.communal.utils.R;
+import com.fang.screw.domain.vo.BlogUserVO;
 import com.fang.screw.domain.vo.LoginVO;
 
 /**
@@ -11,6 +12,6 @@ import com.fang.screw.domain.vo.LoginVO;
  **/
 public interface LoginService {
 
-    R<String> signIn(LoginVO loginVO);
+    R<LoginVO> signIn(LoginVO loginVO);
 
 }

@@ -17,4 +17,6 @@ public class LoginVO {
 
     private String token;
 
+    private BlogUserVO blogUserVO;
+
 }

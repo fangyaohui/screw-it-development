@@ -4,6 +4,8 @@ import com.fang.screw.communal.Interceptor.CurrentUserInterceptor;
 import com.fang.screw.communal.component.CurrentUserArgumentResolver;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -38,5 +40,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(currentUserInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/upm/login","/upm/register");
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 添加对 application/x-www-form-urlencoded 的支持
+        converters.add(new FormHttpMessageConverter());
     }
 }

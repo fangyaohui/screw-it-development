@@ -3,6 +3,7 @@ package com.fang.screw.upm.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.communal.constant.RedisDynamicParameter;
 import com.fang.screw.communal.utils.*;
+import com.fang.screw.domain.vo.BlogUserVO;
 import com.fang.screw.upm.enums.ExceptionEnum;
 import com.fang.screw.upm.mapper.BlogUserMapper;
 import com.fang.screw.upm.service.LoginService;
@@ -41,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
     * @Date 2024/7/27
     */
     @Override
-    public R<String> signIn(LoginVO loginVO) {
+    public R<LoginVO> signIn(LoginVO loginVO) {
         BlogUserPO userInfoPO = blogUserMapper.selectOne(Wrappers.<BlogUserPO>lambdaQuery()
                 .eq(RegexUtils.isMobile(loginVO.getUserName()),BlogUserPO::getPhone,loginVO.getUserName())
                         .or()
@@ -51,19 +52,23 @@ public class LoginServiceImpl implements LoginService {
                 );
 
         if(userInfoPO == null){
-            return ExceptionEnum.SYSOP_USERNAME_ERROR.getBusinessException();
+            return R.failed("登录失败");
         }
 
         if(!MD5WithSaltUtils.verify(loginVO.getPassword(),userInfoPO.getSalt(),userInfoPO.getPassword())){
-            return ExceptionEnum.SYSOP_USERNAME_ERROR.getBusinessException();
+            return R.failed("登录失败");
         }
 
         String uuid = String.valueOf(UUID.randomUUID());
 
         // 判断该用户是否登录 登陆过就无需再生成Token然后保存到Redis中
         String token = (String) redisUtils.get(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userInfoPO.getId());
+        BlogUserVO blogUserVO = userInfoPO.transformToVO();
+        LoginVO loginVO1 = new LoginVO();
+        loginVO1.setToken(token);
+        loginVO1.setBlogUserVO(blogUserVO);
         if(ObjectUtils.isNotEmpty(token)){
-            return R.ok(token);
+            return R.ok(loginVO1);
         }
 
         String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
@@ -72,6 +77,6 @@ public class LoginServiceImpl implements LoginService {
         token = JWTUtils.generateToken(uuid,1L);
         redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userInfoPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
 
-        return R.ok(token);
+        return R.ok(loginVO1);
     }
 }

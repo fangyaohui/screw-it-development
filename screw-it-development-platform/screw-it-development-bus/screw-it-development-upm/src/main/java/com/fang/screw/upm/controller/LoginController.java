@@ -1,5 +1,6 @@
 package com.fang.screw.upm.controller;
 
+import com.fang.screw.domain.vo.BlogUserVO;
 import com.fang.screw.upm.service.LoginService;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class LoginController {
     private LoginService loginService;
 
     @RequestMapping("/signIn")
-    public R<String> signIn(@RequestBody LoginVO loginVO){
+    public R<LoginVO> signIn(@RequestBody LoginVO loginVO){
         return loginService.signIn(loginVO);
     }
 
