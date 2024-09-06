@@ -43,7 +43,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, BlogCommentPO
 
         BlogCommentPO blogCommentPO = blogCommentVO.transformToPO();
         blogCommentPO.setUserId(blogUserPO.getId());
-        blogCommentPO.setNickName(blogUserPO.getNickName());
 
         return R.ok(save(blogCommentPO));
     }

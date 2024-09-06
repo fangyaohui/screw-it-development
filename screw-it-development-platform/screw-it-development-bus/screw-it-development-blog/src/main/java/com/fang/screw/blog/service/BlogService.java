@@ -30,4 +30,12 @@ public interface BlogService {
      * @Date 2024/8/4
      */
     R<BlogInfoVO> getBlogInfoByBlogId(String blogId);
+
+    /***
+     * @Description 获取所有的博客详细内容
+     * @return {@link com.fang.screw.communal.utils.R<java.util.List<com.fang.screw.domain.vo.BlogInfoVO>> }
+     * @Author yaoHui
+     * @Date 2024/9/6
+     */
+    R<List<BlogInfoVO>> getAllBlogInfo();
 }

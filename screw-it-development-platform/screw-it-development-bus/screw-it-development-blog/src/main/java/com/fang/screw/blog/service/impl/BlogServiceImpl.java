@@ -134,4 +134,22 @@ public class BlogServiceImpl implements BlogService {
         BlogInfoVO blogInfoVO = blogInfoPO.transformVO();
         return R.ok(blogInfoVO);
     }
+
+    /***
+     * @Description 获取所有的博客详细内容
+     * @return {@link com.fang.screw.communal.utils.R<java.util.List<com.fang.screw.domain.vo.BlogInfoVO>> }
+     * @Author yaoHui
+     * @Date 2024/9/6
+     */
+    @Override
+    public R<List<BlogInfoVO>> getAllBlogInfo() {
+
+        List<BlogInfoPO> blogInfoPOList = ElasticSearchUtils.getElasticSearchAllInfo(blogInfoMapper);
+
+        if(ObjectUtils.isEmpty(blogInfoPOList)){
+            return R.ok(null);
+        }
+
+        return R.ok(blogInfoPOList.stream().map(BlogInfoPO::transformVO).collect(Collectors.toList()));
+    }
 }

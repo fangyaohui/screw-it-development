@@ -36,5 +36,13 @@ public class ElasticSearchUtils {
         return StreamSupport.stream(iterable.spliterator(),false).collect(Collectors.toList());
     }
 
+    public static <T> List<T> getElasticSearchAllInfo(ElasticsearchRepository<T, String> repository){
+        Iterable<T> iterable = repository.findAll();
+        if(ObjectUtils.isEmpty(iterable)){
+            return null;
+        }
+        return StreamSupport.stream(iterable.spliterator(),false).collect(Collectors.toList());
+    }
+
 
 }

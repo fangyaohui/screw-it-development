@@ -23,9 +23,6 @@ public class BlogCommentPO {
     // 用户ID
     private Long userId;
 
-    // 用户昵称
-    private String nickName;
-
     // 博客ID
     private Long blogId;
 
