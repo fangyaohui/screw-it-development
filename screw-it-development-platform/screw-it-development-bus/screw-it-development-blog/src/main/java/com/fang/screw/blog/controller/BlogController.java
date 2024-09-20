@@ -3,6 +3,7 @@ package com.fang.screw.blog.controller;
 import com.fang.screw.blog.service.BlogService;
 import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.R;
+import com.fang.screw.domain.vo.TopAndFeaturedBlogVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,7 @@ public class BlogController {
     * @Date 2024/8/4
     */
     @GetMapping("/getBlogInfoByBlogId")
-    public R<BlogInfoVO> getBlogInfoByBlogId(@RequestParam("blogId") String blogId){
+        public R<BlogInfoVO> getBlogInfoByBlogId(@RequestParam("blogId") String blogId){
         return blogService.getBlogInfoByBlogId(blogId);
     }
 
@@ -63,6 +64,17 @@ public class BlogController {
     @GetMapping("/getAllBlogInfo")
     public R<List<BlogInfoVO>> getAllBlogInfo(){
         return blogService.getAllBlogInfo();
+    }
+
+    /***
+    * @Description 获取置顶和推荐文章
+    * @return {@link R< TopAndFeaturedBlogVO> }
+    * @Author yaoHui
+    * @Date 2024/9/7
+    */
+    @GetMapping("/getTopAndFeaturedBlog")
+    public R<TopAndFeaturedBlogVO> getTopAndFeaturedBlog(){
+        return blogService.getTopAndFeaturedBlog();
     }
 
 

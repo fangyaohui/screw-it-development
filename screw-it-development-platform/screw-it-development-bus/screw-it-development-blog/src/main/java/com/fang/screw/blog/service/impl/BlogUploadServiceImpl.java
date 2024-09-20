@@ -109,11 +109,11 @@ public class BlogUploadServiceImpl implements BlogUploadService {
         // 保存博客基本信息
         BlogInfoPO blogInfoPO = new BlogInfoPO();
         blogInfoPO.init();
-        blogInfoPO.setAuthor(CurrentUserHolder.getUser().getNickName());
+        blogInfoPO.setUserId(CurrentUserHolder.getUser().getId());
         assert fileName != null;
-        blogInfoPO.setTitle(fileName.substring(0,fileName.length()-3));
-        blogInfoPO.setSummary(content.substring(0,Math.min(200,content.length())));
-        blogInfoPO.setContent(content);
+        blogInfoPO.setArticleTitle(fileName.substring(0,fileName.length()-3));
+        blogInfoPO.setArticleAbstract(content.substring(0,Math.min(200,content.length())));
+        blogInfoPO.setArticleContent(content);
         blogInfoPO.setImages(imagePathList);
         blogInfoMapper.save(blogInfoPO);
 

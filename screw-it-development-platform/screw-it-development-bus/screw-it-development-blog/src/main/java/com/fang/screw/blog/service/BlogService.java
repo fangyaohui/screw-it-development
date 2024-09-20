@@ -3,6 +3,7 @@ package com.fang.screw.blog.service;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.vo.BlogHeadlineVO;
 import com.fang.screw.domain.vo.BlogInfoVO;
+import com.fang.screw.domain.vo.TopAndFeaturedBlogVO;
 
 import java.util.List;
 
@@ -38,4 +39,12 @@ public interface BlogService {
      * @Date 2024/9/6
      */
     R<List<BlogInfoVO>> getAllBlogInfo();
+
+    /***
+     * @Description 获取置顶和推荐文章
+     * @return {@link R< TopAndFeaturedBlogVO> }
+     * @Author yaoHui
+     * @Date 2024/9/7
+     */
+    R<TopAndFeaturedBlogVO> getTopAndFeaturedBlog();
 }

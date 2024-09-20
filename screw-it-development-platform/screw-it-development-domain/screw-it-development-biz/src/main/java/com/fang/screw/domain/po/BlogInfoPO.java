@@ -26,16 +26,16 @@ public class BlogInfoPO {
     private String id;
 
     // 博客标题
-    private String title;
+    private String articleTitle;
 
     // 博客内容
-    private String content;
+    private String articleContent;
 
     // 博客简要
-    private String summary;
+    private String articleAbstract;
 
     // 博客作者
-    private String author;
+    private Long userId;
 
     // 博客所有图片保存服务器地址
     private List<String> images;
@@ -67,8 +67,8 @@ public class BlogInfoPO {
     // 博客评论总数
     private Integer commentsCount;
 
-    // 博客类型
-    private List<Integer> category;
+    // 博客类型ID
+    private List<Integer> categoryId;
 
     public void init(){
         List<Integer> list = new ArrayList<>();
@@ -80,7 +80,7 @@ public class BlogInfoPO {
         this.setViews(0);
         this.setLikes(0);
         this.setCommentsCount(0);
-        this.setCategory(list);
+        this.setCategoryId(list);
         this.setCreateTime(getCurrentTimeStr());
         this.setUpdateTime(getCurrentTimeStr());
         this.setAttachments(null);

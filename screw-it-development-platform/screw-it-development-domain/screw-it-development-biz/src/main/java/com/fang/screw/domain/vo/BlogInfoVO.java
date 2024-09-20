@@ -2,6 +2,7 @@ package com.fang.screw.domain.vo;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,19 +20,22 @@ public class BlogInfoVO implements Serializable {
     private String id;
 
     // 博客标题
-    private String title;
+    private String articleTitle;
 
     // 博客内容
-    private String content;
+    private String articleContent;
 
     // 博客简要
-    private String summary;
+    private String articleAbstract;
 
     // 博客作者
-    private String author;
+    private Long userId;
 
     // 博客所有图片保存服务器地址
     private List<String> images;
+
+    // 附件地址
+    private String attachments;
 
     // 博客上传时间 或 创建时间
     private String createTime;
@@ -51,13 +55,13 @@ public class BlogInfoVO implements Serializable {
     // 博客状态 1-正常 0-异常
     private Integer status;
 
-    // 博客访问类型 1-普通 2-VIP
+    // 博客访问类型 1-普通 2-VIP 3-付费
     private Integer accessControl;
 
     // 博客评论总数
     private Integer commentsCount;
 
-    // 博客类型
-    private List<Integer> category;
+    // 博客类型ID
+    private List<Integer> categoryId;
 
 }

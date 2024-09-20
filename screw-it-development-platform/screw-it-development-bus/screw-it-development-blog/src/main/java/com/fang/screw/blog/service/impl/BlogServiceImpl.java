@@ -11,6 +11,7 @@ import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.TimeUtils;
 import com.fang.screw.domain.enums.PermissionCategoryEnum;
 import com.fang.screw.domain.po.BlogPermissionPO;
+import com.fang.screw.domain.vo.TopAndFeaturedBlogVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -151,5 +152,27 @@ public class BlogServiceImpl implements BlogService {
         }
 
         return R.ok(blogInfoPOList.stream().map(BlogInfoPO::transformVO).collect(Collectors.toList()));
+    }
+
+    /***
+     * @Description 获取置顶和推荐文章
+     * @return {@link R< TopAndFeaturedBlogVO> }
+     * @Author yaoHui
+     * @Date 2024/9/7
+     */
+    @Override
+    public R<TopAndFeaturedBlogVO> getTopAndFeaturedBlog() {
+        //TODO 获取置顶和推荐文章 这里只是为了简单的模拟 后续请进行更改优化
+        List<BlogInfoPO> blogInfoPOList = ElasticSearchUtils.getElasticSearchAllInfo(blogInfoMapper);
+        if(ObjectUtils.isEmpty(blogInfoPOList)){
+            return R.ok(null);
+        }
+
+        TopAndFeaturedBlogVO topAndFeaturedBlogVO = new TopAndFeaturedBlogVO();
+        topAndFeaturedBlogVO.setTopArticle(blogInfoPOList.get(0).transformVO());
+        blogInfoPOList.remove(0);
+        topAndFeaturedBlogVO.setFeaturedArticles(blogInfoPOList.stream().map(BlogInfoPO::transformVO)
+                .collect(Collectors.toList()));
+        return R.ok(topAndFeaturedBlogVO);
     }
 }
