@@ -4,6 +4,7 @@ import com.fang.screw.communal.annotation.CurrentUser;
 import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.JWTUtils;
 import com.fang.screw.communal.utils.RedisUtils;
+import com.fang.screw.domain.po.UserPO;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             String uuid = JWTUtils.getUUID(token);
-            CurrentUserHolder.setUser((BlogUserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid));
+            CurrentUserHolder.setUser((UserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid));
             return (BlogUserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid);
         }
         return null;

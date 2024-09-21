@@ -63,7 +63,7 @@ spring:
           predicates:
             - Path=/api/blog/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
 
   config:
     import:

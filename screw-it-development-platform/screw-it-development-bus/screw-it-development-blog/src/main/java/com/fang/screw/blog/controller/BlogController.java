@@ -26,56 +26,54 @@ public class BlogController {
 
     private BlogService blogService;
 
-    @RequestMapping("/test")
-    public R<String> test(){
-        log.info(CurrentUserHolder.getUser().toString());
-        return R.ok("test");
-    }
 
-    /***
-    * @Description 返回头条五条博客简要信息
-    * @return {@link com.fang.screw.communal.utils.R<java.util.List< BlogInfoVO >> }
-    * @Author yaoHui
-    * @Date 2024/8/3
-    */
-    @RequestMapping("/getHeadlineBriefInfo")
-    public R<List<BlogHeadlineVO>> getHeadlineBriefInfo(){
-        return blogService.getHeadlineBriefInfo();
-    }
 
-    /***
-    * @Description 根据博客ID查询博客的详细信息
-    * @param blogId
-    * @return {@link R< BlogInfoVO> }
-    * @Author yaoHui
-    * @Date 2024/8/4
-    */
-    @GetMapping("/getBlogInfoByBlogId")
-        public R<BlogInfoVO> getBlogInfoByBlogId(@RequestParam("blogId") String blogId){
-        return blogService.getBlogInfoByBlogId(blogId);
-    }
-
-    /***
-    * @Description 获取所有的博客详细内容
-    * @return {@link com.fang.screw.communal.utils.R<java.util.List<com.fang.screw.domain.vo.BlogInfoVO>> }
-    * @Author yaoHui
-    * @Date 2024/9/6
-    */
-    @GetMapping("/getAllBlogInfo")
-    public R<List<BlogInfoVO>> getAllBlogInfo(){
-        return blogService.getAllBlogInfo();
-    }
-
-    /***
-    * @Description 获取置顶和推荐文章
-    * @return {@link R< TopAndFeaturedBlogVO> }
-    * @Author yaoHui
-    * @Date 2024/9/7
-    */
-    @GetMapping("/getTopAndFeaturedBlog")
-    public R<TopAndFeaturedBlogVO> getTopAndFeaturedBlog(){
-        return blogService.getTopAndFeaturedBlog();
-    }
+//    /***
+//    * @Description 返回头条五条博客简要信息
+//    * @return {@link com.fang.screw.communal.utils.R<java.util.List< BlogInfoVO >> }
+//    * @Author yaoHui
+//    * @Date 2024/8/3
+//    */
+//    @RequestMapping("/getHeadlineBriefInfo")
+//    public R<List<BlogHeadlineVO>> getHeadlineBriefInfo(){
+//        return blogService.getHeadlineBriefInfo();
+//    }
+//
+//    /***
+//    * @Description 根据博客ID查询博客的详细信息
+//    * @param blogId
+//    * @return {@link R< BlogInfoVO> }
+//    * @Author yaoHui
+//    * @Date 2024/8/4
+//    */
+//    @GetMapping("/getBlogInfoByBlogId")
+//        public R<BlogInfoVO> getBlogInfoByBlogId(@RequestParam("blogId") String blogId){
+//        return blogService.getBlogInfoByBlogId(blogId);
+//    }
+//
+//    /***
+//    * @Description 获取所有的博客详细内容
+//    * @return {@link com.fang.screw.communal.utils.R<java.util.List<com.fang.screw.domain.vo.BlogInfoVO>> }
+//    * @Author yaoHui
+//    * @Date 2024/9/6
+//    */
+//    @GetMapping("/getAllBlogInfo")
+//    public R<List<BlogInfoVO>> getAllBlogInfo(){
+//        return blogService.getAllBlogInfo();
+//    }
+//
+//    /***
+//    * @Description 获取置顶和推荐文章
+//    * @return {@link R< TopAndFeaturedBlogVO> }
+//    * @Author yaoHui
+//    * @Date 2024/9/7
+//    */
+//    @GetMapping("/getTopAndFeaturedBlog")
+//    public R<TopAndFeaturedBlogVO> getTopAndFeaturedBlog(){
+//        return blogService.getTopAndFeaturedBlog();
+//    }
+//
+//
 
 
 }

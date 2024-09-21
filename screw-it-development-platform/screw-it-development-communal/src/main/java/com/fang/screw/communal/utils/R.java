@@ -59,6 +59,10 @@ public class R<T> implements Serializable {
         return new R(data);
     }
 
+    public static <T> R<T> success() {
+        return new R();
+    }
+
     public static <T> R<T> failed() {
         return restResult(null, 1, (String)null);
     }
