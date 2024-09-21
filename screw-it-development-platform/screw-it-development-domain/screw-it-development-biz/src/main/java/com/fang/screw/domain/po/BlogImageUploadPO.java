@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 public class BlogImageUploadPO extends BasePO{
 
     // 用户ID
-    private Long userId;
+    private Integer userId;
 
     // 图片源地址
     private String sourcePath;
@@ -25,6 +25,6 @@ public class BlogImageUploadPO extends BasePO{
     private String targetPath;
 
     // 图片大小
-    private Long imgSize;
+    private Integer imgSize;
 
 }

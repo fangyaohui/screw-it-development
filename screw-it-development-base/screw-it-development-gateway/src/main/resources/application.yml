@@ -25,6 +25,24 @@ spring:
             refresh: true
         enable-remote-sync-config: true
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - 'http://localhost:13628' #跨域处理 允许所有的域
+            allowedOrigins:
+              - "http://localhost"
+            allowedMethods:
+              - "GET"
+              - "POST"
+              - "PUT"
+              - "DELETE"
+              - "OPTIONS"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 3600000
       routes:
         - id: upm
           uri: lb://screw-it-development-upm
@@ -45,7 +63,7 @@ spring:
           predicates:
             - Path=/api/blog/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
 
   config:
     import:

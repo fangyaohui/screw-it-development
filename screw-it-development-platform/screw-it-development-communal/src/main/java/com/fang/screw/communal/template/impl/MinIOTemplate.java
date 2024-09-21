@@ -108,7 +108,7 @@ public class MinIOTemplate implements OssTemplate {
             ossFile.setFilePath(ossFile.getName());
             ossFile.setDomain(getOssHost(ossProperties.getBucketName()));
             ossFile.setHash(String.valueOf(stat.hashCode()));
-            ossFile.setSize(stat.size());
+            ossFile.setSize((int) stat.size());
             ossFile.setPutTime(DateUtil.date(stat.lastModified().toLocalDateTime()));
             ossFile.setContentType(stat.contentType());
             return ossFile;

@@ -1,5 +1,6 @@
 package com.fang.screw.communal.holder;
 
+import com.fang.screw.domain.po.UserPO;
 import org.springframework.stereotype.Component;
 import com.fang.screw.domain.po.BlogUserPO;
 
@@ -12,13 +13,13 @@ import com.fang.screw.domain.po.BlogUserPO;
 @Component
 public class CurrentUserHolder {
 
-    private static final ThreadLocal<BlogUserPO> userIdHolder = new ThreadLocal<>();
+    private static final ThreadLocal<UserPO> userIdHolder = new ThreadLocal<>();
 
-    public static void setUser(BlogUserPO user) {
+    public static void setUser(UserPO user) {
         userIdHolder.set(user);
     }
 
-    public static BlogUserPO getUser() {
+    public static UserPO getUser() {
         return userIdHolder.get();
     }
 

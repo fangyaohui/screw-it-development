@@ -3,6 +3,7 @@ package com.fang.screw.communal.Interceptor;
 import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.JWTUtils;
 import com.fang.screw.communal.utils.RedisUtils;
+import com.fang.screw.domain.po.UserPO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,10 +33,10 @@ public class CurrentUserInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
-            BlogUserPO blogUserPO = new BlogUserPO();
+            UserPO blogUserPO = new UserPO();
             if(JWTUtils.validateToken(token)){
                 String uuid = JWTUtils.getUUID(token);
-                blogUserPO = (BlogUserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid);
+                blogUserPO = (UserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid);
                 CurrentUserHolder.setUser(blogUserPO);
                 log.info("当前用户get：" + blogUserPO.toString());
             }else{

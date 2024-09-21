@@ -36,7 +36,7 @@ public class OssFile {
     /**
      * 文件大小
      */
-    private long size;
+    private Integer size;
     /**
      * 文件上传时间
      */

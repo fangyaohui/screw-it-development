@@ -26,18 +26,18 @@
             <version>2.13.5</version>
         </dependency>
 
-        <!--    Dubbo Nacos适配依赖包 开始  -->
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-        </dependency>
-        <!--    Dubbo Nacos适配依赖包 结束  -->
+<!--        &lt;!&ndash;    Dubbo Nacos适配依赖包 开始  &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.dubbo</groupId>-->
+<!--            <artifactId>dubbo-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;    Dubbo Nacos适配依赖包 结束  &ndash;&gt;-->
 
-        <!-- Spring Boot WebSocket依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; Spring Boot WebSocket依赖 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-websocket</artifactId>-->
+<!--        </dependency>-->
 
 
 

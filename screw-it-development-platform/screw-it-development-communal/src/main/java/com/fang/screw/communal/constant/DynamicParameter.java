@@ -29,4 +29,6 @@ public class DynamicParameter {
     // 头条博客数目
     public static final Integer HEADLINE_NUM = 5;
 
+    public static final String SALT = "fang";
+
 }
