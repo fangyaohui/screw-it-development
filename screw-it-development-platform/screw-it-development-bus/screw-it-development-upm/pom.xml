@@ -33,11 +33,11 @@
 <!--        </dependency>-->
 <!--        &lt;!&ndash;    Dubbo Nacos适配依赖包 结束  &ndash;&gt;-->
 
-        <!-- Spring Boot WebSocket依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; Spring Boot WebSocket依赖 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-websocket</artifactId>-->
+<!--        </dependency>-->
 
 
 

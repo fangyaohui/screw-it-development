@@ -127,7 +127,7 @@ public class LoginServiceImpl implements LoginService {
         userVO.setAccessToken(token);
 
         if(ObjectUtils.isNotEmpty(token)){
-            return R.ok(userVO);
+            return R.success(userVO);
         }
 
         String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
@@ -136,6 +136,7 @@ public class LoginServiceImpl implements LoginService {
         token = JWTUtils.generateToken(uuid,1L);
         redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
 
-        return R.ok(userVO);
+        userVO.setAccessToken(token);
+        return R.success(userVO);
     }
 }

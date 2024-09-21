@@ -16,7 +16,7 @@ public class R<T> implements Serializable {
 
     private Integer code;
 
-    private String msg;
+    private String message;
 
     private T data;
 
@@ -29,7 +29,7 @@ public class R<T> implements Serializable {
 
     public R(int code, String message) {
         this.code = code;
-        this.msg = message;
+        this.message = message;
     }
 
     public R(T data) {
@@ -39,20 +39,24 @@ public class R<T> implements Serializable {
 
     public R(String message) {
         this.code = 500;
-        this.msg = message;
+        this.message = message;
     }
 
 
     public static <T> R<T> ok() {
-        return restResult(null,0 , (String)null);
+        return restResult(null,200 , (String)null);
     }
 
     public static <T> R<T> ok(T data) {
-        return restResult(data, 0, (String)null);
+        return restResult(data, 200, (String)null);
     }
 
     public static <T> R<T> ok(T data, String msg) {
-        return restResult(data, 0, msg);
+        return restResult(data, 200, msg);
+    }
+
+    public static <T> R<T> success(T data) {
+        return new R(data);
     }
 
     public static <T> R<T> failed() {
@@ -84,7 +88,7 @@ public class R<T> implements Serializable {
         R<T> apiResult = new R();
         apiResult.setCode(code);
         apiResult.setData(data);
-        apiResult.setMsg(msg);
+        apiResult.setMessage(msg);
         return apiResult;
     }
 
