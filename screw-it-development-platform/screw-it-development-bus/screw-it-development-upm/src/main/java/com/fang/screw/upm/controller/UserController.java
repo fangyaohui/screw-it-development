@@ -2,6 +2,7 @@ package com.fang.screw.upm.controller;
 
 import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.R;
+import com.fang.screw.upm.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,33 +26,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    private UserDubboService userDubboService;
+    private UserService userService;
 
-    @GetMapping("/getAllUserInfoList")
-    public R<String> getAllUserInfoList(){
-        List<BlogUserPO> userInfoPOList = userDubboService.getAllUserInfoList();
-        if(userInfoPOList.isEmpty()){
-            return null;
-        }
-        return R.ok(userInfoPOList.toString());
-    }
-
-    @GetMapping("/test")
-    public R<String> getTest(){
-        log.info("test");
-        return R.ok("test");
-    }
-
-    /**
-    * @Description 根据用户ID查询用户的具体信息
-    * @param userId
-    * @return {@link R< BlogUserVO> }
-    * @Author yaoHui
-    * @Date 2024/8/5
-    */
-    @RequestMapping("/getUserInfoByUserId")
-    public R<BlogUserVO> getUserInfoByUserId(@RequestParam("userId") Long userId){
-        return userDubboService.getUserInfoByUserId(userId);
-    }
 
 }

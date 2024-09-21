@@ -3,9 +3,12 @@ package com.fang.screw.upm.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.communal.constant.RedisDynamicParameter;
 import com.fang.screw.communal.utils.*;
+import com.fang.screw.domain.po.UserPO;
 import com.fang.screw.domain.vo.BlogUserVO;
+import com.fang.screw.domain.vo.UserVO;
 import com.fang.screw.upm.enums.ExceptionEnum;
 import com.fang.screw.upm.mapper.BlogUserMapper;
+import com.fang.screw.upm.mapper.UserMapper;
 import com.fang.screw.upm.service.LoginService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +36,8 @@ public class LoginServiceImpl implements LoginService {
     private BlogUserMapper blogUserMapper;
 
     private RedisUtils redisUtils;
+
+    private UserMapper userMapper;
 
     /***
     * @Description 登录：可以通过手机号、用户名或者邮箱进行登录
@@ -78,5 +83,59 @@ public class LoginServiceImpl implements LoginService {
         redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userInfoPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
 
         return R.ok(loginVO1);
+    }
+
+    /***
+    * @Description 登录逻辑
+    * @param account
+    * @param password
+    * @param isAdmin
+    * @return {@link R< UserVO> }
+    * @Author yaoHui
+    * @Date 2024/9/20
+    */
+    @Override
+    public R<UserVO> login(String account, String password, Boolean isAdmin) {
+
+        UserPO userPO = userMapper.selectOne(Wrappers.<UserPO>lambdaQuery()
+                .eq(RegexUtils.isMobile(account),UserPO::getPhoneNumber,account)
+                .or()
+                .eq(RegexUtils.isEmailAddress(account),UserPO::getEmail,account)
+                .or()
+                .eq(UserPO::getUsername,account));
+
+
+        if(userPO == null){
+            return R.failed("登录失败");
+        }
+
+        if(!MD5WithSaltUtils.verify(password,userPO.getPassword())){
+            return R.failed("登录失败");
+        }
+
+        if(!userPO.getUserStatus()){
+            return R.fail("账号被冻结");
+        }
+
+        String uuid = String.valueOf(UUID.randomUUID());
+
+        // 判断该用户是否登录 登陆过就无需再生成Token然后保存到Redis中
+        String token = (String) redisUtils.get(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId());
+
+        UserVO userVO = userPO.transformVO();
+        userVO.setPassword(null);
+        userVO.setAccessToken(token);
+
+        if(ObjectUtils.isNotEmpty(token)){
+            return R.ok(userVO);
+        }
+
+        String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
+
+        redisUtils.set(tokenKey,userPO,EXPIRATION_TIME);
+        token = JWTUtils.generateToken(uuid,1L);
+        redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
+
+        return R.ok(userVO);
     }
 }

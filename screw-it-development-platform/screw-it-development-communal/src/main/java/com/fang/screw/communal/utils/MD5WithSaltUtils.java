@@ -3,6 +3,8 @@ package com.fang.screw.communal.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static com.sun.javafx.font.FontResource.SALT;
+
 /**
  * @FileName MD5WithSaltUtils
  * @Description MD5加密
@@ -52,9 +54,16 @@ public class MD5WithSaltUtils {
     * @Author yaoHui
     * @Date 2024/7/27
     */
-    public static boolean verify(String input, String salt,String encrypted) {
+    public static boolean verify(String input, String salt ,String encrypted) {
         // 使用相同的盐值和输入数据加密，然后比较结果
         String encryptedInput = md5WithSalt(input,salt);
+
+        return encryptedInput.equals(encrypted);
+    }
+
+    public static boolean verify(String input, String encrypted) {
+        // 使用相同的盐值和输入数据加密，然后比较结果
+        String encryptedInput = md5WithSalt(input, String.valueOf(SALT));
 
         return encryptedInput.equals(encrypted);
     }

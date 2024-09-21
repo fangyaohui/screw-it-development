@@ -2,20 +2,25 @@ package com.fang.screw.upm.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fang.screw.communal.utils.MD5WithSaltUtils;
-import com.fang.screw.communal.utils.RegexUtils;
+import com.fang.screw.communal.constant.RedisDynamicParameter;
+import com.fang.screw.communal.utils.*;
+import com.fang.screw.domain.po.UserPO;
+import com.fang.screw.domain.vo.UserVO;
 import com.fang.screw.upm.enums.ExceptionEnum;
 import com.fang.screw.upm.mapper.BlogUserMapper;
+import com.fang.screw.upm.mapper.UserMapper;
 import com.fang.screw.upm.service.RegisterService;
-import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import com.fang.screw.domain.po.BlogUserPO;
 import com.fang.screw.domain.vo.RegisterUserInfoVO;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static com.fang.screw.communal.constant.DynamicParameter.*;
 
 /**
  * @FileName RegisterServiceImpl
@@ -29,6 +34,10 @@ import java.util.UUID;
 public class RegisterServiceImpl implements RegisterService {
 
     private BlogUserMapper blogUserMapper;
+
+    private UserMapper userMapper;
+
+    private RedisUtils redisUtils;
 
     /***
      * @Description 注册用户
@@ -80,5 +89,68 @@ public class RegisterServiceImpl implements RegisterService {
             return R.ok();
         }
         return ExceptionEnum.SYSOP_ACTION_FAIL.getBusinessException();
+    }
+
+    @Override
+    public R<UserVO> registerUser(UserVO userVO) {
+
+        // 判断用户名是否重复
+        if(userMapper.exists(Wrappers.<UserPO>lambdaQuery()
+                .eq(StringUtils.isNotBlank(userVO.getUsername())
+                        ,UserPO::getUsername,
+                        userVO.getUsername()))){
+            return R.fail("用户名重复");
+        }
+
+        // 判断邮箱是否重复
+        if(StringUtils.isNotBlank(userVO.getEmail()) && userMapper.exists(Wrappers.<UserPO>lambdaQuery()
+                .eq(RegexUtils.isEmailAddress(userVO.getEmail())
+                        ,UserPO::getEmail,
+                        userVO.getEmail()))){
+            return R.fail("邮箱重复");
+        }
+
+        // 判断手机号是否重复
+        if(StringUtils.isNotBlank(userVO.getPhoneNumber()) && userMapper.exists(Wrappers.<UserPO>lambdaQuery()
+                .eq(RegexUtils.isMobile(userVO.getPhoneNumber())
+                        ,UserPO::getPhoneNumber,
+                        userVO.getPhoneNumber()))){
+            return R.fail("手机号重复");
+        }
+
+        UserPO userPO = userVO.transformPO();
+
+        // 获取密文
+        userPO.setPassword(MD5WithSaltUtils.md5WithSalt(userVO.getPassword(),SALT));
+//        userPO.setCreateTime(LocalDateTime.now());
+        userPO.setUserStatus(true);
+        userPO.setUserType(2);
+
+        // 保存
+        userMapper.insert(userPO);
+
+        userPO = userMapper.selectOne(Wrappers.<UserPO>lambdaQuery()
+                .eq(UserPO::getUsername,userVO.getUsername()));
+
+        String uuid = String.valueOf(UUID.randomUUID());
+
+        // 判断该用户是否登录 登陆过就无需再生成Token然后保存到Redis中
+        String token = (String) redisUtils.get(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId());
+
+        userVO = userPO.transformVO();
+        userVO.setPassword(null);
+        userVO.setAccessToken(token);
+
+        if(ObjectUtils.isNotEmpty(token)){
+            return R.ok(userVO);
+        }
+
+        String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
+
+        redisUtils.set(tokenKey,userPO,EXPIRATION_TIME);
+        token = JWTUtils.generateToken(uuid,1L);
+        redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
+
+        return R.ok(userVO);
     }
 }
