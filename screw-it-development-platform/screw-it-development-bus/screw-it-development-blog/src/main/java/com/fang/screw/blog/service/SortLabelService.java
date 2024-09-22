@@ -1,7 +1,9 @@
 package com.fang.screw.blog.service;
 
 import com.fang.screw.communal.utils.R;
+import com.fang.screw.domain.po.SortPO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,4 +15,12 @@ import java.util.Map;
 public interface SortLabelService {
 
     R<Map> getListSortAndLabel();
+
+    /***
+     * @Description 获取分类标签信息
+     * @return {@link R< List< SortPO>> }
+     * @Author yaoHui
+     * @Date 2024/9/22
+     */
+    R<List<SortPO>> getSortInfo();
 }

@@ -1,6 +1,11 @@
 
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   elasticsearch:
     uris: http://localhost:9200
   redis:
@@ -75,6 +80,8 @@ spring:
 
 server:
   port: 51938
+  tomcat:
+    max-http-form-post-size: 10485760
 
 #dubbo:
 #  application:

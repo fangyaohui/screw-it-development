@@ -1,11 +1,16 @@
 package com.fang.screw.domain.po;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fang.screw.domain.vo.ArticleVO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -134,8 +139,60 @@ public class ArticlePO implements Serializable {
      * 是否启用[0:未删除，1:已删除]
      */
     @TableField("del_flag")
-    @TableLogic
-    private Boolean delFlag;
+    private Integer delFlag;
 
+
+    public ArticleVO transformVO(){
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(this,articleVO);
+        return articleVO;
+    }
+
+//    private ArticleVO buildArticleVO(ArticlePO article, Boolean isAdmin) {
+//        ArticleVO articleVO = new ArticleVO();
+//        BeanUtils.copyProperties(article, articleVO);
+//        if (!isAdmin) {
+//            if (!StringUtils.hasText(articleVO.getArticleCover())) {
+//                articleVO.setArticleCover(PoetryUtil.getRandomCover(articleVO.getId().toString()));
+//            }
+//        }
+//
+//        User user = commonQuery.getUser(articleVO.getUserId());
+//        if (user != null && StringUtils.hasText(user.getUsername())) {
+//            articleVO.setUsername(user.getUsername());
+//        } else if (!isAdmin) {
+//            articleVO.setUsername(PoetryUtil.getRandomName(articleVO.getUserId().toString()));
+//        }
+//        if (articleVO.getCommentStatus()) {
+//            articleVO.setCommentCount(commonQuery.getCommentCount(articleVO.getId(), CommentTypeEnum.COMMENT_TYPE_ARTICLE.getCode()));
+//        } else {
+//            articleVO.setCommentCount(0);
+//        }
+//
+//        List<Sort> sortInfo = commonQuery.getSortInfo();
+//        if (!CollectionUtils.isEmpty(sortInfo)) {
+//            for (Sort s : sortInfo) {
+//                if (s.getId().intValue() == articleVO.getSortId().intValue()) {
+//                    Sort sort = new Sort();
+//                    BeanUtils.copyProperties(s, sort);
+//                    sort.setLabels(null);
+//                    articleVO.setSort(sort);
+//                    if (!CollectionUtils.isEmpty(s.getLabels())) {
+//                        for (int j = 0; j < s.getLabels().size(); j++) {
+//                            Label l = s.getLabels().get(j);
+//                            if (l.getId().intValue() == articleVO.getLabelId().intValue()) {
+//                                Label label = new Label();
+//                                BeanUtils.copyProperties(l, label);
+//                                articleVO.setLabel(label);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//        return articleVO;
+//    }
 
 }

@@ -18,12 +18,16 @@ import com.fang.screw.domain.po.ResourcePO;
 import com.fang.screw.domain.vo.FileVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.Objects;
 
+import static com.fang.screw.communal.constant.DynamicParameter.IMG_WEB_SITE_URL;
 import static com.fang.screw.communal.constant.UploadConstant.BLOG_IMAGE_UPLOAD_FOLDER_NAME;
 import static com.fang.screw.communal.constant.UploadConstant.BLOG_UPLOAD_IMAGE_MAX_SIZE;
 
@@ -89,19 +93,22 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
             String imageName = UUID.randomUUID().toString();
             OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,file);
 
+            String imageKey = ossFile.getName().replaceFirst("/"+BLOG_IMAGE_UPLOAD_FOLDER_NAME,"");
+            String imageUrl = IMG_WEB_SITE_URL + imageKey;
+
             if(!Objects.equals(fileVO.getType(),"articleCover")){
                 // 保存用户上传过的图片信息
                 BlogImageUploadPO blogImageUploadPO = new BlogImageUploadPO();
                 blogImageUploadPO.setImgSize(ossFile.getSize());
                 blogImageUploadPO.setSourcePath(fileName);
-                blogImageUploadPO.setTargetPath(ossFile.getFilePath());
+                blogImageUploadPO.setTargetPath(imageUrl);
                 blogImageUploadPO.setUserId(CurrentUserHolder.getUser().getId());
                 blogImageUploadMapper.insert(blogImageUploadPO);
             }
 
             ResourcePO resourcePO = new ResourcePO();
             resourcePO.setUserId(CurrentUserHolder.getUser().getId());
-            resourcePO.setPath(ossFile.getDomain() + ossFile.getName());
+            resourcePO.setPath(imageUrl);
             resourcePO.setType(fileVO.getType());
             resourcePO.setSize(ossFile.getSize());
             resourcePO.setOriginalName(ossFile.getOriginalName());
@@ -111,7 +118,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
 
             file.getInputStream().close();
 
-            return R.success(ossFile.getDomain() + ossFile.getName());
+            return R.success(imageUrl);
         }catch (Exception e){
             return R.fail("上传失败");
         }
@@ -129,5 +136,25 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
 //        return PoetryResult.success(result.getVisitPath());
 
 //        return null;
+    }
+
+    /**
+     * @Description 获取minio服务器中的图片
+     * @param imageName
+     * @return {@link R< OssFile> }
+     * @Author yaoHui
+     * @Date 2024/8/1
+     */
+    @Override
+    public ResponseEntity<InputStreamResource> getImage(String imageName) {
+        InputStream inputStream = ossTemplate.getOssFile(imageName);
+        if(ObjectUtils.isEmpty(inputStream)){
+            return ResponseEntity.ok().body(null);
+        }
+        InputStreamResource resource = new InputStreamResource(inputStream);
+
+        return ResponseEntity.ok()
+                .header("Content-Type", "image/jpeg") // 根据文件类型设置正确的Content-Type
+                .body(resource);
     }
 }

@@ -2,12 +2,14 @@ package com.fang.screw.blog.controller;
 
 import com.fang.screw.blog.service.SortLabelService;
 import com.fang.screw.communal.utils.R;
+import com.fang.screw.domain.po.SortPO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 ;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +35,17 @@ public class SortLabelController {
     @GetMapping("/getListSortAndLabel")
     public R<Map> getListSortAndLabel() {
         return sortLabelService.getListSortAndLabel();
+    }
+
+    /***
+    * @Description 获取分类标签信息
+    * @return {@link R< List< SortPO>> }
+    * @Author yaoHui
+    * @Date 2024/9/22
+    */
+    @GetMapping("/getSortInfo")
+    public R<List<SortPO>> getSortInfo() {
+        return sortLabelService.getSortInfo();
     }
 
 }

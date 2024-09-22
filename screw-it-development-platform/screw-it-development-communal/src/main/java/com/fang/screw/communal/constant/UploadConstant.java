@@ -15,7 +15,7 @@ public class UploadConstant {
     public final static Long BLOG_UPLOAD_MD_FILE_MAX_SIZE = 10*1024*1024L;
 
     // 限制博客图片上传最大不超过10MB
-    public final static Long BLOG_UPLOAD_IMAGE_MAX_SIZE = 10*1024*1024L;
+    public final static Long BLOG_UPLOAD_IMAGE_MAX_SIZE = 10*1024*1024*1024L;
 
     // 图片MIME类型
     public static final Set<String> IMAGE_MIME_TYPES = new HashSet<String>() {{

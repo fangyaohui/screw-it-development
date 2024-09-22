@@ -74,6 +74,12 @@ public class ImageDetermineUtils {
     * @Date 2024/8/2
     */
     public static String replaceImageUrls(String markdownContent, Map<String,String> imagePathMap) {
+
+        // 正则表达式匹配 ![img](assets/xxx.png)
+//        String regex = "!\\[img\\]\\(assets/(.*?)\\)";
+//        Pattern pattern = Pattern.compile(regex);
+//        Matcher matcher = pattern.matcher(markdownContent);
+
         Pattern pattern = Pattern.compile("!\\[[^]]*]\\(([^)]+)\\)");
         Matcher matcher = pattern.matcher(markdownContent);
         StringBuffer sb = new StringBuffer();
@@ -83,7 +89,7 @@ public class ImageDetermineUtils {
             if(StringUtils.isNotEmpty(imagePath) && imagePath.startsWith("./")){
                 imagePath = imagePath.substring(2);
             }
-            matcher.appendReplacement(sb, "![](" + imagePathMap.getOrDefault(imagePath,imagePath) + ")");
+            matcher.appendReplacement(sb, "![img](" + imagePathMap.getOrDefault(imagePath,imagePath) + ")");
         }
         matcher.appendTail(sb);
         return sb.toString();

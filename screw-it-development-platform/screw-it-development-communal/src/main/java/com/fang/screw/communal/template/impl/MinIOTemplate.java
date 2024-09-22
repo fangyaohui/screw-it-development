@@ -129,7 +129,6 @@ public class MinIOTemplate implements OssTemplate {
         try {
             return client.getObject(GetObjectArgs.builder().bucket(getBucketName(ossProperties.getBucketName()))
                     .object(fileName).build());
-
         } catch (Exception e) {
             log.error("minio getOssInfo Exception:{}", e);
         }
@@ -343,8 +342,8 @@ public class MinIOTemplate implements OssTemplate {
      * @return string 上传的文件夹名称/yyyyMMdd/原始文件名_时间戳.文件后缀名
      */
     private String getFilePath(String folderName, String originalFilename, String suffix) {
-        return StrPool.SLASH + String.join(StrPool.SLASH, folderName, DateUtil.date().toString(DATE_FORMAT),
-                originalFilename) + StrPool.C_UNDERLINE + DateUtil.current() + StrPool.DOT + suffix;
+        return StrPool.SLASH + String.join(StrPool.SLASH, folderName, originalFilename)
+                + StrPool.C_UNDERLINE + DateUtil.current() + StrPool.DOT + suffix;
     }
 
     /**

@@ -31,4 +31,19 @@ public class DynamicParameter {
 
     public static final String SALT = "fang";
 
+    /**
+     * 文章摘要默认字数
+     */
+    public static final Integer SUMMARY = 80;
+
+    /**
+     * 密钥
+     */
+    public static final String CRYPOTJS_KEY = "sarasarasarasara";
+
+    /***
+    * @Description 图片读取地址
+    */
+    public static final String IMG_WEB_SITE_URL = "http://localhost:61237/api/blog/resource/getImage";
+
 }
