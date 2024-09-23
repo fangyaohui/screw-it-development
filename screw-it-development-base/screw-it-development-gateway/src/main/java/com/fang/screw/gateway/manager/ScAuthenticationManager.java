@@ -26,14 +26,14 @@ public class ScAuthenticationManager implements ReactiveAuthenticationManager {
         String token = getJwtToken(tokenString);
 
         // 校验Token是否合法
-        Long roleId = null;
+        Integer userId = null;
         if(JWTUtils.validateToken(token)){
-            roleId = JWTUtils.getRoleId(token);
+            userId = JWTUtils.getUserId(token);
         }
-        log.info("ScAuthenticationManager roleId = {}", roleId);
-        Long finalRoleId = roleId;
+        log.info("ScAuthenticationManager userId = {}", userId);
+        Integer finalUserId = userId;
         return Mono.just(authentication).map(auth -> {
-            return new UsernamePasswordAuthenticationToken(finalRoleId, null, null);
+            return new UsernamePasswordAuthenticationToken(finalUserId, null, null);
         });
     }
 

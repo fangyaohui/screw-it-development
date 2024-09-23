@@ -4,6 +4,7 @@ import com.fang.screw.communal.constant.DynamicParameter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,15 +22,15 @@ public class JWTUtils {
     /**
     * @Description 生成Token
     * @param uuid
-    * @param roleId 用户角色ID
+    * @param userId 用户角色ID
     * @return {@link String }
     * @Author yaoHui
     * @Date 2024/7/18
     */
-    public static String generateToken(String uuid,Long roleId){
+    public static String generateToken(String uuid,Integer userId){
         Map<String,Object> claims = new HashMap<>();
         claims.put("uuid",uuid);
-        claims.put("roleId",roleId);
+        claims.put("userId",userId);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -62,6 +63,18 @@ public class JWTUtils {
     public static Long getRoleId(String token){
         String roleId =  getClaim(token,claims -> claims.get("roleId").toString());
         return Long.parseLong(roleId);
+    }
+
+    /**
+     * @Description 读取Token中的userId
+     * @param token
+     * @return {@link Long }
+     * @Author yaoHui
+     * @Date 2024/7/18
+     */
+    public static Integer getUserId(String token){
+        String userId =  getClaim(token,claims -> claims.get("userId").toString());
+        return Integer.valueOf(userId);
     }
 
     /**

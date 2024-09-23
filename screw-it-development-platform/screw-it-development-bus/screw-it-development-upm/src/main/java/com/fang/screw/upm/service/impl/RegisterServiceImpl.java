@@ -148,7 +148,7 @@ public class RegisterServiceImpl implements RegisterService {
         String tokenKey = RedisDynamicParameter.REDIS_USER_LOGIN_TOKEN +uuid;
 
         redisUtils.set(tokenKey,userPO,EXPIRATION_TIME);
-        token = JWTUtils.generateToken(uuid,1L);
+        token = JWTUtils.generateToken(uuid,userPO.getId());
         redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
 
         userVO.setAccessToken(token);

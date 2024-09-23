@@ -121,7 +121,6 @@ public class UserPO implements Serializable {
      * 是否启用[0:未删除，1:已删除]
      */
     @TableField("del_flag")
-    @TableLogic
     private Integer delFlag;
 
 

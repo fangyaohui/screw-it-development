@@ -25,13 +25,13 @@ public class ScAuthorizationManager implements ReactiveAuthorizationManager<Auth
     public Mono<AuthorizationDecision> check(Mono<Authentication> authentication, AuthorizationContext object) {
 
         return authentication.map(auth -> {
-            Long roleId = (Long) auth.getPrincipal();
-            log.info("ScAuthorizationManager roleId = {}", roleId);
+            Integer userId = (Integer) auth.getPrincipal();
+            log.info("ScAuthorizationManager userId = {}", userId);
 
             // 如果RoleId为null则不应验证通过 但是目前还没有实现
             // TODO 根据当前用户角色决定是否放行
-            if (Objects.isNull(roleId)) {
-                return new AuthorizationDecision(true);
+            if (Objects.isNull(userId)) {
+                return new AuthorizationDecision(false);
             }
             return new AuthorizationDecision(true);
         }).defaultIfEmpty(new AuthorizationDecision(false));
