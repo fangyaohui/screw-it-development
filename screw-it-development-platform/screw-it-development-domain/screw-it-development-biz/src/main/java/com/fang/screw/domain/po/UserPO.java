@@ -1,6 +1,7 @@
 package com.fang.screw.domain.po;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fang.screw.domain.dto.UserDTO;
 import com.fang.screw.domain.vo.UserVO;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -128,6 +129,13 @@ public class UserPO implements Serializable {
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(this,userVO);
         return userVO;
+    }
+
+    public UserDTO transformDTO(){
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(this,userDTO);
+        userDTO.setPassword(null);
+        return userDTO;
     }
 
 

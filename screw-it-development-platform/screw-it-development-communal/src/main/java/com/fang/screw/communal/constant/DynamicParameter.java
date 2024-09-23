@@ -46,4 +46,9 @@ public class DynamicParameter {
     */
     public static final String IMG_WEB_SITE_URL = "http://localhost:61237/api/blog/resource/getImage";
 
+    /**
+     * 顶层评论ID
+     */
+    public static final Integer FIRST_COMMENT = 0;
+
 }
