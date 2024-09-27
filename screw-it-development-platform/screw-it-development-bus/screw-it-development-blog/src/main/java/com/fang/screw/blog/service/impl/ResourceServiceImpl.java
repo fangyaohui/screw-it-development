@@ -84,10 +84,11 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
             }
 
             // 判断用户是否上传过这个文件 如果是上传的封面照片就不需要判断用户是否上传过了
-            if(!Objects.equals(fileVO.getType(), "articleCover") && blogImageUploadMapper.exists(Wrappers.<BlogImageUploadPO>lambdaQuery()
+            BlogImageUploadPO blogImageUploadPO = blogImageUploadMapper.selectOne(Wrappers.<BlogImageUploadPO>lambdaQuery()
                     .eq(BlogImageUploadPO::getUserId, CurrentUserHolder.getUser().getId())
-                    .eq(BlogImageUploadPO::getSourcePath,fileName))){
-                return R.ok("上传成功");
+                    .eq(BlogImageUploadPO::getSourcePath,fileName));
+            if(!Objects.equals(fileVO.getType(), "articleCover") && !ObjectUtils.isEmpty(blogImageUploadPO)){
+                return R.ok(blogImageUploadPO.getTargetPath());
             }
 
             String imageName = UUID.randomUUID().toString();
@@ -98,7 +99,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
 
             if(!Objects.equals(fileVO.getType(),"articleCover")){
                 // 保存用户上传过的图片信息
-                BlogImageUploadPO blogImageUploadPO = new BlogImageUploadPO();
+                blogImageUploadPO = new BlogImageUploadPO();
                 blogImageUploadPO.setImgSize(ossFile.getSize());
                 blogImageUploadPO.setSourcePath(fileName);
                 blogImageUploadPO.setTargetPath(imageUrl);
