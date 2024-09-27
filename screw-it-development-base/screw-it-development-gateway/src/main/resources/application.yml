@@ -3,6 +3,12 @@ server:
 
 
 spring:
+  redis:
+    host: localhost
+    port: 6379
+  security:
+    filter:
+      order: 0
   main:
     allow-bean-definition-overriding: true
   profiles:
@@ -25,6 +31,11 @@ spring:
             refresh: true
         enable-remote-sync-config: true
     gateway:
+      httpclient:
+        pool:
+          max-idle-time: 1
+          max-life-time: 1000
+          max-connections: 10
       globalcors:
         add-to-simple-url-handler-mapping: true
         cors-configurations:

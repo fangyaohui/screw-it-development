@@ -30,6 +30,13 @@ public class ScSecurityContextRepository implements ServerSecurityContextReposit
         return Mono.empty();
     }
 
+    /***
+    * @Description 请求进来最早进行处理，
+    * @param exchange
+    * @return {@link Mono< SecurityContext> }
+    * @Author yaoHui
+    * @Date 2024/9/27
+    */
     @Override
     public Mono<SecurityContext> load(ServerWebExchange exchange) {
         ServerHttpRequest request = exchange.getRequest();

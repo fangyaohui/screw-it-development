@@ -13,4 +13,6 @@ public class RedisDynamicParameter {
 
     public static String REDIS_USER_LOGIN_STATUS = "screw:user:login:status:";
 
+    public static String REDIS_CRYPT_AES_PRIVATE = "screw:crypt:aes:private:";
+
 }

@@ -1,6 +1,7 @@
 package com.fang.screw.gateway.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.server.ServerWebExchange;
@@ -19,8 +20,9 @@ import java.util.Objects;
 @Slf4j
 public class ScFilter implements WebFilter {
 
+    @NotNull
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, @NotNull WebFilterChain chain) {
         log.info("UserFilter doing.... path={}", exchange.getRequest().getPath());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

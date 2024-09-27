@@ -13,7 +13,11 @@ public class LoginVO {
 
     private String userName;
 
+    private String account;
+
     private String password;
+
+    private String privateKey;
 
     private String token;
 

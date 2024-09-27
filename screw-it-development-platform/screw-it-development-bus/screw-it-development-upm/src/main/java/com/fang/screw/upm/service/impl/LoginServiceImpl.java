@@ -95,7 +95,7 @@ public class LoginServiceImpl implements LoginService {
     * @Date 2024/9/20
     */
     @Override
-    public R<UserVO> login(String account, String password, Boolean isAdmin) {
+    public R<UserVO> login(String account, String password, Boolean isAdmin,String privateKey) {
 
         UserPO userPO = userMapper.selectOne(Wrappers.<UserPO>lambdaQuery()
                 .eq(RegexUtils.isMobile(account),UserPO::getPhoneNumber,account)
@@ -135,8 +135,43 @@ public class LoginServiceImpl implements LoginService {
         redisUtils.set(tokenKey,userPO,EXPIRATION_TIME);
         token = JWTUtils.generateToken(uuid,userPO.getId());
         redisUtils.set(RedisDynamicParameter.REDIS_USER_LOGIN_STATUS + userPO.getId(),token,REDIS_LOGIN_STATUS_EXPIRATION_TIME);
+        redisUtils.set(RedisDynamicParameter.REDIS_CRYPT_AES_PRIVATE + token,privateKey);
 
         userVO.setAccessToken(token);
         return R.success(userVO);
+    }
+
+    /**
+     * @Description 用户进行登录之前访问该API获得后端RSA的公钥
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/9/27
+     */
+    @Override
+    public R<String> getRsaPublicKey() {
+        return R.ok(RsaUtils.getPublicKey());
+    }
+
+    /***
+     * @Description 获取客户端生成的AES密钥，需要使用RSA公钥解密获得，并保存到Redis中进行维护
+     * @param privateKey
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/9/27
+     */
+    @Override
+    public R<String> pushAesPrivateKey(String privateKey) {
+
+        if(ObjectUtils.isEmpty(privateKey)){
+            return R.fail("客户端验证密钥存在问题！请稍后再试");
+        }
+
+        try{
+            String aesPrivateKey = RsaUtils.decryptByPrivateKey(privateKey,String.class);
+        }catch (Exception e){
+            return R.fail("AES密钥解密失败，请稍后再试");
+        }
+
+        return null;
     }
 }
