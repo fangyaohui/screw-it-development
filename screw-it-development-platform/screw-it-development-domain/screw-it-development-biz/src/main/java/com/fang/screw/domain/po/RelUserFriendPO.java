@@ -26,5 +26,7 @@ public class RelUserFriendPO {
 
     private String avatar;
 
+    private String userBName;
+
 
 }
