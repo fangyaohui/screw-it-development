@@ -50,7 +50,7 @@ public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolve
         if (token != null && token.startsWith("Bearer ")) {
             String uuid = JWTUtils.getUUID(token);
             CurrentUserHolder.setUser((UserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid));
-            return (BlogUserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid);
+            return (UserPO) redisUtils.get(REDIS_USER_LOGIN_TOKEN+uuid);
         }
         return null;
     }

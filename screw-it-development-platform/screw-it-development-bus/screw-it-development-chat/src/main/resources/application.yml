@@ -1,0 +1,110 @@
+
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  profiles:
+    active: dev
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      discovery:
+        username: nacos
+        password: nacos
+        server-addr: localhost:8848
+        namespace: dev
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        namespace: ${spring.profiles.active}
+        refresh-enabled: true
+        extension-configs:
+          - data-id: ${spring.application.name}-${spring.profiles.active}.yml
+            refresh: true
+        enable-remote-sync-config: true
+  config:
+    import:
+      - optional:nacos:application-${spring.profiles.active}.yml
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/screw_it_development_biz?characterEncoding=UTF-8&serverTimezone=UTC
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+      stat-view-servlet:
+        enabled: true
+        allow: ""
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 10000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+#      initialSize: 5
+#      minIdle: 5
+#      maxActive: 20
+#      maxWait: 60000
+#      timeBetweenEvictionRunsMillis: 60000
+#      minEvictableIdleTimeMillis: 300000
+#      validationQuery: SELECT 1 FROM DUAL
+#      testWhileIdle: true
+#      testOnBorrow: false
+#      testOnReturn: false
+#      poolPreparedStatements: true
+#      filter:
+#        stat:
+#          enabled: true
+#          log-slow-sql: true
+#          slow-sql-millis: 10000
+#          merge-sql: false
+#      maxPoolPreparedStatementPerConnectionSize: 20
+#      useGlobalDataSourceStat: true
+#      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+server:
+  port: 56281
+
+#dubbo:
+#  application:
+#    name: ${spring.application.name}
+#    qos-enable: false
+#  registry:
+#    address: nacos://localhost:8848
+#    username: nacos
+#    password: nacos
+#    parameters:
+#      namespace: ${spring.cloud.nacos.discovery.namespace}
+##  scan:
+##    base-packages: com.fang.demo.comfangdemoupms.service
+#  protocol:
+#    name: dubbo
+#    port: -1
+
+#MINIO 本机
+oss:
+  name: minio
+  accessKey: MtjQrkWMkc2pZcbb6Xqa
+  secretKey: KpTTuINwsGHbCku5xtJNGtBd66Rh96Ka1YHtqRqA
+  bucketName: screw-it-development-blog-buck
+  endpoint: http://localhost:9000
+  fileExt: png,jpg,jpeg,pdf
+
+#  MINIO 实习机
+#oss:
+#  name: minio
+#  accessKey: fMNacdYkjR9vLglCjPpt
+#  secretKey: iJfnvmKVo3TEJQQv9fIRoGKrhn2aW8NaR5bXX8m6
+#  bucketName: screw-it-development-blog-buck
+#  endpoint: http://localhost:9000
+#  fileExt: png,jpg,jpeg,pdf
+

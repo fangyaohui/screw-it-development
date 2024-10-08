@@ -1,7 +1,7 @@
 package com.fang.screw.gateway.config;
 
 import com.fang.screw.gateway.filter.ScFilter;
-import com.fang.screw.gateway.filter.DecryptFilter;
+//import com.fang.screw.gateway.filter.DecryptFilter;
 import com.fang.screw.gateway.handler.ScAccessDeniedHandler;
 import com.fang.screw.gateway.handler.ScAuthenticationEntryPoint;
 import com.fang.screw.gateway.manager.ScAuthenticationManager;
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf().disable()
-                .addFilterAt(new DecryptFilter(),SecurityWebFiltersOrder.FIRST)
+//                .addFilterAt(new DecryptFilter(),SecurityWebFiltersOrder.FIRST)
                 .securityContextRepository(scSecurityContextRepository) //存储认证信息
                 .authenticationManager(scAuthenticationManager) //认证管理
                 .authorizeExchange(exchange -> exchange // 请求拦截处理

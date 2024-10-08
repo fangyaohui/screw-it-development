@@ -76,6 +76,13 @@ spring:
           filters:
             - StripPrefix=2
 
+        - id: chat
+          uri: lb://screw-it-development-chat
+          predicates:
+            - Path=/api/chat/**
+          filters:
+            - StripPrefix=2
+
   config:
     import:
       - optional:nacos:application-${spring.profiles.active}.yml
