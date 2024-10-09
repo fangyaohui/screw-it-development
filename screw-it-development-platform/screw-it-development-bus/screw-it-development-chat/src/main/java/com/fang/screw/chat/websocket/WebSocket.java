@@ -112,16 +112,6 @@ public class WebSocket {
             MessagePO messagePO = messageVO.transformPO();
             messageMapper.insert(messagePO);
 
-//            JSONObject jsonObject = JSONObject.parseObject(body);
-//            //获取目标用户地址
-//            String targetUserId = jsonObject.getString("targetUserId");
-//            //获取需要发送的消息
-//            String message = jsonObject.getString("message");
-//            jsonObject.put("userId" , userId);
-//            if(userId.equals(targetUserId)){
-//                sendMoreMessage(new String[]{targetUserId} ,  JSONObject.toJSONString(jsonObject));
-//            }else{
-//                sendMoreMessage(new String[]{userId , targetUserId} ,  JSONObject.toJSONString(jsonObject));
 //            }
         } catch (Exception e) {
             log.error("---------------WebSocket消息异常---------------");

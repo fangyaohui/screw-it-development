@@ -2,6 +2,7 @@ package com.fang.screw.blog.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fang.screw.blog.service.ArticleService;
+import com.fang.screw.communal.annotation.CheckPermission;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.vo.ArticleVO;
 import com.fang.screw.domain.vo.BaseRequestVO;
@@ -45,6 +46,7 @@ public class ArticleController {
     * @Author yaoHui
     * @Date 2024/9/22
     */
+    @CheckPermission
     @GetMapping("/getListSortArticle")
     public R<Map<Integer, List<ArticleVO>>> getListSortArticle() {
         return articleService.getListSortArticle();
