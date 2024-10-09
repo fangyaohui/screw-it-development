@@ -45,8 +45,8 @@ public class FriendsController {
     * @Date 2024/10/8
     */
     @PostMapping("/addFriend")
-    public R<String> addFriend(@RequestParam("userId") Integer userId){
-        return chatService.addFriend(userId);
+    public R<String> addFriend(@RequestBody UserVO userVO){
+        return chatService.addFriend(userVO.getId());
     }
 
 }

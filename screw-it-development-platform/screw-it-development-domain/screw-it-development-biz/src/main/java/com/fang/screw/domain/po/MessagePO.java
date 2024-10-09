@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fang.screw.domain.vo.MessageVO;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +35,12 @@ public class MessagePO {
     private Integer delFlag;
 
     @TableField("create_time")
-    private LocalDateTime time;
+    private LocalDateTime createTime;
+
+    public MessageVO transformVO(){
+        MessageVO messageVO = new MessageVO();
+        BeanUtils.copyProperties(this,messageVO);
+        return messageVO;
+    }
 
 }

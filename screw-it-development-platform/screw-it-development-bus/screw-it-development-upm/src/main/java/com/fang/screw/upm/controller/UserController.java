@@ -3,6 +3,7 @@ package com.fang.screw.upm.controller;
 import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.dto.UserDTO;
+import com.fang.screw.domain.vo.UserVO;
 import com.fang.screw.upm.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,19 @@ public class UserController {
     public R<UserDTO> getUserDTOById(@PathVariable String userId){
         return userService.getUserDTOById(userId);
     }
+
+    /***
+    * @Description 根据keyword查询用户名、电子邮件、电话等相关的用户列表
+    * @param keyword
+    * @return {@link R< List< UserDTO>> }
+    * @Author yaoHui
+    * @Date 2024/10/9
+    */
+    @GetMapping("/getUserByUserNameOrEmail/{keyword}")
+    public R<List<UserVO>> getUserByUserNameOrEmail(@PathVariable("keyword") String keyword){
+        return userService.getUserByUserNameOrEmail(keyword);
+    }
+
 
 
 }

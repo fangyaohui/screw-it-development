@@ -2,6 +2,7 @@ package com.fang.screw.chat.utils;
 
 import com.alibaba.nacos.shaded.com.google.gson.GsonBuilder;
 import com.fang.screw.domain.po.MessagePO;
+import com.fang.screw.domain.vo.MessageVO;
 
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
@@ -13,14 +14,14 @@ import javax.websocket.EndpointConfig;
  * @Author yaoHui
  * @date 2024-10-08
  **/
-public class MessageEntityDecode implements Decoder.Text<MessagePO>{
+public class MessageEntityDecode implements Decoder.Text<MessageVO>{
 
     @Override
-    public MessagePO decode(String s) throws DecodeException {
+    public MessageVO decode(String s) throws DecodeException {
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create()
-                .fromJson(s, MessagePO.class);
+                .fromJson(s, MessageVO.class);
     }
 
     @Override

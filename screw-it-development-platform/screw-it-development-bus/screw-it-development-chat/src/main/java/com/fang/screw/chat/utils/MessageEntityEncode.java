@@ -2,6 +2,7 @@ package com.fang.screw.chat.utils;
 
 import com.alibaba.nacos.shaded.com.google.gson.GsonBuilder;
 import com.fang.screw.domain.po.MessagePO;
+import com.fang.screw.domain.vo.MessageVO;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
@@ -13,13 +14,13 @@ import javax.websocket.EndpointConfig;
  * @Author yaoHui
  * @date 2024-10-08
  **/
-public class MessageEntityEncode implements Encoder.Text<MessagePO>{
+public class MessageEntityEncode implements Encoder.Text<MessageVO>{
     @Override
-    public String encode(MessagePO messagePO) throws EncodeException {
+    public String encode(MessageVO messageVO) throws EncodeException {
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create()
-                .toJson(messagePO);
+                .toJson(messageVO);
     }
 
     @Override

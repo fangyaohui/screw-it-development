@@ -6,7 +6,9 @@ import com.fang.screw.domain.dto.UserDTO;
 import com.fang.screw.domain.po.BlogUserPO;
 import com.fang.screw.domain.po.UserInfoPO;
 import com.fang.screw.domain.po.UserPO;
+import com.fang.screw.domain.vo.UserVO;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -26,4 +28,14 @@ public interface UserService extends IService<UserPO> {
      * @Date 2024/9/23
      */
     R<UserDTO> getUserDTOById(String userId);
+
+    /***
+     * @Description 根据keyword查询用户名、电子邮件、电话等相关的用户列表
+     * @param keyword
+     * @return {@link R< List< UserDTO>> }
+     * @Author yaoHui
+     * @Date 2024/10/9
+     */
+    R<List<UserVO>> getUserByUserNameOrEmail(String keyword);
+
 }

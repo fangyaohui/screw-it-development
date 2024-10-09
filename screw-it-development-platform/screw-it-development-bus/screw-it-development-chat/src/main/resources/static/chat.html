@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        #content {
+            overflow: auto;
+            width: 500px;
+            height: 300px;
+            background-color: white;
+        }
+
+        body {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="content">
+    </div>
+    <p><label for="myUserId">用户名称：</label><input type="text" name="myUserId" id="myUserId"
+                                                 placeholder="用户名称"><input type="submit" value="登录"
+                                                                           id="login"/></p>
+    <p><label for="targetUserId">目标用户名称：</label><input type="text" name="targetUserId" id="targetUserId"
+                                                       placeholder="目标用户名称"></p>
+    <textarea name="message" id="message" cols="38" rows="10" placeholder="消息..."></textarea>
+    <p><input type="submit" id="send" value="发送"/></p>
+    </form>
+</div>
+
+</body>
+</html>
+
+<script>
+    $(function () {
+        var websocket = null;
+        $("#login").on('click', function () {
+            let myUserId = $("#myUserId").val();
+            websocket = new WebSocket("ws://localhost:56281/websocket/" + myUserId);
+            // 连接成功后的回调函数
+            socket();
+        });
+
+        function socket(){
+            websocket.onopen = function (params) {
+                console.log('客户端连接成功')
+            };
+
+            websocket.onmessage = function (e) {
+                var data = JSON.parse(e.data);
+                if(data.userId == $("#myUserId").val()){
+                    $("#content").append(`<div style="width: 500px;height:40px;line-height: 30px;"><p style="float:right;margin:0;padding:0;">我：${data.message}</p></div>`);
+                }else{
+                    $("#content").append(`<div style="width: 500px;height:40px;line-height: 30px;"><p style="float:left;margin:0;padding:0;">${data.userId}：${data.message}</p></div>`);
+                }
+            };
+
+            websocket.onclose = function (evt) {
+                console.log("关闭客户端连接");
+            };
+
+            websocket.onerror = function (evt) {
+                console.log("连接失败了");
+            };
+        }
+
+        $("#send").on('click', function () {
+            websocket.send(`{"targetUserId": "${$("#targetUserId").val()}" , "message": "${$("#message").val()}"}`);
+        });
+    });
+</script>
