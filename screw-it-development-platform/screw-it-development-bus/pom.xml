@@ -17,6 +17,8 @@
 
         <module>screw-it-development-upm</module>
         <module>screw-it-development-blog</module>
+        <module>screw-it-development-queue</module>
+        <module>screw-it-development-chat</module>
 
     </modules>
 
@@ -51,11 +53,7 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>screw.it.development</groupId>
-            <artifactId>screw-it-development-communal</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,5 +66,16 @@
         </dependency>
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>screw.it.development</groupId>
+                <artifactId>screw-it-development-communal</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 </project>

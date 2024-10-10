@@ -72,4 +72,16 @@ public class CommentController {
         return commentService.saveComment(commentVO);
     }
 
+    /***
+    * @Description 测试接口 测试Netty是否能够正常发送消息和接收消息
+    * @param commentVO
+    * @return {@link R< String> }
+    * @Author yaoHui
+    * @Date 2024/10/10
+    */
+    @PostMapping("/testNettySendMessage")
+    public R<String> testNettySendMessage(@RequestBody CommentVO commentVO){
+        return commentService.testNettySendMessage(commentVO);
+    }
+
 }

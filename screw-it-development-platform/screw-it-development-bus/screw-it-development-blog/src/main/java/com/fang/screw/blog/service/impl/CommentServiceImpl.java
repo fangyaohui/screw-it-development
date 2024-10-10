@@ -10,6 +10,8 @@ import com.fang.screw.blog.feign.UserFeign;
 import com.fang.screw.blog.mapper.ArticleMapper;
 import com.fang.screw.blog.mapper.CommentMapper;
 import com.fang.screw.blog.service.CommentService;
+import com.fang.screw.client.component.NettyClient;
+import com.fang.screw.client.protocol.MessageBase;
 import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.TreeBuildUtils;
@@ -50,6 +52,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentPO> im
     private UserFeign userFeign;
 
     private CommentMapper commentMapper;
+
+    private NettyClient nettyClient;
 
     /***
      * @Description 查询评论
@@ -201,6 +205,23 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentPO> im
 //        }
 
         return R.success();
+    }
+
+    /***
+     * @Description 测试接口 测试Netty是否能够正常发送消息和接收消息
+     * @param commentVO
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/10/10
+     */
+    @Override
+    public R<String> testNettySendMessage(CommentVO commentVO) {
+
+        MessageBase.Message message = MessageBase.Message.newBuilder()
+                .setContent(commentVO.getCommentContent())
+                .build();
+        nettyClient.sendMessage(message);
+        return R.ok("ok");
     }
 
     /***

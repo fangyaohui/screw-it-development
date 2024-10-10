@@ -3,7 +3,6 @@ package com.fang.screw.domain.vo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 

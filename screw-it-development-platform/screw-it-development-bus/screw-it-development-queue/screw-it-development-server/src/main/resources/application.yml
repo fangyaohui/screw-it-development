@@ -72,7 +72,7 @@ spring:
 #      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
 server:
-  port: 51234
+  port: 52313
 
 #dubbo:
 #  application:

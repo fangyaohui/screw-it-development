@@ -52,4 +52,13 @@ public interface CommentService extends IService<CommentPO> {
      */
     R<String> saveComment(CommentVO commentVO);
 
+    /***
+     * @Description 测试接口 测试Netty是否能够正常发送消息和接收消息
+     * @param commentVO
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/10/10
+     */
+    R<String> testNettySendMessage(CommentVO commentVO);
+
 }
