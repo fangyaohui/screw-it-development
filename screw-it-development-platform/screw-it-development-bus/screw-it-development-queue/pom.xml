@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--    <modelVersion>4.0.0</modelVersion>-->
+<!--    <parent>-->
+<!--        <artifactId>screw-it-development-bus</artifactId>-->
+<!--        <groupId>screw.it.development</groupId>-->
+<!--        <version>1.0-SNAPSHOT</version>-->
+<!--    </parent>-->
+
+    <parent>
+        <artifactId>screw-it-development-bus</artifactId>
+        <groupId>screw.it.development</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <artifactId>screw-it-development-queue</artifactId>
+
+
+<!--    <artifactId>screw-it-development-queue</artifactId>-->
+<!--    <version>0.0.1-SNAPSHOT</version>-->
+<!--    <name>screw-it-development-queue</name>-->
+<!--    <description>screw-it-development-queue</description>-->
+<!--    <packaging>pom</packaging>-->
+
+    <properties>
+
+    </properties>
+
+    <dependencies>
+
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
+<!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
+<!--            <version>2.13.5</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-openfeign</artifactId>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash;    Dubbo Nacos适配依赖包 开始  &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.dubbo</groupId>-->
+<!--            <artifactId>dubbo-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;    Dubbo Nacos适配依赖包 结束  &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Spring Boot WebSocket依赖 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-websocket</artifactId>-->
+<!--        </dependency>-->
+
+
+
+
+
+    </dependencies>
+
+    <modules>
+        <module>screw-it-development-client</module>
+    </modules>
+
+</project>
