@@ -90,9 +90,10 @@ public class SendMessageThread {
         }else{
             if (socketChannel.isActive()){
                 socketChannel.writeAndFlush(message);
+                waitAckMessageMap.put(message.getRequestId(),message);
+                messageTimeOutMap.put(message.getRequestId(),LocalDateTime.now().plusSeconds(timeout));
             }else{
                 log.info("Netty连接失败，请重试");
-//                socketChannel = NettyClient.getSocketChannel();
                 addMessageBlockingQueue(message);
             }
         }
