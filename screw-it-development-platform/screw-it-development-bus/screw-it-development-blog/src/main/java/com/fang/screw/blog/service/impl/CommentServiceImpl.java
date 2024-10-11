@@ -218,9 +218,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentPO> im
     public R<String> testNettySendMessage(CommentVO commentVO) {
 
         MessageBase.Message message = MessageBase.Message.newBuilder()
+                .setRequestId(String.valueOf(UUID.randomUUID()))
                 .setContent(commentVO.getCommentContent())
                 .build();
-        nettyClient.sendMessage(message);
+        nettyClient.addMessageBlockingQueue(message);
         return R.ok("ok");
     }
 

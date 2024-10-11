@@ -8,9 +8,12 @@ message Message {
   string requestId = 1;
   CommandType cmd = 2;
   string content = 3;
+  int32 retryCount = 4;
+  string urlPath = 5;
   enum CommandType {
     NORMAL = 0; //常规业务消息
     HEARTBEAT_REQUEST = 1; //客户端心跳消息
     HEARTBEAT_RESPONSE = 2; //服务端心跳消息
+    ACK = 3;
   }
 }

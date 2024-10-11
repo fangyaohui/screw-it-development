@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@ComponentScan(value = {"com.fang.screw.communal.*", "com.fang.screw.blog.*","com.fang.screw.client.component"})
+@ComponentScan(value = {"com.fang.screw.communal.*", "com.fang.screw.blog.*","com.fang.screw.client.*"})
 public class ComFangScrewBlogApplication {
 
     public static void main(String[] args) {

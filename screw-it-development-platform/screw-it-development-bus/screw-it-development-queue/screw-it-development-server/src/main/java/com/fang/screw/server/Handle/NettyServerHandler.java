@@ -27,7 +27,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             // 可选：根据接收到的消息发送响应
             MessageBase.Message response = MessageBase.Message.newBuilder()
                     .setRequestId(message.getRequestId())
-                    .setContent("Response to: " + message.getContent())
+                    .setCmd(MessageBase.Message.CommandType.ACK)
                     .build();
             ctx.writeAndFlush(response); // 发送响应
         } else {
