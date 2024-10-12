@@ -70,6 +70,18 @@ public final class MessageBase {
      */
     com.google.protobuf.ByteString
         getUrlPathBytes();
+
+    /**
+     * <code>string channel = 6;</code>
+     * @return The channel.
+     */
+    java.lang.String getChannel();
+    /**
+     * <code>string channel = 6;</code>
+     * @return The bytes for channel.
+     */
+    com.google.protobuf.ByteString
+        getChannelBytes();
   }
   /**
    * <pre>
@@ -92,6 +104,7 @@ public final class MessageBase {
       cmd_ = 0;
       content_ = "";
       urlPath_ = "";
+      channel_ = "";
     }
 
     @java.lang.Override
@@ -151,6 +164,12 @@ public final class MessageBase {
               java.lang.String s = input.readStringRequireUtf8();
 
               urlPath_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              channel_ = s;
               break;
             }
             default: {
@@ -530,6 +549,44 @@ public final class MessageBase {
       }
     }
 
+    public static final int CHANNEL_FIELD_NUMBER = 6;
+    private volatile java.lang.Object channel_;
+    /**
+     * <code>string channel = 6;</code>
+     * @return The channel.
+     */
+    @java.lang.Override
+    public java.lang.String getChannel() {
+      java.lang.Object ref = channel_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        channel_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string channel = 6;</code>
+     * @return The bytes for channel.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getChannelBytes() {
+      java.lang.Object ref = channel_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        channel_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -559,6 +616,9 @@ public final class MessageBase {
       if (!getUrlPathBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, urlPath_);
       }
+      if (!getChannelBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, channel_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -585,6 +645,9 @@ public final class MessageBase {
       if (!getUrlPathBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, urlPath_);
       }
+      if (!getChannelBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, channel_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -609,6 +672,8 @@ public final class MessageBase {
           != other.getRetryCount()) return false;
       if (!getUrlPath()
           .equals(other.getUrlPath())) return false;
+      if (!getChannel()
+          .equals(other.getChannel())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -630,6 +695,8 @@ public final class MessageBase {
       hash = (53 * hash) + getRetryCount();
       hash = (37 * hash) + URLPATH_FIELD_NUMBER;
       hash = (53 * hash) + getUrlPath().hashCode();
+      hash = (37 * hash) + CHANNEL_FIELD_NUMBER;
+      hash = (53 * hash) + getChannel().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -777,6 +844,8 @@ public final class MessageBase {
 
         urlPath_ = "";
 
+        channel_ = "";
+
         return this;
       }
 
@@ -808,6 +877,7 @@ public final class MessageBase {
         result.content_ = content_;
         result.retryCount_ = retryCount_;
         result.urlPath_ = urlPath_;
+        result.channel_ = channel_;
         onBuilt();
         return result;
       }
@@ -872,6 +942,10 @@ public final class MessageBase {
         }
         if (!other.getUrlPath().isEmpty()) {
           urlPath_ = other.urlPath_;
+          onChanged();
+        }
+        if (!other.getChannel().isEmpty()) {
+          channel_ = other.channel_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -1215,6 +1289,82 @@ public final class MessageBase {
         onChanged();
         return this;
       }
+
+      private java.lang.Object channel_ = "";
+      /**
+       * <code>string channel = 6;</code>
+       * @return The channel.
+       */
+      public java.lang.String getChannel() {
+        java.lang.Object ref = channel_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          channel_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string channel = 6;</code>
+       * @return The bytes for channel.
+       */
+      public com.google.protobuf.ByteString
+          getChannelBytes() {
+        java.lang.Object ref = channel_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          channel_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string channel = 6;</code>
+       * @param value The channel to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChannel(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        channel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string channel = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearChannel() {
+        
+        channel_ = getDefaultInstance().getChannel();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string channel = 6;</code>
+       * @param value The bytes for channel to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChannelBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        channel_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1282,15 +1432,15 @@ public final class MessageBase {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rMessage.proto\"\200\002\n\007Message\022\021\n\trequestId" +
+      "\n\rMessage.proto\"\221\002\n\007Message\022\021\n\trequestId" +
       "\030\001 \001(\t\022!\n\003cmd\030\002 \001(\0162\024.Message.CommandTyp" +
       "e\022\017\n\007content\030\003 \001(\t\022\022\n\nretryCount\030\004 \001(\005\022\017" +
-      "\n\007urlPath\030\005 \001(\t\"\210\001\n\013CommandType\022\n\n\006NORMA" +
-      "L\020\000\022\025\n\021HEARTBEAT_REQUEST\020\001\022\026\n\022HEARTBEAT_" +
-      "RESPONSE\020\002\022\007\n\003ACK\020\003\022\020\n\014SAVE_MESSAGE\020\004\022\020\n" +
-      "\014SEND_MESSAGE\020\005\022\021\n\rRETRY_MESSAGE\020\006B-\n\036co" +
-      "m.fang.screw.client.protocolB\013MessageBas" +
-      "eb\006proto3"
+      "\n\007urlPath\030\005 \001(\t\022\017\n\007channel\030\006 \001(\t\"\210\001\n\013Com" +
+      "mandType\022\n\n\006NORMAL\020\000\022\025\n\021HEARTBEAT_REQUES" +
+      "T\020\001\022\026\n\022HEARTBEAT_RESPONSE\020\002\022\007\n\003ACK\020\003\022\020\n\014" +
+      "SAVE_MESSAGE\020\004\022\020\n\014SEND_MESSAGE\020\005\022\021\n\rRETR" +
+      "Y_MESSAGE\020\006B-\n\036com.fang.screw.client.pro" +
+      "tocolB\013MessageBaseb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1301,7 +1451,7 @@ public final class MessageBase {
     internal_static_Message_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Message_descriptor,
-        new java.lang.String[] { "RequestId", "Cmd", "Content", "RetryCount", "UrlPath", });
+        new java.lang.String[] { "RequestId", "Cmd", "Content", "RetryCount", "UrlPath", "Channel", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -10,6 +10,7 @@ message Message {
   string content = 3;
   int32 retryCount = 4;
   string urlPath = 5;
+  string channel = 6;
   enum CommandType {
     NORMAL = 0; //常规业务消息
     HEARTBEAT_REQUEST = 1; //客户端心跳消息

@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.BlockingQueue;
+
 /**
  * @FileName NettyServerHandler
  * @Description
@@ -48,6 +50,15 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                             .build();
                 }
                 ctx.writeAndFlush(response); // 发送响应
+            }else if(message.getCmd() == MessageBase.Message.CommandType.SEND_MESSAGE){
+                if(HuiMessageQueue.messageQueueMap.containsKey(message.getChannel())){
+                    BlockingQueue<MessageBase.Message> queue = HuiMessageQueue.messageQueueMap.get(message.getChannel());
+                    while(!queue.isEmpty()){
+                        MessageBase.Message sendMessage = queue.take();
+                        log.info("HuiMQ向消费者发送消息：" + sendMessage.toString());
+                        ctx.writeAndFlush(sendMessage);
+                    }
+                }
             }
         } else {
             // 如果接收到的消息不是预期的类型，可以选择忽略或者抛出异常

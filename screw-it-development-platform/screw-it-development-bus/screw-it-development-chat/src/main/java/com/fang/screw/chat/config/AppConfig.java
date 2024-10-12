@@ -16,10 +16,10 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnWebApplication
 public class AppConfig {
 
-    @Bean
-    public Gson gson() {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    }
+//    @Bean
+//    public Gson gson() {
+//        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+//    }
 
     @Bean
     public CustomSpringConfigurator customSpringConfigurator() {

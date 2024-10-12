@@ -59,6 +59,20 @@ public class NettyClient {
     }
 
     /***
+    * @Description 发送消息
+    * @param message
+    * @return {@link }
+    * @Author yaoHui
+    * @Date 2024/10/12
+    */
+    public void sendMessage(MessageBase.Message message){
+        if(!socketChannel.isActive()){
+            this.start();
+        }
+        socketChannel.writeAndFlush(message);
+    }
+
+    /***
     * @Description 该方法提供获取SocketChannel 暂时无用
     * @return {@link SocketChannel }
     * @Author yaoHui
@@ -90,7 +104,7 @@ public class NettyClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
                                 // 空闲检测
-                                .addLast(new IdleStateHandler(60, 60, 60)) // 60秒写空闲，30秒读空闲
+                                .addLast(new IdleStateHandler(0, 0, 60)) // 60秒写空闲，30秒读空闲
                                 .addLast(new HeartbeatHandler())
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufDecoder(MessageBase.Message.getDefaultInstance()))
@@ -127,7 +141,7 @@ public class NettyClient {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
                                 // 空闲检测
-                                .addLast(new IdleStateHandler(60, 60, 60)) // 60秒写空闲，30秒读空闲
+                                .addLast(new IdleStateHandler(0, 0, 60)) // 60秒写空闲，30秒读空闲
                                 .addLast(new HeartbeatHandler())
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufDecoder(MessageBase.Message.getDefaultInstance()))
@@ -151,5 +165,6 @@ public class NettyClient {
 
         sendMessageThread.setSocketChannel(socketChannel);
     }
+
 
 }

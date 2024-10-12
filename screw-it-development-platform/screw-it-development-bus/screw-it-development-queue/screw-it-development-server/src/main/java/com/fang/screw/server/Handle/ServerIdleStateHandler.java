@@ -22,12 +22,12 @@ public class ServerIdleStateHandler extends IdleStateHandler {
      */
     private static final int READER_IDLE_TIME = 60;
     public ServerIdleStateHandler() {
-        super(READER_IDLE_TIME, READER_IDLE_TIME, READER_IDLE_TIME, TimeUnit.SECONDS);
+        super(0, 0, READER_IDLE_TIME, TimeUnit.SECONDS);
     }
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
-        log.info("{} 秒内没有读取到数据,关闭连接", READER_IDLE_TIME);
+        log.info("{} 秒内没有读取和写数据,关闭连接", READER_IDLE_TIME);
 
         System.out.println(ctx.channel().remoteAddress() + "发生超时事件--" + evt);
 

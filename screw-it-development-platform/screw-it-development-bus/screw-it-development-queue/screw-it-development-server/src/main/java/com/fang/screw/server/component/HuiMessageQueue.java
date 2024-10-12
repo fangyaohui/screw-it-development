@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.client.protocol.MessageBase;
 import com.fang.screw.domain.po.MessageQueuePO;
 import com.fang.screw.server.mapper.MessageQueueMapper;
+import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @FileName HuiMessageQueue
@@ -23,7 +25,9 @@ import java.util.concurrent.BlockingQueue;
 public class HuiMessageQueue {
 
     // 存放待消费消息阻塞队列
-    private static final BlockingQueue<MessageBase.Message> messageBlockingQueue = new ArrayBlockingQueue<MessageBase.Message>(1024);
+//    private static final BlockingQueue<MessageBase.Message> messageBlockingQueue = new ArrayBlockingQueue<MessageBase.Message>(1024);
+
+    public static final ConcurrentHashMap<String,BlockingQueue<MessageBase.Message>> messageQueueMap = new ConcurrentHashMap<>();
 
     private MessageQueueMapper messageQueueMapper;
 
@@ -43,7 +47,11 @@ public class HuiMessageQueue {
     public boolean saveMessage(MessageBase.Message message){
         try{
             // 保存到消息队列中
-            messageBlockingQueue.add(message);
+            if(!messageQueueMap.containsKey(message.getChannel())){
+                BlockingQueue<MessageBase.Message> messageBlockingQueue = new ArrayBlockingQueue<MessageBase.Message>(1024);
+                messageQueueMap.put(message.getChannel(),messageBlockingQueue);
+            }
+            messageQueueMap.get(message.getChannel()).add(message);
 
             // 保存到MySQL数据库中
             if(!messageQueueMapper.exists(Wrappers.<MessageQueuePO>lambdaQuery()
@@ -64,6 +72,28 @@ public class HuiMessageQueue {
         }
 
         return true;
+    }
+
+    /***
+    * @Description 发送消息队列中的消息给指定Channel
+    * @param ctx
+    * @return {@link }
+    * @Author yaoHui
+    * @Date 2024/10/12
+    */
+    public void sendMessage(ChannelHandlerContext ctx, MessageBase.Message message){
+        try{
+            if(messageQueueMap.containsKey(message.getChannel())){
+                BlockingQueue<MessageBase.Message> queue = messageQueueMap.get(message.getChannel());
+                while(!queue.isEmpty()){
+                    MessageBase.Message sendMessage = queue.take();
+                    ctx.writeAndFlush(sendMessage);
+                }
+            }
+        } catch (InterruptedException e) {
+            log.info("HuiMQ 给消费者发送消息失败,通道为：" + message.getChannel());
+            e.printStackTrace();
+        }
     }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @EnableFeignClients
 // 注意一旦使用了ComponentScan扫描后，需要在这里特别应用该微服务自己的ComponentScan
-@ComponentScan(value = {"com.fang.screw.communal.*","com.fang.screw.communal.config", "com.fang.screw.chat.*"})
+@ComponentScan(value = {"com.fang.screw.communal.*","com.fang.screw.communal.config", "com.fang.screw.chat.*","com.fang.screw.client.*"})
 public class ComFangScrewChatApplication {
 
     public static void main(String[] args) {

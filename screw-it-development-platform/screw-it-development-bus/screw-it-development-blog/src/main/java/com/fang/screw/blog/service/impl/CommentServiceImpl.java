@@ -2,6 +2,7 @@ package com.fang.screw.blog.service.impl;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.lang.tree.Tree;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -219,7 +220,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentPO> im
 
         MessageBase.Message message = MessageBase.Message.newBuilder()
                 .setRequestId(String.valueOf(UUID.randomUUID()))
-                .setContent(commentVO.getCommentContent())
+                .setContent(JSON.toJSONString(commentVO))
+                .setChannel("queue")
                 .setCmd(MessageBase.Message.CommandType.SAVE_MESSAGE)
                 .build();
         nettyClient.addMessageBlockingQueue(message);
