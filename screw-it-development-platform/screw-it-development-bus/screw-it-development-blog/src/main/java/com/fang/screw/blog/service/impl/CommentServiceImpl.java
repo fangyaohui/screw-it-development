@@ -220,6 +220,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, CommentPO> im
         MessageBase.Message message = MessageBase.Message.newBuilder()
                 .setRequestId(String.valueOf(UUID.randomUUID()))
                 .setContent(commentVO.getCommentContent())
+                .setCmd(MessageBase.Message.CommandType.SAVE_MESSAGE)
                 .build();
         nettyClient.addMessageBlockingQueue(message);
         return R.ok("ok");

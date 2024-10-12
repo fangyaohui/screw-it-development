@@ -63,9 +63,9 @@ public class SendMessageThread {
         new Thread(() -> {
             while(true){
                 try{
-                    log.info("sendMessageByThread ready");
+//                    log.info("sendMessageByThread ready");
                     MessageBase.Message message = blockingQueue.take();
-                    log.info("sendMessageByThread working");
+                    log.info("sendMessageByThread working:"+message.toString());
                     sendMessage(message);
                 } catch (Exception e) {
                     log.error("sendMessageByThread is interrupt 发送消息线程被中断");
@@ -110,7 +110,7 @@ public class SendMessageThread {
         ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
 
         Runnable task = () -> {
-            log.info("messageRetryThread working");
+//            log.info("messageRetryThread working");
           for (Map.Entry<String, MessageBase.Message> entry : waitAckMessageMap.entrySet()){
               MessageBase.Message message = entry.getValue();
               String key = entry.getKey();

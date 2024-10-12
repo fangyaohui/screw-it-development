@@ -42,7 +42,7 @@ public class NettyClient {
 
     private static SocketChannel socketChannel;
 
-    private static SendMessageThread sendMessageThread = new SendMessageThread();
+    private static final SendMessageThread sendMessageThread = new SendMessageThread();
 
     /***
     * @Description 添加消息到阻塞队列中 为消息生产者调用

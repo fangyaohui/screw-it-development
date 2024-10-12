@@ -15,5 +15,8 @@ message Message {
     HEARTBEAT_REQUEST = 1; //客户端心跳消息
     HEARTBEAT_RESPONSE = 2; //服务端心跳消息
     ACK = 3;
+    SAVE_MESSAGE = 4; //客户端请求保存消息
+    SEND_MESSAGE = 5;//客户端请求发送消息
+    RETRY_MESSAGE = 6;// 请重新发送消息
   }
 }

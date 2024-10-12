@@ -218,6 +218,30 @@ public final class MessageBase {
        * <code>ACK = 3;</code>
        */
       ACK(3),
+      /**
+       * <pre>
+       *客户端请求保存消息
+       * </pre>
+       *
+       * <code>SAVE_MESSAGE = 4;</code>
+       */
+      SAVE_MESSAGE(4),
+      /**
+       * <pre>
+       *客户端请求发送消息
+       * </pre>
+       *
+       * <code>SEND_MESSAGE = 5;</code>
+       */
+      SEND_MESSAGE(5),
+      /**
+       * <pre>
+       * 请重新发送消息
+       * </pre>
+       *
+       * <code>RETRY_MESSAGE = 6;</code>
+       */
+      RETRY_MESSAGE(6),
       UNRECOGNIZED(-1),
       ;
 
@@ -249,6 +273,30 @@ public final class MessageBase {
        * <code>ACK = 3;</code>
        */
       public static final int ACK_VALUE = 3;
+      /**
+       * <pre>
+       *客户端请求保存消息
+       * </pre>
+       *
+       * <code>SAVE_MESSAGE = 4;</code>
+       */
+      public static final int SAVE_MESSAGE_VALUE = 4;
+      /**
+       * <pre>
+       *客户端请求发送消息
+       * </pre>
+       *
+       * <code>SEND_MESSAGE = 5;</code>
+       */
+      public static final int SEND_MESSAGE_VALUE = 5;
+      /**
+       * <pre>
+       * 请重新发送消息
+       * </pre>
+       *
+       * <code>RETRY_MESSAGE = 6;</code>
+       */
+      public static final int RETRY_MESSAGE_VALUE = 6;
 
 
       public final int getNumber() {
@@ -279,6 +327,9 @@ public final class MessageBase {
           case 1: return HEARTBEAT_REQUEST;
           case 2: return HEARTBEAT_RESPONSE;
           case 3: return ACK;
+          case 4: return SAVE_MESSAGE;
+          case 5: return SEND_MESSAGE;
+          case 6: return RETRY_MESSAGE;
           default: return null;
         }
       }
@@ -1231,13 +1282,15 @@ public final class MessageBase {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rMessage.proto\"\310\001\n\007Message\022\021\n\trequestId" +
+      "\n\rMessage.proto\"\200\002\n\007Message\022\021\n\trequestId" +
       "\030\001 \001(\t\022!\n\003cmd\030\002 \001(\0162\024.Message.CommandTyp" +
       "e\022\017\n\007content\030\003 \001(\t\022\022\n\nretryCount\030\004 \001(\005\022\017" +
-      "\n\007urlPath\030\005 \001(\t\"Q\n\013CommandType\022\n\n\006NORMAL" +
-      "\020\000\022\025\n\021HEARTBEAT_REQUEST\020\001\022\026\n\022HEARTBEAT_R" +
-      "ESPONSE\020\002\022\007\n\003ACK\020\003B-\n\036com.fang.screw.cli" +
-      "ent.protocolB\013MessageBaseb\006proto3"
+      "\n\007urlPath\030\005 \001(\t\"\210\001\n\013CommandType\022\n\n\006NORMA" +
+      "L\020\000\022\025\n\021HEARTBEAT_REQUEST\020\001\022\026\n\022HEARTBEAT_" +
+      "RESPONSE\020\002\022\007\n\003ACK\020\003\022\020\n\014SAVE_MESSAGE\020\004\022\020\n" +
+      "\014SEND_MESSAGE\020\005\022\021\n\rRETRY_MESSAGE\020\006B-\n\036co" +
+      "m.fang.screw.client.protocolB\013MessageBas" +
+      "eb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

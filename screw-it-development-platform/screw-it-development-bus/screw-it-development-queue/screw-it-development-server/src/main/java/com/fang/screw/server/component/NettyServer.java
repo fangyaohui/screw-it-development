@@ -7,6 +7,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
@@ -38,6 +39,13 @@ public class NettyServer {
 //    @Value("${netty.port}")
     private static final Integer port = 54021;
 
+    private HuiMessageQueue huiMessageQueue;
+
+    @Autowired
+    private void setHuiMessageQueue(HuiMessageQueue huiMessageQueue){
+        this.huiMessageQueue = huiMessageQueue;
+    }
+
     // @PostConstruct 是一个用于 Java EE 和 Spring 框架中的注解，标记在一个方法上，表示这个方法将在依赖注入完成后被自动调用。
     // 它通常用于进行初始化操作，例如设置默认值、执行启动时的逻辑、或者进行资源的准备。
     /***
@@ -63,7 +71,7 @@ public class NettyServer {
                 // 设置 TCP_NODELAY 选项为 true，启用 Nagle 算法。
                 // 这会在发送小数据包时禁用延迟，从而减少数据包的发送延迟，提高实时性。
                 .childOption(ChannelOption.TCP_NODELAY,true)
-                .childHandler(new NettyServerHandlerInitializer());
+                .childHandler(new NettyServerHandlerInitializer(huiMessageQueue));
         ChannelFuture future = serverBootstrap.bind().sync();
         if (future.isSuccess()){
             log.info("Netty Server Running");

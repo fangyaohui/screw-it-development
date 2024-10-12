@@ -1,6 +1,7 @@
 package com.fang.screw.server.Handle;
 
 import com.fang.screw.client.protocol.MessageBase;
+import com.fang.screw.server.component.HuiMessageQueue;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
@@ -16,6 +17,12 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
  **/
 public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
 
+    private final HuiMessageQueue huiMessageQueue;
+
+    public NettyServerHandlerInitializer(HuiMessageQueue huiMessageQueue){
+        this.huiMessageQueue = huiMessageQueue;
+    }
+
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ch.pipeline()
@@ -25,6 +32,6 @@ public class NettyServerHandlerInitializer extends ChannelInitializer<Channel> {
                 .addLast(new ProtobufDecoder(MessageBase.Message.getDefaultInstance()))
                 .addLast(new ProtobufVarint32LengthFieldPrepender())
                 .addLast(new ProtobufEncoder())
-                .addLast(new NettyServerHandler());
+                .addLast(new NettyServerHandler(huiMessageQueue));
     }
 }

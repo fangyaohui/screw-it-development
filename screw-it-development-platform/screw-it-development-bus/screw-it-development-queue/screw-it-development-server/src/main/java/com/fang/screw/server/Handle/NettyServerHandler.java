@@ -1,6 +1,7 @@
 package com.fang.screw.server.Handle;
 
 import com.fang.screw.client.protocol.MessageBase;
+import com.fang.screw.server.component.HuiMessageQueue;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
+    private final HuiMessageQueue huiMessageQueue;
+
+    public NettyServerHandler(HuiMessageQueue messageQueue){
+        this.huiMessageQueue = messageQueue;
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof MessageBase.Message) {
@@ -24,12 +31,24 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             log.info("Received message:");
             log.info(message.toString());
 
-            // 可选：根据接收到的消息发送响应
-            MessageBase.Message response = MessageBase.Message.newBuilder()
-                    .setRequestId(message.getRequestId())
-                    .setCmd(MessageBase.Message.CommandType.ACK)
-                    .build();
-            ctx.writeAndFlush(response); // 发送响应
+            // 请求保存消息
+            if(message.getCmd() == MessageBase.Message.CommandType.SAVE_MESSAGE){
+                // 可选：根据接收到的消息发送响应
+                MessageBase.Message response = null;
+                boolean flag = huiMessageQueue.saveMessage(message);
+                if(flag){
+                    response = MessageBase.Message.newBuilder()
+                            .setRequestId(message.getRequestId())
+                            .setCmd(MessageBase.Message.CommandType.ACK)
+                            .build();
+                }else{
+                    response = MessageBase.Message.newBuilder()
+                            .setRequestId(message.getRequestId())
+                            .setCmd(MessageBase.Message.CommandType.RETRY_MESSAGE)
+                            .build();
+                }
+                ctx.writeAndFlush(response); // 发送响应
+            }
         } else {
             // 如果接收到的消息不是预期的类型，可以选择忽略或者抛出异常
             System.err.println("Received an unknown message type: " + msg.getClass().getName());
