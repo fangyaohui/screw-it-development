@@ -1,5 +1,6 @@
 package com.fang.screw.server.component;
 
+import com.alibaba.nacos.shaded.com.google.protobuf.MapEntry;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.client.protocol.MessageBase;
 import com.fang.screw.domain.po.MessageQueuePO;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +31,12 @@ public class HuiMessageQueue {
 //    private static final BlockingQueue<MessageBase.Message> messageBlockingQueue = new ArrayBlockingQueue<MessageBase.Message>(1024);
 
     public static final ConcurrentHashMap<String,BlockingQueue<MessageBase.Message>> messageQueueMap = new ConcurrentHashMap<>();
+
+    // 等待确认的消息Map
+    public static final ConcurrentHashMap<String, MessageBase.Message> waitAckMessageMap = new ConcurrentHashMap<>();
+
+    // 等待确认消息超时Map
+    public static final ConcurrentHashMap<String, LocalDateTime> messageTimeOutMap = new ConcurrentHashMap<>();
 
     private MessageQueueMapper messageQueueMapper;
 
@@ -94,6 +103,43 @@ public class HuiMessageQueue {
             log.info("HuiMQ 给消费者发送消息失败,通道为：" + message.getChannel());
             e.printStackTrace();
         }
+    }
+
+    /***
+    * @Description 检查是否有超时没有收到确认消息的消息 将其重新放置在待发送消息队列中
+    * @return {@link }
+    * @Author yaoHui
+    * @Date 2024/10/13
+    */
+    public static void checkTimeOutMessage(){
+        for(Map.Entry<String,LocalDateTime> mapEntry : messageTimeOutMap.entrySet()){
+            LocalDateTime time = mapEntry.getValue();
+            if(time.isBefore(LocalDateTime.now())){
+                String s = mapEntry.getKey();
+                MessageBase.Message message = waitAckMessageMap.get(s);
+                waitAckMessageMap.remove(s);
+                messageTimeOutMap.remove(s);
+
+                // 保存到消息队列中
+                if(!messageQueueMap.containsKey(message.getChannel())){
+                    BlockingQueue<MessageBase.Message> messageBlockingQueue = new ArrayBlockingQueue<MessageBase.Message>(1024);
+                    messageQueueMap.put(message.getChannel(),messageBlockingQueue);
+                }
+                messageQueueMap.get(message.getChannel()).add(message);
+            }
+        }
+    }
+
+    /***
+    * @Description
+    * @param requestId
+    * @return {@link }
+    * @Author yaoHui
+    * @Date 2024/10/13
+    */
+    public static void setMessageAck(String requestId){
+        messageTimeOutMap.remove(requestId);
+        waitAckMessageMap.remove(requestId);
     }
 
 }
