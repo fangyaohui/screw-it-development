@@ -85,5 +85,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
         return R.ok(userVOList);
     }
 
+    /***
+     * @Description 测试ApplicationsContextAware
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/10/13
+     */
+    @Override
+    public R<String> testApplicationContextAware() {
+        return R.ok("testApplicationContextAware is running");
+    }
+
 
 }

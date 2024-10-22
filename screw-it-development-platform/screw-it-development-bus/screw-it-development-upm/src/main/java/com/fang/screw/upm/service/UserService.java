@@ -38,4 +38,12 @@ public interface UserService extends IService<UserPO> {
      */
     R<List<UserVO>> getUserByUserNameOrEmail(String keyword);
 
+    /***
+    * @Description 测试ApplicationsContextAware
+    * @return {@link R< String> }
+    * @Author yaoHui
+    * @Date 2024/10/13
+    */
+    R<String> testApplicationContextAware();
+
 }

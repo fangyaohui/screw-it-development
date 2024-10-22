@@ -19,6 +19,7 @@
         <module>screw-it-development-blog</module>
         <module>screw-it-development-queue</module>
         <module>screw-it-development-chat</module>
+        <module>screw-it-development-adapter</module>
 
     </modules>
 
@@ -52,8 +53,6 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
