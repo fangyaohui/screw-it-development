@@ -2,25 +2,19 @@ package com.fang.screw.blog.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fang.screw.blog.mapper.ArticleMapper;
-import com.fang.screw.blog.mapper.BlogImageUploadMapper;
-import com.fang.screw.blog.mapper.LabelMapper;
-import com.fang.screw.blog.mapper.SortMapper;
+import com.fang.screw.blog.mapper.*;
 import com.fang.screw.blog.service.ArticleService;
 import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.ImageDetermineUtils;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.StringUtil;
 import com.fang.screw.domain.enums.PoetryEnum;
-import com.fang.screw.domain.po.ArticlePO;
-import com.fang.screw.domain.po.BlogImageUploadPO;
-import com.fang.screw.domain.po.LabelPO;
-import com.fang.screw.domain.po.SortPO;
+import com.fang.screw.domain.po.*;
 import com.fang.screw.domain.vo.ArticleVO;
 import com.fang.screw.domain.vo.BaseRequestVO;
+import com.fang.screw.domain.vo.PageVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -29,9 +23,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
@@ -57,6 +48,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,ArticlePO> imp
     private LabelMapper labelMapper;
 
     private BlogImageUploadMapper blogImageUploadMapper;
+
+    private CommentMapper commentMapper;
 
     /***
      * @Description 保存博客内容
@@ -285,6 +278,51 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,ArticlePO> imp
         articleVOPage.setRecords(page.getRecords().stream().map(this::buildArticleVO).collect(Collectors.toList()));
 
         return R.success(articleVOPage);
+    }
+
+    /***
+     * @Description 通过分页读取页面内容
+     * @param articleVOPage
+     * @return {@link R< Page< ArticleVO>> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    @Override
+    public R<Page<ArticleVO>> getPageArticle(PageVO<ArticleVO> articleVOPage) {
+
+        if(ObjectUtils.isEmpty(articleVOPage)){
+            return R.failed("查询错误，请稍后再试");
+        }
+
+        Page<ArticlePO> tempPage = new Page<>();
+        BeanUtils.copyProperties(articleVOPage,tempPage);
+        page(tempPage,Wrappers.<ArticlePO>lambdaQuery()
+                .like(!StringUtils.isEmpty(articleVOPage.getKeyWord()),ArticlePO::getArticleTitle,articleVOPage.getKeyWord())
+                .or()
+                .like(!StringUtils.isEmpty(articleVOPage.getKeyWord()),ArticlePO::getArticleContent,articleVOPage.getKeyWord())
+                .eq(ArticlePO::getDelFlag,NOT_DEL_FLAG)
+                .eq(ArticlePO::getViewStatus,STATUS_OK)
+                .orderByDesc(ArticlePO::getViewCount));
+
+        Map<Integer,SortPO> sortPOMap = sortMapper.selectList(null).stream()
+                .collect(Collectors.toMap(SortPO::getId,Function.identity()));
+
+        Map<Integer,LabelPO> labelMap = labelMapper.selectList(null).stream()
+                .collect(Collectors.toMap(LabelPO::getId,Function.identity()));
+
+        Map<Integer,Long> commentCounts = commentMapper.selectList(Wrappers.<CommentPO>lambdaQuery()
+                        .eq(CommentPO::getDelFlag,NOT_DEL_FLAG)).stream()
+                .collect(Collectors.groupingBy(CommentPO::getSource,Collectors.counting()));
+
+        BeanUtils.copyProperties(tempPage,articleVOPage);
+        articleVOPage.setRecords(tempPage.getRecords().stream().map(e -> {
+            ArticleVO articleVO = e.transformVO();
+            articleVO.setSort(sortPOMap.get(e.getSortId()));
+            articleVO.setLabel(labelMap.get(e.getLabelId()));
+            articleVO.setCommentCount(Math.toIntExact(commentCounts.getOrDefault(e.getId(),0L)));
+            return articleVO;
+        }).collect(Collectors.toList()));
+        return R.ok(articleVOPage);
     }
 
     private List<List<Integer>> getArticleIds(String searchText){

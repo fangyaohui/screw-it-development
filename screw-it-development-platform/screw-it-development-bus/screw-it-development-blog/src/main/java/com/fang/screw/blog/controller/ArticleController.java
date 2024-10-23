@@ -6,6 +6,7 @@ import com.fang.screw.communal.annotation.CheckPermission;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.vo.ArticleVO;
 import com.fang.screw.domain.vo.BaseRequestVO;
+import com.fang.screw.domain.vo.PageVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,18 @@ public class ArticleController {
     @PostMapping("/getListArticle")
     public R<Page> getListArticle(@RequestBody BaseRequestVO baseRequestVO) {
         return articleService.getListArticle(baseRequestVO);
+    }
+
+    /***
+    * @Description 通过分页读取页面内容
+    * @param articleVOPage
+    * @return {@link R< Page< ArticleVO>> }
+    * @Author yaoHui
+    * @Date 2024/10/23
+    */
+    @PostMapping("/getPageArticle")
+    public R<Page<ArticleVO>> getPageArticle(@RequestBody PageVO<ArticleVO> articleVOPage){
+        return articleService.getPageArticle(articleVOPage);
     }
 
 }

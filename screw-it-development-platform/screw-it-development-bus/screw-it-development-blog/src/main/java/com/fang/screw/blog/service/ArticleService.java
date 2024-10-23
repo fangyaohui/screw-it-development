@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.vo.ArticleVO;
 import com.fang.screw.domain.vo.BaseRequestVO;
+import com.fang.screw.domain.vo.PageVO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,4 +54,13 @@ public interface ArticleService {
      * @Date 2024/9/22
      */
     R<Page> getListArticle(BaseRequestVO baseRequestVO);
+
+    /***
+     * @Description 通过分页读取页面内容
+     * @param articleVOPage
+     * @return {@link R< Page< ArticleVO>> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    R<Page<ArticleVO>> getPageArticle(@RequestBody PageVO<ArticleVO> articleVOPage);
 }

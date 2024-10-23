@@ -2,6 +2,7 @@ package com.fang.screw.upm.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.StringUtil;
 import com.fang.screw.domain.dto.UserDTO;
@@ -94,6 +95,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
     @Override
     public R<String> testApplicationContextAware() {
         return R.ok("testApplicationContextAware is running");
+    }
+
+    /***
+     * @Description 更新用户的头像
+     * @param userVO
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    @Override
+    public R<UserVO> updateUserAvatarInfo(UserVO userVO) {
+
+        if(ObjectUtils.isEmpty(userVO)){
+            return R.failed("需要更新的数据为空");
+        }
+
+        UserPO user = CurrentUserHolder.getUser();
+        user.setAvatar(userVO.getAvatar());
+
+        baseMapper.update(user,Wrappers.<UserPO>lambdaUpdate()
+                .eq(UserPO::getId,user.getId()));
+
+        return R.ok(user.transformVO());
     }
 
 

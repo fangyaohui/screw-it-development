@@ -51,6 +51,21 @@ public class UserController {
         return userService.getUserByUserNameOrEmail(keyword);
     }
 
+    /***
+    * @Description 更新用户的头像
+    * @param userVO
+    * @return {@link R< String> }
+    * @Author yaoHui
+    * @Date 2024/10/23
+    */
+    @PostMapping("/updateUserAvatarInfo")
+    public R<UserVO> updateUserAvatarInfo(@RequestBody UserVO userVO){
+
+//        UserVO userVO = new UserVO();
+//        userVO.setAvatar(avatar);
+
+        return userService.updateUserAvatarInfo(userVO);
+    }
 
 
 }

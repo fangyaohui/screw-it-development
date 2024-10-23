@@ -7,6 +7,7 @@ import com.fang.screw.domain.po.WebInfoPO;
 import com.fang.screw.domain.vo.WebInfoVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,7 @@ public class WebInfoController {
     * @Date 2024/9/22
     */
     @GetMapping("/getWebInfo")
+    @Cacheable()
     public R<WebInfoVO> getWebInfo(){
         return webInfoService.getWebInfo();
     }
