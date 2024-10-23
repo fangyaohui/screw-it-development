@@ -1,6 +1,7 @@
 package com.fang.screw.blog.controller;
 
 import com.fang.screw.blog.service.SortLabelService;
+import com.fang.screw.communal.annotation.Cacheable;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.po.SortPO;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class SortLabelController {
     * @Date 2024/9/22
     */
     @GetMapping("/getSortInfo")
+    @Cacheable(value = "sortLabel:sort")
     public R<List<SortPO>> getSortInfo() {
         return sortLabelService.getSortInfo();
     }

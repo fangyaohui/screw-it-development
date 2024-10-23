@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fang.screw.blog.mapper.ArticleMapper">
+
+    <select id="getUserBlogInfo" resultType="com.fang.screw.domain.vo.UserBlogInfoVO">
+
+        SELECT COUNT(user_id) as article_count,
+               SUM(view_count) as view_count,
+               SUM(like_count) like_count
+        FROM `article`
+        where user_id = #{userId} and del_flag = 0;
+
+    </select>
+
+
+</mapper>

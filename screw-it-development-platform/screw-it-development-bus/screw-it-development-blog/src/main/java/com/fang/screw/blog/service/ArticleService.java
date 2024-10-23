@@ -5,6 +5,7 @@ import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.vo.ArticleVO;
 import com.fang.screw.domain.vo.BaseRequestVO;
 import com.fang.screw.domain.vo.PageVO;
+import com.fang.screw.domain.vo.UserBlogInfoVO;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,7 +35,7 @@ public interface ArticleService {
      * @Author yaoHui
      * @Date 2024/9/22
      */
-    R<Map<Integer, List<ArticleVO>>> getListSortArticle();
+    R<Map<Integer, List<ArticleVO>>> getListSortArticle(Integer userId);
 
     /***
      * @Description 根据ID查询对应文章
@@ -63,4 +64,22 @@ public interface ArticleService {
      * @Date 2024/10/23
      */
     R<Page<ArticleVO>> getPageArticle(@RequestBody PageVO<ArticleVO> articleVOPage);
+
+    /***
+     * @Description 通过用户ID分页读取页面内容
+     * @param articleVOPage
+     * @return {@link R< Page< ArticleVO>> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    R<Page<ArticleVO>> getPageArticleByUserId(@RequestBody PageVO<ArticleVO> articleVOPage);
+
+    /***
+     * @Description 获取用户文章数、点赞数和访问数
+     * @param articleVOPage
+     * @return {@link R< Page< ArticleVO>> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    R<UserBlogInfoVO> getUserBlogInfo();
 }

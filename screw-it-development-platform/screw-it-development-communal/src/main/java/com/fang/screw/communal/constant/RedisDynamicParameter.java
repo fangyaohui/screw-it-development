@@ -8,6 +8,8 @@ package com.fang.screw.communal.constant;
  **/
 public class RedisDynamicParameter {
 
+    public static String REDIS_BASE_KEY = "screw:";
+
     // 用户登录Key
     public static String REDIS_USER_LOGIN_TOKEN = "screw:user:login:token:";
 

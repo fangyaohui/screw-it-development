@@ -15,6 +15,7 @@ import com.fang.screw.domain.po.*;
 import com.fang.screw.domain.vo.ArticleVO;
 import com.fang.screw.domain.vo.BaseRequestVO;
 import com.fang.screw.domain.vo.PageVO;
+import com.fang.screw.domain.vo.UserBlogInfoVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -113,7 +114,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,ArticlePO> imp
      * @Date 2024/9/22
      */
     @Override
-    public R<Map<Integer, List<ArticleVO>>> getListSortArticle() {
+    public R<Map<Integer, List<ArticleVO>>> getListSortArticle(Integer userId) {
+
+        if (ObjectUtils.isEmpty(userId) || !Objects.equals(CurrentUserHolder.getUser().getId(), userId)){
+            return R.failed("系统异常，请稍后再试");
+        }
 
         Map<Integer, List<ArticleVO>> map = new HashMap<>();
         Map<Integer, LabelPO> labelPOMap = labelMapper.selectList(null)
@@ -125,6 +130,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,ArticlePO> imp
             List<ArticlePO> articlePOList = articleMapper.selectList(Wrappers.<ArticlePO>lambdaQuery()
                     .eq(ArticlePO::getSortId,sort.getId())
                     .eq(ArticlePO::getDelFlag,NOT_DEL_FLAG)
+                    .eq(ArticlePO::getUserId,userId)
                     .orderByDesc(ArticlePO::getCreateTime)
                     .last("limit 6"));
             if(CollectionUtils.isEmpty(articlePOList)){
@@ -323,6 +329,64 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper,ArticlePO> imp
             return articleVO;
         }).collect(Collectors.toList()));
         return R.ok(articleVOPage);
+    }
+
+    /***
+     * @Description 通过用户ID分页读取页面内容
+     * @param articleVOPage
+     * @return {@link R< Page< ArticleVO>> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    @Override
+    public R<Page<ArticleVO>> getPageArticleByUserId(PageVO<ArticleVO> articleVOPage) {
+
+        if(ObjectUtils.isEmpty(articleVOPage)){
+            return R.failed("查询错误，请稍后再试");
+        }
+
+        Page<ArticlePO> tempPage = new Page<>();
+        BeanUtils.copyProperties(articleVOPage,tempPage);
+        page(tempPage,Wrappers.<ArticlePO>lambdaQuery()
+                .eq(ArticlePO::getUserId,CurrentUserHolder.getUser().getId())
+                .eq(ArticlePO::getDelFlag,NOT_DEL_FLAG)
+                .eq(ArticlePO::getViewStatus,STATUS_OK)
+                .orderByDesc(ArticlePO::getViewCount));
+
+        Map<Integer,SortPO> sortPOMap = sortMapper.selectList(null).stream()
+                .collect(Collectors.toMap(SortPO::getId,Function.identity()));
+
+        Map<Integer,LabelPO> labelMap = labelMapper.selectList(null).stream()
+                .collect(Collectors.toMap(LabelPO::getId,Function.identity()));
+
+        Map<Integer,Long> commentCounts = commentMapper.selectList(Wrappers.<CommentPO>lambdaQuery()
+                        .eq(CommentPO::getDelFlag,NOT_DEL_FLAG)).stream()
+                .collect(Collectors.groupingBy(CommentPO::getSource,Collectors.counting()));
+
+        BeanUtils.copyProperties(tempPage,articleVOPage);
+        articleVOPage.setRecords(tempPage.getRecords().stream().map(e -> {
+            ArticleVO articleVO = e.transformVO();
+            articleVO.setSort(sortPOMap.get(e.getSortId()));
+            articleVO.setLabel(labelMap.get(e.getLabelId()));
+            articleVO.setCommentCount(Math.toIntExact(commentCounts.getOrDefault(e.getId(),0L)));
+            return articleVO;
+        }).collect(Collectors.toList()));
+        return R.ok(articleVOPage);
+    }
+
+    /***
+     * @Description 获取用户文章数、点赞数和访问数
+     * @param articleVOPage
+     * @return {@link R< Page< ArticleVO>> }
+     * @Author yaoHui
+     * @Date 2024/10/23
+     */
+    @Override
+    public R<UserBlogInfoVO> getUserBlogInfo() {
+
+        Integer userId = CurrentUserHolder.getUser().getId();
+        UserBlogInfoVO userBlogInfoVO = articleMapper.getUserBlogInfo(Long.valueOf(userId));
+        return R.ok(userBlogInfoVO);
     }
 
     private List<List<Integer>> getArticleIds(String searchText){

@@ -1,13 +1,13 @@
 package com.fang.screw.blog.controller;
 
 import com.fang.screw.blog.service.WebInfoService;
+import com.fang.screw.communal.annotation.Cacheable;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.po.UserPO;
 import com.fang.screw.domain.po.WebInfoPO;
 import com.fang.screw.domain.vo.WebInfoVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +35,7 @@ public class WebInfoController {
     * @Date 2024/9/22
     */
     @GetMapping("/getWebInfo")
-    @Cacheable()
+    @Cacheable(value = "webInfo:getWebInfo")
     public R<WebInfoVO> getWebInfo(){
         return webInfoService.getWebInfo();
     }
@@ -47,6 +47,7 @@ public class WebInfoController {
     * @Date 2024/9/22
     */
     @GetMapping("/getAdmire")
+    @Cacheable(value = "webInfo:getAdmire")
     public R<List<UserPO>> getAdmire() {
         return R.success();
     }

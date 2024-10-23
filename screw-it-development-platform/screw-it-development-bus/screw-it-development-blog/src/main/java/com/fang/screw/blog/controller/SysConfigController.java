@@ -2,6 +2,7 @@ package com.fang.screw.blog.controller;
 
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.fang.screw.blog.service.SysConfigService;
+import com.fang.screw.communal.annotation.Cacheable;
 import com.fang.screw.communal.utils.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class SysConfigController {
     * @Date 2024/9/22
     */
     @GetMapping("/getListSysConfig")
+    @Cacheable(value = "sysConfig:getListSysConfig",expireTime = 60*60*24)
     public R<Map<String, String>> getListSysConfig() {
         return sysConfigService.getListSysConfig();
     }

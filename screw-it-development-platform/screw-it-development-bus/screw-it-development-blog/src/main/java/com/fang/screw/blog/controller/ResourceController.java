@@ -37,7 +37,6 @@ public class ResourceController {
     */
     @PostMapping("/uploadImage")
     public R<String> uploadImage(@RequestParam("file") MultipartFile file, FileVO fileVO) {
-
         return resourceService.uploadImage(file,fileVO);
     }
 

@@ -2,6 +2,8 @@ package com.fang.screw.blog.controller;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.fang.screw.blog.service.CommentService;
+import com.fang.screw.communal.annotation.CacheRemove;
+import com.fang.screw.communal.annotation.Cacheable;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.communal.utils.StringUtil;
 import com.fang.screw.domain.vo.BaseRequestVO;
@@ -37,6 +39,7 @@ public class CommentController {
     * @Date 2024/9/23
     */
     @PostMapping("/getListComment")
+    @Cacheable(value = "comment",key = "#0.source:getListComment")
     public R<BaseRequestVO> getListComment(@RequestBody BaseRequestVO baseRequestVO) {
         return commentService.getListComment(baseRequestVO);
     }
@@ -50,6 +53,7 @@ public class CommentController {
     * @Date 2024/9/23
     */
     @GetMapping("/getCommentCount")
+    @Cacheable(value = "comment",key = "#source:#type")
     public R<Integer> getCommentCount(@RequestParam("source") Integer source, @RequestParam("type") String type) {
         return commentService.getCommentCount(source, type);
     }
@@ -62,6 +66,7 @@ public class CommentController {
     * @Date 2024/9/23
     */
     @PostMapping("/saveComment")
+    @CacheRemove(value = "comment",key = "#0.source")
     public R<String> saveComment(@Validated @RequestBody CommentVO commentVO) {
         String content = StringUtil.removeHtml(commentVO.getCommentContent());
         if (!StringUtils.hasText(content)) {

@@ -28,6 +28,12 @@ public class RedisUtils {
 
     private RedisTemplate redisTemplate;
 
+    // =============================new============================
+    public Set<String> getKeysByPattern(String pattern){
+        Set<String> keys = redisTemplate.keys(pattern);
+        return keys;
+    }
+
     // =============================common============================
     /**
      * 指定缓存失效时间
@@ -84,6 +90,10 @@ public class RedisUtils {
                 redisTemplate.delete((Collection<String>) CollectionUtils.arrayToList(key));
             }
         }
+    }
+
+    public void del(List<String> key) {
+        redisTemplate.delete(key);
     }
 
 
