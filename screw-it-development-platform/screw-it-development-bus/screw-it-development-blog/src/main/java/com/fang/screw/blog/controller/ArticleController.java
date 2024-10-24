@@ -2,6 +2,7 @@ package com.fang.screw.blog.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fang.screw.blog.service.ArticleService;
+import com.fang.screw.communal.annotation.CacheRemove;
 import com.fang.screw.communal.annotation.Cacheable;
 import com.fang.screw.communal.annotation.CheckPermission;
 import com.fang.screw.communal.utils.R;
@@ -38,6 +39,7 @@ public class ArticleController {
     * @Date 2024/9/21
     */
     @PostMapping("/saveArticle")
+    @CacheRemove(value = "page:article")
     public R saveArticle(@RequestBody ArticleVO articleVO){
 
         return articleService.saveArticle(articleVO);

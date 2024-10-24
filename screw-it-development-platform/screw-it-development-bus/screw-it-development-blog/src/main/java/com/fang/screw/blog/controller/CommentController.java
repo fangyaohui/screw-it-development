@@ -11,6 +11,7 @@ import com.fang.screw.domain.vo.BlogCommentVO;
 import com.fang.screw.domain.vo.CommentVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -67,11 +68,14 @@ public class CommentController {
     */
     @PostMapping("/saveComment")
     @CacheRemove(value = "comment",key = "#0.source")
+//    @Transactional
     public R<String> saveComment(@Validated @RequestBody CommentVO commentVO) {
+
         String content = StringUtil.removeHtml(commentVO.getCommentContent());
         if (!StringUtils.hasText(content)) {
             return R.fail("评论内容不合法！");
         }
+
         commentVO.setCommentContent(content);
 
         return commentService.saveComment(commentVO);

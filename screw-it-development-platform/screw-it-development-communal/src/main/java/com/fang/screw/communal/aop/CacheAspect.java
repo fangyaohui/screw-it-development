@@ -14,12 +14,18 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,6 +45,8 @@ public class CacheAspect {
 
     private RedisUtils redisUtils;
 
+    private TransactionTemplate transactionTemplate;
+
     @Pointcut("@annotation(com.fang.screw.communal.annotation.CacheRemove)")
     public void cacheRemovePointCut(){
 
@@ -53,20 +61,37 @@ public class CacheAspect {
     @Around("cacheRemovePointCut()")
     public Object doCacheRemovePointCut(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        CacheRemove cacheRemove = method.getAnnotation(CacheRemove.class);
+        final Object[] res = {null};
 
-        String keyExpression = cacheRemove.key();
-        Object[] args = joinPoint.getArgs();
-        String cacheKey = generateCacheKey(keyExpression, args);
-        cacheKey = cacheKey.substring(0,cacheKey.length()-1);
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                try {
+                    Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+                    CacheRemove cacheRemove = method.getAnnotation(CacheRemove.class);
 
-        String key = getRedisKey(cacheRemove.value(),cacheKey) + "*";
+                    String keyExpression = cacheRemove.key();
+                    Object[] args = joinPoint.getArgs();
+                    String cacheKey = generateCacheKey(keyExpression, args);
+                    cacheKey = cacheKey.substring(0,cacheKey.length()-1);
 
-        List<String> keys = new ArrayList<>(redisUtils.getKeysByPattern(key));
-        redisUtils.del(keys);
+                    String key = getRedisKey(cacheRemove.value(),cacheKey) + "*";
 
-        return joinPoint.proceed();
+                    List<String> keys = new ArrayList<>(redisUtils.getKeysByPattern(key));
+
+                    res[0] =  joinPoint.proceed();
+
+                    redisUtils.del(keys);
+                } catch (Exception e ) {
+                    // 发生异常时，手动回滚事务
+                    status.setRollbackOnly();
+                    log.error("发生异常，事务已回滚：" + e.getMessage());
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return res[0];
     }
 
     /***
@@ -90,10 +115,13 @@ public class CacheAspect {
 
         String key = getRedisKey(cacheable.value(),cacheKey);
 
+        // 为每一个设置一个随机过期时间 避免缓存雪崩
+        long expireTime = new Random().nextInt(100) * 2000L;
+
         R result = (R) redisUtils.get(key);
         if(ObjectUtils.isEmpty(result)){
             result = (R) joinPoint.proceed();
-            redisUtils.set(key,result,cacheable.expireTime()*1000L);
+            redisUtils.set(key,result,cacheable.expireTime()*1000L + expireTime);
         }
 
         return result;
