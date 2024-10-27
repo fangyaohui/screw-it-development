@@ -2,6 +2,7 @@ package com.fang.screw.communal.config;
 
 import io.minio.MinioClient;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
  **/
 
 @Configuration
+@Slf4j
 @EnableConfigurationProperties(MinioProperties.class)
 @ConditionalOnProperty(value = "oss.name", havingValue = "minio")
 public class MinioConfiguration {
@@ -27,6 +29,7 @@ public class MinioConfiguration {
     @Bean
     @SneakyThrows
     public MinioClient minioClient() {
+        log.error(ossProperties.getAccessKey());
         return MinioClient.builder()
                 .endpoint(ossProperties.getEndpoint())
                 .credentials(ossProperties.getAccessKey(), ossProperties.getSecretKey())

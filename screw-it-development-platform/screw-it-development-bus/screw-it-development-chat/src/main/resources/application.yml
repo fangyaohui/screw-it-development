@@ -1,9 +1,4 @@
-
-
 spring:
-  redis:
-    host: localhost
-    port: 6379
   profiles:
     active: dev
   application:
@@ -26,50 +21,7 @@ spring:
   config:
     import:
       - optional:nacos:application-${spring.profiles.active}.yml
-
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      username: root
-      password: 123456
-      url: jdbc:mysql://localhost:3306/screw_it_development_biz?characterEncoding=UTF-8&serverTimezone=UTC
-      driver-class-name: com.mysql.cj.jdbc.Driver
-
-      stat-view-servlet:
-        enabled: true
-        allow: ""
-        url-pattern: /druid/*
-        #login-username: admin
-        #login-password: admin
-      filter:
-        stat:
-          enabled: true
-          log-slow-sql: true
-          slow-sql-millis: 10000
-          merge-sql: false
-        wall:
-          config:
-            multi-statement-allow: true
-#      initialSize: 5
-#      minIdle: 5
-#      maxActive: 20
-#      maxWait: 60000
-#      timeBetweenEvictionRunsMillis: 60000
-#      minEvictableIdleTimeMillis: 300000
-#      validationQuery: SELECT 1 FROM DUAL
-#      testWhileIdle: true
-#      testOnBorrow: false
-#      testOnReturn: false
-#      poolPreparedStatements: true
-#      filter:
-#        stat:
-#          enabled: true
-#          log-slow-sql: true
-#          slow-sql-millis: 10000
-#          merge-sql: false
-#      maxPoolPreparedStatementPerConnectionSize: 20
-#      useGlobalDataSourceStat: true
-#      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yml
 
 server:
   port: 56281
@@ -91,13 +43,13 @@ server:
 #    port: -1
 
 #MINIO 本机
-oss:
-  name: minio
-  accessKey: MtjQrkWMkc2pZcbb6Xqa
-  secretKey: KpTTuINwsGHbCku5xtJNGtBd66Rh96Ka1YHtqRqA
-  bucketName: screw-it-development-blog-buck
-  endpoint: http://localhost:9000
-  fileExt: png,jpg,jpeg,pdf
+#oss:
+#  name: minio
+#  accessKey: MtjQrkWMkc2pZcbb6Xqa
+#  secretKey: KpTTuINwsGHbCku5xtJNGtBd66Rh96Ka1YHtqRqA
+#  bucketName: screw-it-development-blog-buck
+#  endpoint: http://localhost:9000
+#  fileExt: png,jpg,jpeg,pdf
 
 #  MINIO 实习机
 #oss:

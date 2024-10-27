@@ -3,14 +3,14 @@ server:
 
 
 spring:
-  redis:
-    host: localhost
-    port: 6379
-  security:
-    filter:
-      order: 0
-  main:
-    allow-bean-definition-overriding: true
+#  redis:
+#    host: localhost
+#    port: 6379
+#  security:
+#    filter:
+#      order: 0
+#  main:
+#    allow-bean-definition-overriding: true
   profiles:
     active: dev
   application:
@@ -30,61 +30,63 @@ spring:
           - data-id: ${spring.application.name}-${spring.profiles.active}.yml
             refresh: true
         enable-remote-sync-config: true
-    gateway:
-      httpclient:
-        pool:
-          max-idle-time: 1
-          max-life-time: 1000
-          max-connections: 10
-      globalcors:
-        add-to-simple-url-handler-mapping: true
-        cors-configurations:
-          '[/**]':
-            allowedOriginPatterns:
-              - 'http://localhost:13628' #跨域处理 允许所有的域
-              - 'http://localhost:8080' #跨域处理 允许所有的域
-            allowedOrigins:
-              - "http://localhost"
-            allowedMethods:
-              - "GET"
-              - "POST"
-              - "PUT"
-              - "DELETE"
-              - "OPTIONS"
-            allowedHeaders:
-              - "*"
-            allowCredentials: true
-            maxAge: 3600000
-      routes:
-        - id: upm
-          uri: lb://screw-it-development-upm
-          predicates:
-            - Path=/api/upm/**
-          filters:
-            - StripPrefix=2
-
-        - id: consumer
-          uri: lb://screw-it-development-consumer
-          predicates:
-            - Path=/api/consumer/**
-          filters:
-            - StripPrefix=2
-
-        - id: blog
-          uri: lb://screw-it-development-blog
-          predicates:
-            - Path=/api/blog/**
-          filters:
-            - StripPrefix=2
-
-        - id: chat
-          uri: lb://screw-it-development-chat
-          predicates:
-            - Path=/api/chat/**
-          filters:
-            - StripPrefix=2
-
   config:
     import:
       - optional:nacos:application-${spring.profiles.active}.yml
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yml
+#    gateway:
+#      httpclient:
+#        pool:
+#          max-idle-time: 1
+#          max-life-time: 1000
+#          max-connections: 10
+#      globalcors:
+#        add-to-simple-url-handler-mapping: true
+#        cors-configurations:
+#          '[/**]':
+#            allowedOriginPatterns:
+#              - 'http://localhost:13628' #跨域处理 允许所有的域
+#              - 'http://localhost:8080' #跨域处理 允许所有的域
+#            allowedOrigins:
+#              - "http://localhost"
+#            allowedMethods:
+#              - "GET"
+#              - "POST"
+#              - "PUT"
+#              - "DELETE"
+#              - "OPTIONS"
+#            allowedHeaders:
+#              - "*"
+#            allowCredentials: true
+#            maxAge: 3600000
+#      routes:
+#        - id: upm
+#          uri: lb://screw-it-development-upm
+#          predicates:
+#            - Path=/api/upm/**
+#          filters:
+#            - StripPrefix=2
+#
+#        - id: consumer
+#          uri: lb://screw-it-development-consumer
+#          predicates:
+#            - Path=/api/consumer/**
+#          filters:
+#            - StripPrefix=2
+#
+#        - id: blog
+#          uri: lb://screw-it-development-blog
+#          predicates:
+#            - Path=/api/blog/**
+#          filters:
+#            - StripPrefix=2
+#
+#        - id: chat
+#          uri: lb://screw-it-development-chat
+#          predicates:
+#            - Path=/api/chat/**
+#          filters:
+#            - StripPrefix=2
+
+
 #      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yml

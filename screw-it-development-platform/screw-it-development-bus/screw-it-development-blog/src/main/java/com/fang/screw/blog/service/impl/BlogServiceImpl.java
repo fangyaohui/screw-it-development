@@ -2,7 +2,7 @@ package com.fang.screw.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fang.screw.blog.mapper.BlogHeadlineMapper;
-import com.fang.screw.blog.mapper.BlogInfoMapper;
+//import com.fang.screw.blog.mapper.BlogInfoMapper;
 import com.fang.screw.blog.service.BlogService;
 import com.fang.screw.communal.holder.CurrentUserHolder;
 import com.fang.screw.communal.service.UserDubboService;
@@ -39,7 +39,7 @@ import static com.fang.screw.communal.constant.DynamicParameter.*;
 @AllArgsConstructor
 public class BlogServiceImpl implements BlogService {
 
-    private BlogInfoMapper blogInfoMapper;
+//    private BlogInfoMapper blogInfoMapper;
 
     private BlogHeadlineMapper blogHeadlineMapper;
 
