@@ -9,13 +9,13 @@ server:
 # 数据库存储存储配置文件
 db:
   num: 1
-  host: localhost
+  host: 1.94.101.104
   port: 3306
   database: com_fang_demo_cfg
   user: root
-  password: 123456
+  password: fyh2380514719
   url:
-    0: jdbc:mysql://localhost:3306/com_fang_demo_cfg?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    0: jdbc:mysql://1.94.101.104:3306/com_fang_demo_cfg?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
 nacos:
   # 单实例模式启动
   standalone: true
@@ -36,6 +36,8 @@ nacos:
       urls: /,/error,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/v1/auth/**,/v1/console/health/**,/actuator/**,/v1/console/server/**
 
 spring:
+  profiles:
+    active: dev #环境
   datasource:
     platform: mysql
   security:

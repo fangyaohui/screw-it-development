@@ -8,12 +8,12 @@
     <parent>
         <artifactId>screw-it-development-maven</artifactId>
         <groupId>screw.it.development</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>2.6.13</version>
         <relativePath>./screw-it-development-base/screw-it-development-maven/pom.xml</relativePath>
     </parent>
 
     <artifactId>screw-it-development</artifactId>
-    <version>1.0-SNAPSHOT</version>
+<!--    <version>1.0-SNAPSHOT</version>-->
     <packaging>pom</packaging>
 
     <modules>
