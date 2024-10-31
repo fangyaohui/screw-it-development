@@ -84,5 +84,13 @@ public interface OssTemplate {
      */
     void downloadFile(HttpServletResponse response, String fileName, String filePath);
 
+    /***
+    * @Description 获取获取图片地址
+    * @return {@link java.lang.String }
+    * @Author yaoHui
+    * @Date 2024/10/31
+    */
+    String getImgWebSiteUrl();
+
 
 }

@@ -50,4 +50,9 @@ public class MinioProperties {
      * 可上传的文件后缀名
      */
     private List<String> fileExt;
+
+    /**
+     * 用户上传后需要直接访问的地址
+     */
+    private String imgWebSiteUrl;
 }

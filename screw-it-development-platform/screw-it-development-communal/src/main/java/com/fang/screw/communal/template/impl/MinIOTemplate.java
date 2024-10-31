@@ -303,6 +303,17 @@ public class MinIOTemplate implements OssTemplate {
         }
     }
 
+    /***
+     * @Description 获取获取图片地址
+     * @return {@link java.lang.String }
+     * @Author yaoHui
+     * @Date 2024/10/31
+     */
+    @Override
+    public String getImgWebSiteUrl() {
+        return ossProperties.getImgWebSiteUrl();
+    }
+
     /**
      * 获取文件外链
      *

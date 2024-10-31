@@ -84,22 +84,24 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
             }
 
             // 判断用户是否上传过这个文件 如果是上传的封面照片就不需要判断用户是否上传过了
-            BlogImageUploadPO blogImageUploadPO = blogImageUploadMapper.selectOne(Wrappers.<BlogImageUploadPO>lambdaQuery()
-                    .eq(BlogImageUploadPO::getUserId, CurrentUserHolder.getUser().getId())
-                    .eq(BlogImageUploadPO::getSourcePath,fileName));
-            if(!Objects.equals(fileVO.getType(), "articleCover") && !ObjectUtils.isEmpty(blogImageUploadPO)){
-                return R.ok(blogImageUploadPO.getTargetPath());
-            }
+            // 用户上传头像也会走这个逻辑，但是应该没关系；
+            // 不行这个逻辑得取消，上线之后我们不能保证每个用户上传的名称不重复
+//            BlogImageUploadPO blogImageUploadPO = blogImageUploadMapper.selectOne(Wrappers.<BlogImageUploadPO>lambdaQuery()
+//                    .eq(BlogImageUploadPO::getUserId, CurrentUserHolder.getUser().getId())
+//                    .eq(BlogImageUploadPO::getSourcePath,fileName));
+//            if(!Objects.equals(fileVO.getType(), "articleCover") && !ObjectUtils.isEmpty(blogImageUploadPO)){
+//                return R.ok(blogImageUploadPO.getTargetPath());
+//            }
 
             String imageName = UUID.randomUUID().toString();
             OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,file);
 
             String imageKey = ossFile.getName().replaceFirst("/"+BLOG_IMAGE_UPLOAD_FOLDER_NAME,"");
-            String imageUrl = IMG_WEB_SITE_URL + imageKey;
+            String imageUrl = ossTemplate.getImgWebSiteUrl() + imageKey;
 
             if(!Objects.equals(fileVO.getType(),"articleCover")){
                 // 保存用户上传过的图片信息
-                blogImageUploadPO = new BlogImageUploadPO();
+                BlogImageUploadPO blogImageUploadPO = new BlogImageUploadPO();
                 blogImageUploadPO.setImgSize(ossFile.getSize());
                 blogImageUploadPO.setSourcePath(fileName);
                 blogImageUploadPO.setTargetPath(imageUrl);
