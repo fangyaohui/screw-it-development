@@ -1,10 +1,17 @@
-package com.fang.screw.domain.vo;
+package com.fang.screw.domain.dto;
 
+import com.fang.screw.domain.vo.FileVO;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @FileName UploadImageDTO
+ * @Description
+ * @Author yaoHui
+ * @date 2024-10-31
+ **/
 @Data
-public class FileVO {
+public class UploadImageDTO {
 
     private String type;
 
@@ -16,13 +23,7 @@ public class FileVO {
 
     private String visitPath;
 
-//    private MultipartFile file;
-    // 转为 Base64 以便通过 JSON 传递文件内容
-    private String fileContent;
+    private MultipartFile file;
 
     private String originalName;
-
-    private String fileName;
-
-    private Integer userId;
 }

@@ -18,13 +18,18 @@ import com.fang.screw.domain.po.ResourcePO;
 import com.fang.screw.domain.vo.FileVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.Objects;
 
 import static com.fang.screw.communal.constant.DynamicParameter.IMG_WEB_SITE_URL;
@@ -50,6 +55,16 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
 
     private ResourceMapper resourceMapper;
 
+    private RabbitTemplate rabbitTemplate;
+
+    /***
+     * @Description 上传图片服务——博客内部的图片OR头像OR封面
+     * @param file
+     * @param fileVO
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/10/31
+     */
     @Override
     public R<String> uploadImage(MultipartFile file, FileVO fileVO) {
 
@@ -57,14 +72,11 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
             return R.fail("文件和资源类型和资源路径不能为空！");
         }
 
-        fileVO.setFile(file);
-        // TODO 根据上传来的参数指定其存储在哪
-        // 目前只是默认存储在minio服务器中 后续有更改在进行修正
-//        StoreService storeService = fileStorageService.getFileStorage(fileVO.getStoreType());
-
         // 保存文件到minio服务器中
         // 限制上传文件大小 不能为空 OR 超过10MB
         try{
+            fileVO.setFileContent(Base64.getEncoder().encodeToString(file.getBytes()));
+
             if(ObjectUtils.isEmpty(file) || file.getSize() > BLOG_UPLOAD_IMAGE_MAX_SIZE){
                 // 清理临时缓存
                 file.getInputStream().close();
@@ -82,64 +94,99 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, ResourcePO>
             if(StringUtils.isNotEmpty(fileName) && fileName.startsWith("./")){
                 fileName = fileName.substring(2);
             }
+            fileVO.setFileName(fileName);
 
-            // 判断用户是否上传过这个文件 如果是上传的封面照片就不需要判断用户是否上传过了
-            // 用户上传头像也会走这个逻辑，但是应该没关系；
-            // 不行这个逻辑得取消，上线之后我们不能保证每个用户上传的名称不重复
-//            BlogImageUploadPO blogImageUploadPO = blogImageUploadMapper.selectOne(Wrappers.<BlogImageUploadPO>lambdaQuery()
-//                    .eq(BlogImageUploadPO::getUserId, CurrentUserHolder.getUser().getId())
-//                    .eq(BlogImageUploadPO::getSourcePath,fileName));
-//            if(!Objects.equals(fileVO.getType(), "articleCover") && !ObjectUtils.isEmpty(blogImageUploadPO)){
-//                return R.ok(blogImageUploadPO.getTargetPath());
-//            }
+            fileVO.setUserId(CurrentUserHolder.getUser().getId());
 
-            String imageName = UUID.randomUUID().toString();
-            OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,file);
-
-            String imageKey = ossFile.getName().replaceFirst("/"+BLOG_IMAGE_UPLOAD_FOLDER_NAME,"");
-            String imageUrl = ossTemplate.getImgWebSiteUrl() + imageKey;
-
-            if(!Objects.equals(fileVO.getType(),"articleCover")){
-                // 保存用户上传过的图片信息
-                BlogImageUploadPO blogImageUploadPO = new BlogImageUploadPO();
-                blogImageUploadPO.setImgSize(ossFile.getSize());
-                blogImageUploadPO.setSourcePath(fileName);
-                blogImageUploadPO.setTargetPath(imageUrl);
-                blogImageUploadPO.setUserId(CurrentUserHolder.getUser().getId());
-                blogImageUploadMapper.insert(blogImageUploadPO);
+            if(Objects.equals(fileVO.getType(),"blogImage")){
+                rabbitTemplate.convertAndSend("uploadImageExchange","uploadImageKey",fileVO);
+                return R.success();
             }
 
-            ResourcePO resourcePO = new ResourcePO();
-            resourcePO.setUserId(CurrentUserHolder.getUser().getId());
-            resourcePO.setPath(imageUrl);
-            resourcePO.setType(fileVO.getType());
-            resourcePO.setSize(ossFile.getSize());
-            resourcePO.setOriginalName(ossFile.getOriginalName());
-            resourcePO.setStoreType("MinIO");
-
-            save(resourcePO);
-
+            String imageUrl = saveImageAndResource(fileVO);
             file.getInputStream().close();
 
             return R.success(imageUrl);
         }catch (Exception e){
-            return R.fail("上传失败");
+
+            log.error("上传失败："+e.getMessage());
+            return R.fail("上传失败："+e.getMessage());
+        }
+    }
+
+    /***
+    * @Description 监听上传图片人物——只适用于批量上传博客图片场景
+    * @param fileVO
+    * @return {@link }
+    * @Author yaoHui
+    * @Date 2024/10/31
+    */
+    @RabbitListener(queues = "uploadImageSimpleQueue")
+    public void uploadImageSimpleQueueProcess(FileVO fileVO){
+        try{
+            String imageUrl = saveImageAndResource(fileVO);
+        }catch (Exception e){
+            log.info(CurrentUserHolder.getUser().toString());
+            e.printStackTrace();
+            log.error("批量上传博客图片监听任务失败："+e.getMessage());
         }
 
-//
-//        Resource re = new Resource();
-//        re.setPath(result.getVisitPath());
-//        re.setType(fileVO.getType());
-//        re.setSize(Integer.valueOf(Long.toString(file.getSize())));
-//        re.setMimeType(file.getContentType());
-//        re.setStoreType(fileVO.getStoreType());
-//        re.setOriginalName(fileVO.getOriginalName());
-//        re.setUserId(PoetryUtil.getUserId());
-//        resourceService.save(re);
-//        return PoetryResult.success(result.getVisitPath());
-
-//        return null;
     }
+
+    /***
+     * @Description 上传图片
+     * @param fileVO
+     * @return {@link }
+     * @Author yaoHui
+     * @Date 2024/10/31
+     */
+    private String saveImageAndResource(FileVO fileVO) throws IOException {
+
+
+        // 判断用户是否上传过这个文件 如果是上传的封面照片就不需要判断用户是否上传过了
+        // 用户上传头像也会走这个逻辑，但是应该没关系；
+        // 不行这个逻辑得取消，上线之后我们不能保证每个用户上传的名称不重复
+        BlogImageUploadPO blogImageUploadPO = blogImageUploadMapper.selectOne(Wrappers.<BlogImageUploadPO>lambdaQuery()
+                .eq(BlogImageUploadPO::getUserId, fileVO.getUserId())
+                .eq(BlogImageUploadPO::getSourcePath,fileVO.getFileName()));
+        if(!ObjectUtils.isEmpty(blogImageUploadPO)){
+            return blogImageUploadPO.getTargetPath();
+        }
+
+        String imageName = UUID.randomUUID().toString();
+        byte[] fileContent = Base64.getDecoder().decode(fileVO.getFileContent());
+        InputStream inputStream = new ByteArrayInputStream(fileContent);
+        OssFile ossFile = ossTemplate.upLoadFile(BLOG_IMAGE_UPLOAD_FOLDER_NAME,imageName,"png",inputStream);
+
+        String imageKey = ossFile.getName().replaceFirst("/"+BLOG_IMAGE_UPLOAD_FOLDER_NAME,"");
+        String imageUrl = ossTemplate.getImgWebSiteUrl() + imageKey;
+
+        if(!Objects.equals(fileVO.getType(),"articleCover")){
+            // 保存用户上传过的图片信息
+            blogImageUploadPO = new BlogImageUploadPO();
+            blogImageUploadPO.setImgSize(ossFile.getSize());
+            blogImageUploadPO.setSourcePath(fileVO.getFileName());
+            blogImageUploadPO.setTargetPath(imageUrl);
+            blogImageUploadPO.setUserId(fileVO.getUserId());
+            blogImageUploadMapper.insert(blogImageUploadPO);
+        }
+
+        ResourcePO resourcePO = new ResourcePO();
+        resourcePO.setUserId(fileVO.getUserId());
+        resourcePO.setPath(imageUrl);
+        resourcePO.setType(fileVO.getType());
+        resourcePO.setSize(ossFile.getSize());
+        resourcePO.setOriginalName(ossFile.getOriginalName());
+        resourcePO.setStoreType("MinIO");
+
+        save(resourcePO);
+
+//        fileVO.getFile().getInputStream().close();
+
+        return imageUrl;
+    }
+
+
 
     /**
      * @Description 获取minio服务器中的图片

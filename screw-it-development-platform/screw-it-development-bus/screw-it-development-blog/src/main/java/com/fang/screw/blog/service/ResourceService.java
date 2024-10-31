@@ -19,6 +19,14 @@ import java.util.List;
 public interface ResourceService {
 
 
+    /***
+    * @Description 上传图片服务——博客内部的图片OR头像OR封面
+    * @param file
+     * @param fileVO
+    * @return {@link R< String> }
+    * @Author yaoHui
+    * @Date 2024/10/31
+    */
     R<String> uploadImage(@RequestParam("file") MultipartFile file, FileVO fileVO);
 
     /**
