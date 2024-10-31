@@ -1,5 +1,6 @@
 package com.fang.screw.upm.controller;
 
+import com.fang.screw.communal.annotation.CacheRemove;
 import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.dto.UserDTO;
@@ -58,12 +59,10 @@ public class UserController {
     * @Author yaoHui
     * @Date 2024/10/23
     */
+    // TODO 更新用户头像或者相关信息之后 Redis中的数据没有更新 导致用户评论之后的头像还是Redis中的老数据 应为comment是从Redis获取用户头像的
     @PostMapping("/updateUserAvatarInfo")
+    @CacheRemove(value = "page:article")
     public R<UserVO> updateUserAvatarInfo(@RequestBody UserVO userVO){
-
-//        UserVO userVO = new UserVO();
-//        userVO.setAvatar(avatar);
-
         return userService.updateUserAvatarInfo(userVO);
     }
 
