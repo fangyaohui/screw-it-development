@@ -37,6 +37,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!--  RabbitMQ      -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
 <!--        &lt;!&ndash;    Dubbo Nacos适配依赖包 开始  &ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.dubbo</groupId>-->

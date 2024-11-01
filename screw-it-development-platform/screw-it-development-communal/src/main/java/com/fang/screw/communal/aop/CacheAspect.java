@@ -87,6 +87,7 @@ public class CacheAspect {
                 } catch (Exception e ) {
                     // 发生异常时，手动回滚事务
                     status.setRollbackOnly();
+                    e.printStackTrace();
                     log.error("发生异常，事务已回滚：" + e.getMessage());
                 } catch (Throwable e) {
                     e.printStackTrace();

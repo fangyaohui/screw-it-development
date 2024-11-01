@@ -13,6 +13,7 @@ import com.fang.screw.upm.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements UserService{
+
+    private RabbitTemplate rabbitTemplate;
 
     /***
      * @Description 根据用户ID查询该用户对应的具体用户信息
@@ -124,6 +127,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
 
         user = baseMapper.selectById(user.getId());
 
+        rabbitTemplate.convertAndSend("updateUserInfoExchange","updateUserInfoKey",user.transformVO());
         return R.ok(user.transformVO());
     }
 }
