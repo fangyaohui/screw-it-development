@@ -82,6 +82,8 @@ public class CacheAspect {
                     res[0] =  joinPoint.proceed();
 
                     redisUtils.del(keys);
+
+                    log.info("CacheRemoveKey running delete key is :"+keys.toString());
                 } catch (Exception e ) {
                     // 发生异常时，手动回滚事务
                     status.setRollbackOnly();

@@ -53,17 +53,17 @@ public class UserController {
     }
 
     /***
-    * @Description 更新用户的头像
+    * @Description 更新用户的相关信息
     * @param userVO
     * @return {@link R< String> }
     * @Author yaoHui
     * @Date 2024/10/23
     */
     // TODO 更新用户头像或者相关信息之后 Redis中的数据没有更新 导致用户评论之后的头像还是Redis中的老数据 应为comment是从Redis获取用户头像的
-    @PostMapping("/updateUserAvatarInfo")
-    @CacheRemove(value = "page:article")
-    public R<UserVO> updateUserAvatarInfo(@RequestBody UserVO userVO){
-        return userService.updateUserAvatarInfo(userVO);
+    @PostMapping("/updateUserInfo")
+    @CacheRemove(value = "user:login:status",key = "#0.id")
+    public R<UserVO> updateUserInfo(@RequestBody UserVO userVO){
+        return userService.updateUserInfo(userVO);
     }
 
 

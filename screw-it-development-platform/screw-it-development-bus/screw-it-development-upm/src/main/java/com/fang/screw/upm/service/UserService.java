@@ -47,12 +47,12 @@ public interface UserService extends IService<UserPO> {
     R<String> testApplicationContextAware();
 
     /***
-     * @Description 更新用户的头像
+     * @Description 更新用户的相关信息
      * @param userVO
      * @return {@link R< String> }
      * @Author yaoHui
      * @Date 2024/10/23
      */
-    R<UserVO> updateUserAvatarInfo(UserVO userVO);
+    R<UserVO> updateUserInfo(UserVO userVO);
 
 }

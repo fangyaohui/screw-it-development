@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -98,27 +99,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserPO> implements 
     }
 
     /***
-     * @Description 更新用户的头像
+     * @Description 更新用户的相关信息
      * @param userVO
      * @return {@link R< String> }
      * @Author yaoHui
      * @Date 2024/10/23
      */
     @Override
-    public R<UserVO> updateUserAvatarInfo(UserVO userVO) {
+    public R<UserVO> updateUserInfo(UserVO userVO) {
 
         if(ObjectUtils.isEmpty(userVO)){
             return R.failed("需要更新的数据为空");
         }
 
         UserPO user = CurrentUserHolder.getUser();
-        user.setAvatar(userVO.getAvatar());
+        if(!Objects.equals(user.getId(), userVO.getId())){
+            return R.failed("账户状态异常，请重新登录");
+        }
+
+        user = userVO.transformPO();
 
         baseMapper.update(user,Wrappers.<UserPO>lambdaUpdate()
                 .eq(UserPO::getId,user.getId()));
 
+        user = baseMapper.selectById(user.getId());
+
         return R.ok(user.transformVO());
     }
-
-
 }
