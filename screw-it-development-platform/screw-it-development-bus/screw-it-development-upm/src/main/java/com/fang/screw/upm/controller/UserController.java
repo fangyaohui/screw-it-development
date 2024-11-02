@@ -1,16 +1,14 @@
 package com.fang.screw.upm.controller;
 
 import com.fang.screw.communal.annotation.CacheRemove;
-import com.fang.screw.communal.service.UserDubboService;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.dto.UserDTO;
+import com.fang.screw.domain.vo.FamilyVO;
 import com.fang.screw.domain.vo.UserVO;
 import com.fang.screw.upm.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import com.fang.screw.domain.po.BlogUserPO;
-import com.fang.screw.domain.vo.BlogUserVO;
 
 import java.util.List;
 
@@ -59,11 +57,33 @@ public class UserController {
     * @Author yaoHui
     * @Date 2024/10/23
     */
-    // TODO 更新用户头像或者相关信息之后 Redis中的数据没有更新 导致用户评论之后的头像还是Redis中的老数据 应为comment是从Redis获取用户头像的
     @PostMapping("/updateUserInfo")
     @CacheRemove(value = "user:login:status",key = "#0.id")
     public R<UserVO> updateUserInfo(@RequestBody UserVO userVO){
         return userService.updateUserInfo(userVO);
+    }
+
+    /***
+    * @Description 查询当前用户的Family相关信息
+    * @return {@link R< FamilyVO> }
+    * @Author yaoHui
+    * @Date 2024/11/2
+    */
+    @PostMapping("/getUserFamily")
+    public R<FamilyVO> getUserFamily(){
+        return userService.getUserFamily();
+    }
+
+    /***
+    * @Description 保存用户的相关Family信息——新建
+    * @param familyVO
+    * @return {@link R< String> }
+    * @Author yaoHui
+    * @Date 2024/11/2
+    */
+    @PostMapping("/saveAndUpdateFamily")
+    public R<String> saveAndUpdateFamily(@RequestBody FamilyVO familyVO){
+        return userService.saveAndUpdateFamily(familyVO);
     }
 
 

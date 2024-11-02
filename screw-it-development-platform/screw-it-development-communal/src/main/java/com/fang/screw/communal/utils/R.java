@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @FileName R
+ * @FileName R 选用OK and failed
  * @Description
  * @Author yaoHui
  * @date 2024-07-17

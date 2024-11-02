@@ -3,12 +3,9 @@ package com.fang.screw.upm.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fang.screw.communal.utils.R;
 import com.fang.screw.domain.dto.UserDTO;
-import com.fang.screw.domain.po.BlogUserPO;
-import com.fang.screw.domain.po.UserInfoPO;
 import com.fang.screw.domain.po.UserPO;
+import com.fang.screw.domain.vo.FamilyVO;
 import com.fang.screw.domain.vo.UserVO;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -54,5 +51,22 @@ public interface UserService extends IService<UserPO> {
      * @Date 2024/10/23
      */
     R<UserVO> updateUserInfo(UserVO userVO);
+
+    /***
+     * @Description 查询当前用户的Family相关信息
+     * @return {@link R< FamilyVO> }
+     * @Author yaoHui
+     * @Date 2024/11/2
+     */
+    R<FamilyVO> getUserFamily();
+
+    /***
+     * @Description 保存用户的相关Family信息——新建
+     * @param familyVO
+     * @return {@link R< String> }
+     * @Author yaoHui
+     * @Date 2024/11/2
+     */
+    R<String> saveAndUpdateFamily(FamilyVO familyVO);
 
 }
