@@ -9,13 +9,13 @@ server:
 # 数据库存储存储配置文件
 db:
   num: 1
-  host: 1.94.101.104
+  host: localhost
   port: 3306
   database: com_fang_demo_cfg
   user: root
-  password: fyh2380514719
+  password: 123456
   url:
-    0: jdbc:mysql://1.94.101.104:3306/com_fang_demo_cfg?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    0: jdbc:mysql://localhost:3306/com_fang_demo_cfg?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
 nacos:
   # 单实例模式启动
   standalone: true

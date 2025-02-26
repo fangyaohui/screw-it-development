@@ -29,7 +29,7 @@ public class MinioConfiguration {
     @Bean
     @SneakyThrows
     public MinioClient minioClient() {
-        log.error(ossProperties.getAccessKey());
+//        log.error(ossProperties.getAccessKey());
         return MinioClient.builder()
                 .endpoint(ossProperties.getEndpoint())
                 .credentials(ossProperties.getAccessKey(), ossProperties.getSecretKey())
